@@ -22,7 +22,7 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      */
     public static function getName()
     {
-        return 'auto.categories';
+        return 'autoCategories';
     }
 
     /**

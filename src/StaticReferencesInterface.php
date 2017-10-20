@@ -3,9 +3,9 @@
 namespace AvtoDev\StaticReferencesLaravel;
 
 /**
- * Interface ReferencesStackInterface.
+ * Interface StaticReferencesInterface.
  */
-interface ReferencesStackInterface
+interface StaticReferencesInterface
 {
     /**
      * Возвращает массив классов провайдеров справочников.
@@ -26,5 +26,5 @@ interface ReferencesStackInterface
      *
      * @return string[]
      */
-    public function getBasicReferencesClasses();
+    public function getPackageProvidersClasses();
 }

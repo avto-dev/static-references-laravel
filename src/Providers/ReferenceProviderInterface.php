@@ -4,7 +4,7 @@ namespace AvtoDev\StaticReferencesLaravel\Providers;
 
 use Closure;
 use Countable;
-use AvtoDev\StaticReferencesLaravel\ReferencesStackInterface;
+use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
 
 /**
  * Interface ReferenceProviderInterface.
@@ -14,12 +14,14 @@ interface ReferenceProviderInterface extends Countable
     /**
      * ReferenceProviderInterface constructor.
      *
-     * @param ReferencesStackInterface $references_stack
+     * @param StaticReferencesInterface $references_stack
      */
-    public function __construct(ReferencesStackInterface $references_stack);
+    public function __construct(StaticReferencesInterface $references_stack);
 
     /**
      * Возвращает короткое имя справочника.
+     *
+     * Важно: крайне желательно использовать имена в camelCase, для удобного обращения с помощью магических методов.
      *
      * @return string
      */

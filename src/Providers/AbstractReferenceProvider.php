@@ -5,7 +5,7 @@ namespace AvtoDev\StaticReferencesLaravel\Providers;
 use Closure;
 use Exception;
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesLaravel\ReferencesStackInterface;
+use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
 use AvtoDev\StaticReferencesLaravel\Exceptions\FileReadingException;
 
 /**
@@ -25,14 +25,14 @@ abstract class AbstractReferenceProvider implements ReferenceProviderInterface
     /**
      * Инстанс объекта-стека справочников.
      *
-     * @var ReferencesStackInterface
+     * @var StaticReferencesInterface
      */
     protected $references;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(ReferencesStackInterface $references_stack)
+    public function __construct(StaticReferencesInterface $references_stack)
     {
         $this->references = $references_stack;
         $this->initializeStack();

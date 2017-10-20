@@ -2,8 +2,8 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests\Providers;
 
+use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferencesLaravel\Tests\Mocks\AbstractReferencesStackMock;
 use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvider;
 
 /**
@@ -23,7 +23,7 @@ class AutoCategoriesReferenceTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        $this->instance = new AutoCategoriesProvider(new AbstractReferencesStackMock($this->app));
+        $this->instance = new AutoCategoriesProvider(new StaticReferences($this->app));
     }
 
     /**
@@ -43,9 +43,9 @@ class AutoCategoriesReferenceTest extends AbstractUnitTestCase
      */
     public function testGetName()
     {
-        $this->assertEquals('auto.categories', $this->instance->getName());
+        $this->assertEquals('autoCategories', $this->instance->getName());
     }
-
+    
     /**
      * Тест базовых акцессоров данных.
      *
