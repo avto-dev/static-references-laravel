@@ -4,8 +4,8 @@ namespace AvtoDev\StaticReferencesLaravel\Tests;
 
 use AvtoDev\StaticReferencesLaravel\AbstractReferencesStack;
 use AvtoDev\StaticReferencesLaravel\ReferencesStackInterface;
-use AvtoDev\StaticReferencesLaravel\Tests\Mocks\AbstractReferencesStackMock;
 use AvtoDev\StaticReferencesLaravel\Traits\InstanceableTrait;
+use AvtoDev\StaticReferencesLaravel\Tests\Mocks\AbstractReferencesStackMock;
 
 /**
  * Class AbstractReferencesStackTest.
@@ -54,7 +54,7 @@ class AbstractReferencesStackTest extends AbstractUnitTestCase
      */
     public function testTraits()
     {
-        /**
+        /*
          * @see InstanceableTrait
          */
         $this->assertInstanceOf(AbstractReferencesStackMock::class, $this->instance->instance());

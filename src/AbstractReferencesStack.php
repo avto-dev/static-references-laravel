@@ -2,13 +2,13 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
-use AvtoDev\StaticReferencesLaravel\Providers\ReferenceProviderInterface;
-use AvtoDev\StaticReferencesLaravel\Traits\InstanceableTrait;
 use Exception;
-use Illuminate\Cache\Repository as CacheRepository;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
-use Illuminate\Contracts\Foundation\Application;
 use ReflectionClass;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Cache\Repository as CacheRepository;
+use AvtoDev\StaticReferencesLaravel\Traits\InstanceableTrait;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use AvtoDev\StaticReferencesLaravel\Providers\ReferenceProviderInterface;
 
 /**
  * Class AbstractReferencesStack.
@@ -39,11 +39,6 @@ abstract class AbstractReferencesStack implements ReferencesStackInterface
     protected $instances = [];
 
     /**
-     * {@inheritdoc}
-     */
-    abstract public function getBasicReferencesClasses();
-
-    /**
      * StaticReferences constructor.
      *
      * @param Application $app
@@ -54,6 +49,34 @@ abstract class AbstractReferencesStack implements ReferencesStackInterface
     {
         $this->app = $app;
         $this->initializeInstances();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getBasicReferencesClasses();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProvidersClasses()
+    {
+        $result = [];
+
+        $classes = array_merge_recursive(
+            $this->getBasicReferencesClasses(),
+            (array) $this->getConfigValue('extra_references')
+        );
+
+        foreach ($classes as $class) {
+            $reflection = new ReflectionClass($class);
+            // Убеждаемся в том, что классы реализуют интерфейс
+            if ($reflection->implementsInterface(ReferenceProviderInterface::class)) {
+                array_push($result, $class);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -99,34 +122,11 @@ abstract class AbstractReferencesStack implements ReferencesStackInterface
     {
         static $instance = null;
 
-        if (!($instance instanceof ConfigRepository)) {
+        if (! ($instance instanceof ConfigRepository)) {
             $instance = $this->app->make('config');
         }
 
         return $instance->get(sprintf('%s.%s', static::getConfigRootKeyName(), $key), $default);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProvidersClasses()
-    {
-        $result = [];
-
-        $classes = array_merge_recursive(
-            $this->getBasicReferencesClasses(),
-            (array) $this->getConfigValue('extra_references')
-        );
-
-        foreach ($classes as $class) {
-            $reflection = new ReflectionClass($class);
-            // Убеждаемся в том, что классы реализуют интерфейс
-            if ($reflection->implementsInterface(ReferenceProviderInterface::class)) {
-                array_push($result, $class);
-            }
-        }
-
-        return $result;
     }
 
     /**
@@ -138,7 +138,7 @@ abstract class AbstractReferencesStack implements ReferencesStackInterface
     {
         static $instance = null;
 
-        if (!($instance instanceof CacheRepository)) {
+        if (! ($instance instanceof CacheRepository)) {
             $storage = ($name = $this->getConfigValue('cache.store')) === 'auto'
                 ? config('cache.default')
                 : $name;

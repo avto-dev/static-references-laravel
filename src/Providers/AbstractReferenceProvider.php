@@ -111,19 +111,19 @@ abstract class AbstractReferenceProvider implements ReferenceProviderInterface
      *
      * @param string $file_path
      *
-     * @return array[]|array
-     *
      * @throws FileReadingException
+     *
+     * @return array[]|array
      */
     protected function getContentFromJsonFile($file_path)
     {
         if (is_string($file_path) && file_exists($file_path) && is_readable($file_path)) {
             try {
                 $content = file_get_contents($file_path, false, null, 0, 524288);
-                if (is_string($content) && !empty($content)) {
+                if (is_string($content) && ! empty($content)) {
                     $result = json_decode($content, true);
 
-                    if (json_last_error() === JSON_ERROR_NONE && is_array($result) && !empty($result)) {
+                    if (json_last_error() === JSON_ERROR_NONE && is_array($result) && ! empty($result)) {
                         return $result;
                     }
                 }

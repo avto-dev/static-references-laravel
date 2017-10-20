@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests\Providers;
 
-use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\AbstractReferencesStackMock;
+use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvider;
 
 /**
  * Class AutoCategoriesReferenceTest.
@@ -75,7 +75,7 @@ class AutoCategoriesReferenceTest extends AbstractUnitTestCase
          * По описаниям.
          */
         $category_name = 'Трициклы';
-        $assert_with = 'B1';
+        $assert_with   = 'B1';
 
         $this->assertEquals($assert_with, $this->instance->getByDescription($category_name)->getCode());
         $this->assertEquals($assert_with, $this->instance->getByDescription(' ' . $category_name)->getCode());

@@ -16,7 +16,7 @@ class ReferenceEntityMock implements ReferenceEntityInterface
     {
         $this->raw_data = $raw_data;
 
-        $this->some = $raw_data['some'];
+        $this->some  = $raw_data['some'];
         $this->value = $raw_data['value'];
     }
 

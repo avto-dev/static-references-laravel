@@ -2,11 +2,11 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Providers\AutoCategories;
 
-use AvtoDev\StaticReferencesLaravel\Providers\AbstractReferenceEntity;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferencesLaravel\Providers\AbstractReferenceEntity;
 
 /**
- * Class AutoCategory
+ * Class AutoCategory.
  *
  * Сущность типа "Категория автомобиля".
  */

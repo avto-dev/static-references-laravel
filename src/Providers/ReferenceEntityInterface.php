@@ -5,7 +5,7 @@ namespace AvtoDev\StaticReferencesLaravel\Providers;
 use AvtoDev\StaticReferencesLaravel\Support\Contracts\Configurable;
 
 /**
- * Interface ReferenceEntityInterface
+ * Interface ReferenceEntityInterface.
  */
 interface ReferenceEntityInterface extends Configurable
 {

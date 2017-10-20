@@ -12,6 +12,13 @@ use AvtoDev\StaticReferencesLaravel\ReferencesStackInterface;
 interface ReferenceProviderInterface extends Countable
 {
     /**
+     * ReferenceProviderInterface constructor.
+     *
+     * @param ReferencesStackInterface $references_stack
+     */
+    public function __construct(ReferencesStackInterface $references_stack);
+
+    /**
      * Возвращает короткое имя справочника.
      *
      * @return string
@@ -33,11 +40,4 @@ interface ReferenceProviderInterface extends Countable
      * @return void
      */
     public function each(Closure $callback);
-
-    /**
-     * ReferenceProviderInterface constructor.
-     *
-     * @param ReferencesStackInterface $references_stack
-     */
-    public function __construct(ReferencesStackInterface $references_stack);
 }

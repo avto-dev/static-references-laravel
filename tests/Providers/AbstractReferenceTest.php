@@ -3,9 +3,9 @@
 namespace AvtoDev\StaticReferencesLaravel\Tests\Providers;
 
 use AvtoDev\StaticReferencesLaravel\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferencesLaravel\Tests\Mocks\AbstractReferenceProviderMock;
-use AvtoDev\StaticReferencesLaravel\Tests\Mocks\AbstractReferencesStackMock;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\ReferenceEntityMock;
+use AvtoDev\StaticReferencesLaravel\Tests\Mocks\AbstractReferencesStackMock;
+use AvtoDev\StaticReferencesLaravel\Tests\Mocks\AbstractReferenceProviderMock;
 
 /**
  * Class AbstractReferenceTest.

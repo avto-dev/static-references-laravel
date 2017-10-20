@@ -6,12 +6,17 @@ use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesLaravel\Providers\AbstractReferenceProvider;
 
 /**
- * Class AutoCategoriesProvider
+ * Class AutoCategoriesProvider.
  *
  * Провайдер данных о категориях ТС.
  */
 class AutoCategoriesProvider extends AbstractReferenceProvider
 {
+    /**
+     * @var AutoCategory[]
+     */
+    protected $stack = [];
+
     /**
      * {@inheritdoc}
      */
@@ -19,11 +24,6 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
     {
         return 'auto.categories';
     }
-
-    /**
-     * @var AutoCategory[]
-     */
-    protected $stack = [];
 
     /**
      * Возвращает объект категории по её коду.
@@ -34,15 +34,13 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      */
     public function getByCode($code)
     {
-        if (is_scalar($code) && !empty($code = Str::upper(Str::ascii(trim((string) $code))))) {
+        if (is_scalar($code) && ! empty($code = Str::upper(Str::ascii(trim((string) $code))))) {
             foreach ($this->stack as $auto_category) {
-                if ($auto_category->getCode() == $code) {
+                if ($auto_category->getCode() === $code) {
                     return $auto_category;
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -66,15 +64,13 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      */
     public function getByDescription($description)
     {
-        if (is_scalar($description) && !empty($description = trim((string) $description))) {
+        if (is_scalar($description) && ! empty($description = trim((string) $description))) {
             foreach ($this->stack as $auto_category) {
                 if (Str::contains($auto_category->getDescription(), $description)) {
                     return $auto_category;
                 }
             }
         }
-
-        return null;
     }
 
     /**
