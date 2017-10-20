@@ -45,7 +45,7 @@ class AutoCategoriesReferenceTest extends AbstractUnitTestCase
     {
         $this->assertEquals('autoCategories', $this->instance->getName());
     }
-    
+
     /**
      * Тест базовых акцессоров данных.
      *

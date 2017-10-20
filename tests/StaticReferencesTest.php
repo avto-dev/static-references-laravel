@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
-use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
+use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvider;
 
 /**
  * Class StaticReferencesTest.

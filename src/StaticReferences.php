@@ -2,14 +2,14 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
-use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvider;
-use AvtoDev\StaticReferencesLaravel\Providers\ReferenceProviderInterface;
-use AvtoDev\StaticReferencesLaravel\Traits\InstanceableTrait;
 use Exception;
-use Illuminate\Cache\Repository as CacheRepository;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
-use Illuminate\Contracts\Foundation\Application;
 use ReflectionClass;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Cache\Repository as CacheRepository;
+use AvtoDev\StaticReferencesLaravel\Traits\InstanceableTrait;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use AvtoDev\StaticReferencesLaravel\Providers\ReferenceProviderInterface;
+use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvider;
 
 /**
  * Class StaticReferences.
@@ -55,53 +55,15 @@ class StaticReferences implements StaticReferencesInterface
     }
 
     /**
-     * Производит инициализацию инстансов справочников.
+     * При обращении к провайдеру справочника по имени - пытаемся его вернуть.
      *
-     * @return void
+     * @param string $provider_name
+     *
+     * @return ReferenceProviderInterface|null
      */
-    protected function initializeProviders()
+    public function __get($provider_name)
     {
-        $cache_enabled = $this->getConfigValue('cache.enabled') === true;
-        $this->providers = []; // Не уверен что это оптимально будет очищать память при повторном вызове
-
-        // Создаем инстансы справочников
-        foreach ($this->getProvidersClasses() as $provider_class) {
-            // Формируем имя ключа для кэша
-            $cache_key = static::CACHE_KEY_PREFIX . class_basename($provider_class);
-
-            // Если инстанс справочника есть в кэше
-            if ($cache_enabled && $this->getCacheRepository()->has($cache_key)) {
-                // То берем его из него
-                array_push($this->providers, $this->getCacheRepository()->get($cache_key));
-            } else {
-                // Иначе - создаем новый инстанс провайдера справочника
-                array_push($this->providers, $instance = $this->referenceInstanceFactory($provider_class));
-
-                // И помещаем его ИНСТАНС в кэш
-                if ($cache_enabled) {
-                    $this->getCacheRepository()->forever($cache_key, $instance);
-                }
-            }
-        }
-    }
-
-    /**
-     * Извлекает значение конфига справочников по его имени. Имя корневого элемента при этом указывать не требуется.
-     *
-     * @param string $key
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    protected function getConfigValue($key, $default = null)
-    {
-        static $instance = null;
-
-        if (!($instance instanceof ConfigRepository)) {
-            $instance = $this->app->make('config');
-        }
-
-        return $instance->get(sprintf('%s.%s', static::getConfigRootKeyName(), $key), $default);
+        return $this->getByName($provider_name);
     }
 
     /**
@@ -143,39 +105,6 @@ class StaticReferences implements StaticReferencesInterface
         return [
             AutoCategoriesProvider::class,
         ];
-    }
-
-    /**
-     * Возвращает инстанс кэша.
-     *
-     * @return CacheRepository|null
-     */
-    protected function getCacheRepository()
-    {
-        static $instance = null;
-
-        if (!($instance instanceof CacheRepository)) {
-            $storage = ($name = $this->getConfigValue('cache.store')) === 'auto'
-                ? config('cache.default')
-                : $name;
-
-            $instance = $this->app->make('cache')->store($storage);
-        }
-
-        return $instance;
-    }
-
-    /**
-     * Факторка по созданию инстансов справочников.
-     *
-     * @param string $reference_class
-     * @param array  ...$arguments
-     *
-     * @return ReferenceProviderInterface
-     */
-    protected function referenceInstanceFactory($reference_class, ...$arguments)
-    {
-        return new $reference_class($this, ...$arguments);
     }
 
     /**
@@ -227,14 +156,85 @@ class StaticReferences implements StaticReferencesInterface
     }
 
     /**
-     * При обращении к провайдеру справочника по имени - пытаемся его вернуть.
+     * Производит инициализацию инстансов справочников.
      *
-     * @param string $provider_name
-     *
-     * @return ReferenceProviderInterface|null
+     * @return void
      */
-    public function __get($provider_name)
+    protected function initializeProviders()
     {
-        return $this->getByName($provider_name);
+        $cache_enabled   = $this->getConfigValue('cache.enabled') === true;
+        $this->providers = []; // Не уверен что это оптимально будет очищать память при повторном вызове
+
+        // Создаем инстансы справочников
+        foreach ($this->getProvidersClasses() as $provider_class) {
+            // Формируем имя ключа для кэша
+            $cache_key = static::CACHE_KEY_PREFIX . class_basename($provider_class);
+
+            // Если инстанс справочника есть в кэше
+            if ($cache_enabled && $this->getCacheRepository()->has($cache_key)) {
+                // То берем его из него
+                array_push($this->providers, $this->getCacheRepository()->get($cache_key));
+            } else {
+                // Иначе - создаем новый инстанс провайдера справочника
+                array_push($this->providers, $instance = $this->referenceInstanceFactory($provider_class));
+
+                // И помещаем его ИНСТАНС в кэш
+                if ($cache_enabled) {
+                    $this->getCacheRepository()->forever($cache_key, $instance);
+                }
+            }
+        }
+    }
+
+    /**
+     * Извлекает значение конфига справочников по его имени. Имя корневого элемента при этом указывать не требуется.
+     *
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    protected function getConfigValue($key, $default = null)
+    {
+        static $instance = null;
+
+        if (! ($instance instanceof ConfigRepository)) {
+            $instance = $this->app->make('config');
+        }
+
+        return $instance->get(sprintf('%s.%s', static::getConfigRootKeyName(), $key), $default);
+    }
+
+    /**
+     * Возвращает инстанс кэша.
+     *
+     * @return CacheRepository|null
+     */
+    protected function getCacheRepository()
+    {
+        static $instance = null;
+
+        if (! ($instance instanceof CacheRepository)) {
+            $storage = ($name = $this->getConfigValue('cache.store')) === 'auto'
+                ? config('cache.default')
+                : $name;
+
+            $instance = $this->app->make('cache')->store($storage);
+        }
+
+        return $instance;
+    }
+
+    /**
+     * Факторка по созданию инстансов справочников.
+     *
+     * @param string $reference_class
+     * @param array  ...$arguments
+     *
+     * @return ReferenceProviderInterface
+     */
+    protected function referenceInstanceFactory($reference_class, ...$arguments)
+    {
+        return new $reference_class($this, ...$arguments);
     }
 }
