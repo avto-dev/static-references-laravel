@@ -2,8 +2,8 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References\AutoCategories;
 
-use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
 
 /**
  * Class AutoCategoryEntry.

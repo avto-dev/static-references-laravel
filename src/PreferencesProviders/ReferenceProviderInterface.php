@@ -2,8 +2,8 @@
 
 namespace AvtoDev\StaticReferencesLaravel\PreferencesProviders;
 
-use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
+use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 
 interface ReferenceProviderInterface
 {

@@ -5,7 +5,6 @@ namespace AvtoDev\StaticReferencesLaravel\Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 /**
  * Class AbstractUnitTestCase.

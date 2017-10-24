@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References;
 
-use AvtoDev\StaticReferencesLaravel\Support\Contracts\Configurable;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use AvtoDev\StaticReferencesLaravel\Support\Contracts\Configurable;
 
 /**
  * Interface ReferenceEntryInterface.

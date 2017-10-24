@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests\Mocks;
 
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
-use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
+use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
 
 /**
  * Class StaticReferencesMock.

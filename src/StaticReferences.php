@@ -2,14 +2,14 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
+use ReflectionClass;
+use Illuminate\Support\Str;
+use Illuminate\Cache\Repository as CacheRepository;
+use AvtoDev\StaticReferencesLaravel\Traits\InstanceableTrait;
+use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
-use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
-use AvtoDev\StaticReferencesLaravel\Traits\InstanceableTrait;
-use Illuminate\Cache\Repository as CacheRepository;
-use Illuminate\Support\Str;
-use ReflectionClass;
 
 /**
  * Class StaticReferences.
@@ -77,6 +77,53 @@ class StaticReferences implements StaticReferencesInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function __get($name)
+    {
+        return $this->make($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function &make($bind_name)
+    {
+        // Ищем среди биндов ссылку на провайдер искомого справочника
+        if (is_string($bind_name) && isset($this->binds_map[$bind_name])) {
+            /** @var ReferenceProviderInterface $provider */
+            $provider_class = get_class($provider = $this->binds_map[$bind_name]);
+
+            // Если в стеке инстансов справочников НЕ присутствует необходимый нам - то создаём его
+            if (! isset($this->references[$provider_class])) {
+                $cache_enabled = $this->config['cache']['enabled'] === true;
+                $cache_key     = static::CACHE_KEY_PREFIX . Str::snake($provider_class);
+
+                // Ищем инстанс справочника в кэше, то сразу его и извлекаем
+                if ($cache_enabled && $this->getCacheRepository()->has($cache_key)) {
+                    $this->references[$provider_class] = $this->getCacheRepository()->get($cache_key);
+                } else {
+                    // В противном случае - создаем его
+                    $this->references[$provider_class] = ($instance = $provider->instance());
+
+                    // И помещаем в кэш
+                    if ($cache_enabled) {
+                        if (($lifetime = (int) $this->config['cache']['lifetime']) > 0) {
+                            $this->getCacheRepository()->put($cache_key, $instance, $lifetime);
+                        } else {
+                            $this->getCacheRepository()->forever($cache_key, $instance);
+                        }
+                    }
+                }
+            }
+
+            return $this->references[$provider_class];
+        }
+
+        throw new InvalidReferenceException(sprintf('Invalid reference bind: "%s"', $bind_name));
+    }
+
+    /**
      * Производит инициализацию провайдеров справочников, не вызывая конструкторы самих справочников.
      *
      * @throws InvalidReferenceException
@@ -91,7 +138,7 @@ class StaticReferences implements StaticReferencesInterface
 
                 if ($reflection->implementsInterface(ReferenceProviderInterface::class)) {
                     // Создаём инстанс провайдера справочника и сразу же пушим его в стек
-                    /** @var ReferenceProviderInterface $provider */
+                    /* @var ReferenceProviderInterface $provider */
                     array_push($this->providers, $provider = new $reference_provider_class());
 
                     // Автоматически в бинды добавляем имя класса его провайдера
@@ -121,53 +168,6 @@ class StaticReferences implements StaticReferencesInterface
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function &make($bind_name)
-    {
-        // Ищем среди биндов ссылку на провайдер искомого справочника
-        if (is_string($bind_name) && isset($this->binds_map[$bind_name])) {
-            /** @var ReferenceProviderInterface $provider */
-            $provider_class = get_class($provider = $this->binds_map[$bind_name]);
-
-            // Если в стеке инстансов справочников НЕ присутствует необходимый нам - то создаём его
-            if (! isset($this->references[$provider_class])) {
-                $cache_enabled = $this->config['cache']['enabled'] === true;
-                $cache_key = static::CACHE_KEY_PREFIX . Str::snake($provider_class);
-
-                // Ищем инстанс справочника в кэше, то сразу его и извлекаем
-                if ($cache_enabled && $this->getCacheRepository()->has($cache_key)) {
-                    $this->references[$provider_class] = $this->getCacheRepository()->get($cache_key);
-                } else {
-                    // В противном случае - создаем его
-                    $this->references[$provider_class] = ($instance = $provider->instance());
-
-                    // И помещаем в кэш
-                    if ($cache_enabled) {
-                        if (($lifetime = (int) $this->config['cache']['lifetime']) > 0) {
-                            $this->getCacheRepository()->put($cache_key, $instance, $lifetime);
-                        } else {
-                            $this->getCacheRepository()->forever($cache_key, $instance);
-                        }
-                    }
-                }
-            }
-
-            return $this->references[$provider_class];
-        }
-
-        throw new InvalidReferenceException(sprintf('Invalid reference bind: "%s"', $bind_name));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __get($name)
-    {
-        return $this->make($name);
     }
 
     /**

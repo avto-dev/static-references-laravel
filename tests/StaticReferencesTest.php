@@ -2,10 +2,10 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 
 /**
  * Class StaticReferencesTest.
@@ -82,7 +82,7 @@ class StaticReferencesTest extends AbstractUnitTestCase
 
         // И этот провайдер - провайдер категорий авто
         $auto_categories = new AutoCategoriesProvider();
-        $last_bind = null;
+        $last_bind       = null;
         // Класс сервис-провайдера должен сам забиндиться
         foreach (array_merge($auto_categories->binds(), [AutoCategoriesProvider::class]) as $bind) {
             // Убеждаемся что бинды - есть
