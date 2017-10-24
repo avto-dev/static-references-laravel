@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
+use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
@@ -24,7 +25,11 @@ class StaticReferencesTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        $this->instance = new StaticReferencesMock();
+        $this->instance = new StaticReferencesMock([
+            'cache' => [
+                'enabled' => true,
+            ]
+        ]);
     }
 
     /**
@@ -61,17 +66,7 @@ class StaticReferencesTest extends AbstractUnitTestCase
     }
 
     /**
-     * Тест публичных констант.
-     *
-     * @return void
-     */
-    public function testConstants()
-    {
-        $this->assertNotEmpty(StaticReferences::CACHE_KEY_PREFIX);
-    }
-
-    /**
-     * Тест доступности справочников.
+     * Базовый тест работы стека провайдеров + извлечения инстансов справочников.
      *
      * @return void
      */
@@ -83,8 +78,9 @@ class StaticReferencesTest extends AbstractUnitTestCase
         // И этот провайдер - провайдер категорий авто
         $auto_categories = new AutoCategoriesProvider();
         $last_bind       = null;
+        $binds           = array_merge([AutoCategoriesProvider::class], $auto_categories->binds());
         // Класс сервис-провайдера должен сам забиндиться
-        foreach (array_merge($auto_categories->binds(), [AutoCategoriesProvider::class]) as $bind) {
+        foreach ($binds as $bind) {
             // Убеждаемся что бинды - есть
             $this->assertArrayHasKey($bind, $this->instance->_binds_map());
             // И они есть в карте биндов, и соответствуют ожиданиям
@@ -102,8 +98,57 @@ class StaticReferencesTest extends AbstractUnitTestCase
 
         // После этого делаем make() по имени провайдера справочника, и должен вернуться тот-же объект
         $this->assertEquals($ref, $this->instance->make(AutoCategoriesProvider::class));
+        foreach ($binds as $bind) {
+            $this->assertEquals($ref, $this->instance->$bind); // magic-вызов
+        }
         $this->assertCount(1, $this->instance->_references());
+    }
 
-        dump($this->instance);
+    /**
+     * Тест извлечения инстанса из кэша. Больше для покрытия.
+     *
+     * @depends testDeferredProviderWorks
+     */
+    public function testMakeFromCache()
+    {
+        $auto_categories = new AutoCategoriesProvider();
+
+        // Должен прилететь из кэша. Чекать по покрытию
+        $this->assertInstanceOf(
+            get_class($auto_categories->instance()),
+            $this->instance->make($auto_categories->binds()[0])
+        );
+    }
+
+    /**
+     * Тест помещения к кэш с указанным временным интервалом.
+     */
+    public function testPutIntoCacheWithLifetime()
+    {
+        $this->clearCache();
+        $this->instance = new StaticReferencesMock([
+            'cache' => [
+                'enabled'  => true,
+                'lifetime' => 10,
+            ],
+        ]);
+
+        $auto_categories = new AutoCategoriesProvider();
+
+        // Должен прилететь из кэша. Чекать по покрытию
+        $this->assertInstanceOf(
+            get_class($auto_categories->instance()),
+            $this->instance->make($auto_categories->binds()[0])
+        );
+    }
+
+    /**
+     * Тест бросания исключения при не корректном извлечении (отсутствие бинда).
+     */
+    public function testInvalidBindNameCall()
+    {
+        $this->expectException(InvalidReferenceException::class);
+
+        $this->instance->make('bla bla');
     }
 }

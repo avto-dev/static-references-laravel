@@ -25,6 +25,18 @@ abstract class AbstractUnitTestCase extends BaseTestCase
         // Register our service-provider manually
         //$app->register(B2BApiServiceProvider::class);
 
+        $this->app = $app; // грязный хак, но тут - срать
+        $this->clearCache();
+
         return $app;
+    }
+
+    /**
+     * Чистим кэш.
+     */
+    protected function clearCache()
+    {
+        $this->app->make(Kernel::class)->call('cache:clear');
+        $this->app->make('cache')->flush();
     }
 }

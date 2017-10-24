@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
+use Carbon\Carbon;
 use ReflectionClass;
 use Illuminate\Support\Str;
 use Illuminate\Cache\Repository as CacheRepository;
@@ -17,13 +18,6 @@ use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterf
 class StaticReferences implements StaticReferencesInterface
 {
     use InstanceableTrait;
-
-    /**
-     * Префикс для ключей кэша.
-     *
-     * @var string
-     */
-    const CACHE_KEY_PREFIX = 'reference_';
 
     /**
      * Стек инстансов **провайдеров** справочников.
@@ -96,12 +90,13 @@ class StaticReferences implements StaticReferencesInterface
 
             // Если в стеке инстансов справочников НЕ присутствует необходимый нам - то создаём его
             if (! isset($this->references[$provider_class])) {
+                $cache         = $this->getCacheRepository();
+                $cache_key     = $this->getCacheKeyName($provider_class);
                 $cache_enabled = $this->config['cache']['enabled'] === true;
-                $cache_key     = static::CACHE_KEY_PREFIX . Str::snake($provider_class);
 
                 // Ищем инстанс справочника в кэше, то сразу его и извлекаем
-                if ($cache_enabled && $this->getCacheRepository()->has($cache_key)) {
-                    $this->references[$provider_class] = $this->getCacheRepository()->get($cache_key);
+                if ($cache_enabled && $cache->has($cache_key)) {
+                    $this->references[$provider_class] = $cache->get($cache_key);
                 } else {
                     // В противном случае - создаем его
                     $this->references[$provider_class] = ($instance = $provider->instance());
@@ -109,9 +104,9 @@ class StaticReferences implements StaticReferencesInterface
                     // И помещаем в кэш
                     if ($cache_enabled) {
                         if (($lifetime = (int) $this->config['cache']['lifetime']) > 0) {
-                            $this->getCacheRepository()->put($cache_key, $instance, $lifetime);
+                            $cache->put($cache_key, $instance, Carbon::now()->addMinutes($lifetime));
                         } else {
-                            $this->getCacheRepository()->forever($cache_key, $instance);
+                            $cache->forever($cache_key, $instance);
                         }
                     }
                 }
@@ -123,6 +118,24 @@ class StaticReferences implements StaticReferencesInterface
         throw new InvalidReferenceException(sprintf('Invalid reference bind: "%s"', $bind_name));
     }
 
+    /**
+     * Возвращает имя ключа для кэша, основываясь на имени класса.
+     *
+     * @param string $prefix
+     * @param string $class_name
+     *
+     * @return string
+     */
+    protected function getCacheKeyName($class_name, $prefix = 'static_reference')
+    {
+        return Str::lower(sprintf(
+            '%s__class_%s__hash_%d',
+            $prefix,
+            class_basename($class_name),
+            crc32($class_name)
+        ));
+    }
+    
     /**
      * Производит инициализацию провайдеров справочников, не вызывая конструкторы самих справочников.
      *
@@ -171,7 +184,7 @@ class StaticReferences implements StaticReferencesInterface
     }
 
     /**
-     * Возвращает инстанс кэша.
+     * Возвращает инстанс репозитория кэша.
      *
      * @return CacheRepository
      */

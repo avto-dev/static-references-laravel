@@ -30,6 +30,6 @@
     </logging>
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="B2B_API_IS_TEST" value="true"/>
+        <env name="CACHE_DRIVER" value="array"/>
     </php>
 </phpunit>

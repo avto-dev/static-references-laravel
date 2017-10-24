@@ -18,14 +18,6 @@ class AutoCategoriesReference extends AbstractReference
     protected $items = [];
 
     /**
-     * {@inheritdoc}
-     */
-    public static function getName()
-    {
-        return 'autoCategories';
-    }
-
-    /**
      * Возвращает объект категории по её коду.
      *
      * @param string $code
@@ -64,9 +56,9 @@ class AutoCategoriesReference extends AbstractReference
      */
     public function getByDescription($description)
     {
-        if (is_scalar($description) && ! empty($description = trim((string) $description))) {
+        if (is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $auto_category) {
-                if (Str::contains($auto_category->getDescription(), $description)) {
+                if (Str::contains(Str::lower($auto_category->getDescription()), $description)) {
                     return $auto_category;
                 }
             }
