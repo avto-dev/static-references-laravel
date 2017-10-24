@@ -1,16 +1,16 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\Providers\AutoCategories;
+namespace AvtoDev\StaticReferencesLaravel\References\AutoCategories;
 
+use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesLaravel\Providers\AbstractReferenceEntity;
 
 /**
- * Class AutoCategory.
+ * Class AutoCategoryEntry.
  *
  * Сущность типа "Категория автомобиля".
  */
-class AutoCategory extends AbstractReferenceEntity
+class AutoCategoryEntry extends AbstractReferenceEntry
 {
     /**
      * Код категории.
@@ -39,7 +39,7 @@ class AutoCategory extends AbstractReferenceEntity
                     case 'category':
                     case 'categoryname':
                     case 'category_name':
-                        $this->code = Str::upper(Str::ascii(trim((string) $value)));
+                        $this->code = trim($this->uppercaseAndSafeTransliterate($value));
                         break;
 
                     case 'desc':
@@ -70,5 +70,16 @@ class AutoCategory extends AbstractReferenceEntity
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        return [
+            'code'        => $this->code,
+            'description' => $this->description,
+        ];
     }
 }

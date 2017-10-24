@@ -2,29 +2,40 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
+use ArrayAccess;
+use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
+use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
+
 /**
  * Interface StaticReferencesInterface.
  */
 interface StaticReferencesInterface
 {
     /**
-     * Возвращает массив классов провайдеров справочников.
+     * StaticReferences constructor.
      *
-     * @return string[]
+     * @param array $config
+     *
+     * @throws InvalidReferenceException
      */
-    public function getProvidersClasses();
+    public function __construct(array $config = []);
 
     /**
-     * Возвращает имя корневого элемента конфига справочников.
+     * Возвращает инстанс справочника из стека по его бинд-алиасу, создавая и кэшируя его инстанс при необходимости.
      *
-     * @return string
+     * @param string $bind_name
+     *
+     * @return ReferenceInterface
+     * @throws InvalidReferenceException
      */
-    public static function getConfigRootKeyName();
+    public function make($bind_name);
 
     /**
-     * Возвращает массив имен классов, что должны быть инициализированы "по умолчанию".
+     * Алиас для извлечения инстанов справочников при обращении к ним как к public-свойствам.
      *
-     * @return string[]
+     * @param string $name
+     *
+     * @return ReferenceInterface
      */
-    public function getPackageProvidersClasses();
+    public function __get($name);
 }

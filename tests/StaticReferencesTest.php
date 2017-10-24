@@ -2,9 +2,10 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
-use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvider;
+use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
 
 /**
  * Class StaticReferencesTest.
@@ -12,7 +13,7 @@ use AvtoDev\StaticReferencesLaravel\Providers\AutoCategories\AutoCategoriesProvi
 class StaticReferencesTest extends AbstractUnitTestCase
 {
     /**
-     * @var StaticReferences
+     * @var StaticReferencesMock
      */
     protected $instance;
 
@@ -23,7 +24,7 @@ class StaticReferencesTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        $this->instance = new StaticReferences($this->app);
+        $this->instance = new StaticReferencesMock();
     }
 
     /**
@@ -70,36 +71,39 @@ class StaticReferencesTest extends AbstractUnitTestCase
     }
 
     /**
-     * Тест метода `getPackageProvidersClasses()`.
-     *
-     * @return void
-     */
-    public function testGetBasicReferencesClasses()
-    {
-        $this->assertTrue(is_array($this->instance->getPackageProvidersClasses()));
-    }
-
-    /**
      * Тест доступности справочников.
      *
      * @return void
      */
-    public function testReferencesAccess()
+    public function testDeferredProviderWorks()
     {
-        /*
-         * Тест доступности справочника "Категории ТС".
-         */
-        $this->assertInstanceOf(
-            AutoCategoriesProvider::class,
-            $this->instance->getByClass(AutoCategoriesProvider::class)
-        );
-        $this->assertInstanceOf(
-            AutoCategoriesProvider::class,
-            $this->instance->getByName('autoCategories')
-        );
-        $this->assertInstanceOf(
-            AutoCategoriesProvider::class,
-            $this->instance->autoCategories
-        );
+        // Из коробки у нас должен быть хоть один провайдер
+        $this->assertGreaterThanOrEqual(1, $this->instance->_config()['providers']);
+
+        // И этот провайдер - провайдер категорий авто
+        $auto_categories = new AutoCategoriesProvider();
+        $last_bind = null;
+        // Класс сервис-провайдера должен сам забиндиться
+        foreach (array_merge($auto_categories->binds(), [AutoCategoriesProvider::class]) as $bind) {
+            // Убеждаемся что бинды - есть
+            $this->assertArrayHasKey($bind, $this->instance->_binds_map());
+            // И они есть в карте биндов, и соответствуют ожиданиям
+            $this->assertInstanceOf(AutoCategoriesProvider::class, $this->instance->_binds_map()[$bind]);
+            $last_bind = $bind;
+        }
+
+        // Пока не вызвали make() - инстансы справочников пустые
+        $this->assertEmpty($this->instance->_references());
+
+        // После этого делаем make(), и убеждаемся что прилетел корректный инстанс самого справочника
+        $this->assertInstanceOf(get_class($auto_categories->instance()), $ref = $this->instance->make($last_bind));
+        // И создался его инстанс в стеке уже справочников
+        $this->assertCount(1, $this->instance->_references());
+
+        // После этого делаем make() по имени провайдера справочника, и должен вернуться тот-же объект
+        $this->assertEquals($ref, $this->instance->make(AutoCategoriesProvider::class));
+        $this->assertCount(1, $this->instance->_references());
+
+        dump($this->instance);
     }
 }

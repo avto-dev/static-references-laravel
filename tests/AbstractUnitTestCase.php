@@ -28,14 +28,4 @@ abstract class AbstractUnitTestCase extends BaseTestCase
 
         return $app;
     }
-
-    /**
-     * @param Application $app
-     *
-     * @return ConfigRepository
-     */
-    protected function getConfigRepository(Application $app)
-    {
-        return $app->make('config');
-    }
 }

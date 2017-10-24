@@ -1,21 +1,21 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\Providers\AutoCategories;
+namespace AvtoDev\StaticReferencesLaravel\References\AutoCategories;
 
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesLaravel\Providers\AbstractReferenceProvider;
+use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 
 /**
- * Class AutoCategoriesProvider.
+ * Class AutoCategoriesReference.
  *
  * Провайдер данных о категориях ТС.
  */
-class AutoCategoriesProvider extends AbstractReferenceProvider
+class AutoCategoriesReference extends AbstractReference
 {
     /**
-     * @var AutoCategory[]
+     * @var AutoCategoryEntry[]
      */
-    protected $stack = [];
+    protected $items = [];
 
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      *
      * @param string $code
      *
-     * @return AutoCategory|null
+     * @return AutoCategoryEntry|null
      */
     public function getByCode($code)
     {
-        if (is_scalar($code) && ! empty($code = Str::upper(Str::ascii(trim((string) $code))))) {
-            foreach ($this->stack as $auto_category) {
+        if (is_scalar($code) && ! empty($code = trim($this->uppercaseAndSafeTransliterate($code)))) {
+            foreach ($this->items as $auto_category) {
                 if ($auto_category->getCode() === $code) {
                     return $auto_category;
                 }
@@ -52,7 +52,7 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      */
     public function hasCode($code)
     {
-        return $this->getByCode($code) instanceof AutoCategory;
+        return $this->getByCode($code) instanceof AutoCategoryEntry;
     }
 
     /**
@@ -60,12 +60,12 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      *
      * @param string $description
      *
-     * @return AutoCategory|null
+     * @return AutoCategoryEntry|null
      */
     public function getByDescription($description)
     {
         if (is_scalar($description) && ! empty($description = trim((string) $description))) {
-            foreach ($this->stack as $auto_category) {
+            foreach ($this->items as $auto_category) {
                 if (Str::contains($auto_category->getDescription(), $description)) {
                     return $auto_category;
                 }
@@ -82,7 +82,7 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      */
     public function hasDescription($description)
     {
-        return $this->getByDescription($description) instanceof AutoCategory;
+        return $this->getByDescription($description) instanceof AutoCategoryEntry;
     }
 
     /**
@@ -90,7 +90,7 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      */
     protected function getSourcesFilesPaths()
     {
-        return __DIR__ . '/../../../vendor/avto-dev/static-references-data/data/auto_categories/auto_categories.json';
+        return $this->getVendorPath() . '/data/auto_categories/auto_categories.json';
     }
 
     /**
@@ -98,6 +98,6 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      */
     protected function getReferenceEntityClassName()
     {
-        return AutoCategory::class;
+        return AutoCategoryEntry::class;
     }
 }
