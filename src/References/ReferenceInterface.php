@@ -19,20 +19,6 @@ interface ReferenceInterface
     public function all();
 
     /**
-     * Dump the collection and end the script.
-     *
-     * @return void
-     */
-    public function dd();
-
-    /**
-     * Dump the collection.
-     *
-     * @return $this
-     */
-    public function dump();
-
-    /**
      * Execute a callback over each item.
      *
      * @param callable $callback
