@@ -35,7 +35,8 @@ interface ReferenceInterface
     /**
      * Execute a callback over each item.
      *
-     * @param  callable  $callback
+     * @param callable $callback
+     *
      * @return $this
      */
     public function each(callable $callback);
@@ -43,7 +44,8 @@ interface ReferenceInterface
     /**
      * Run a filter over each of the items.
      *
-     * @param  callable|null  $callback
+     * @param callable|null $callback
+     *
      * @return static
      */
     public function filter(callable $callback = null);
@@ -51,8 +53,9 @@ interface ReferenceInterface
     /**
      * Get the first item from the collection.
      *
-     * @param  callable|null  $callback
-     * @param  mixed  $default
+     * @param callable|null $callback
+     * @param mixed         $default
+     *
      * @return mixed
      */
     public function first(callable $callback = null, $default = null);
@@ -60,8 +63,9 @@ interface ReferenceInterface
     /**
      * Get an item from the collection by key.
      *
-     * @param  mixed  $key
-     * @param  mixed  $default
+     * @param mixed $key
+     * @param mixed $default
+     *
      * @return mixed
      */
     public function get($key, $default = null);
@@ -76,12 +80,11 @@ interface ReferenceInterface
     /**
      * Get one or a specified number of items randomly from the collection.
      *
-     * @param  int|null  $number
-     * @return mixed
+     * @param int|null $number
      *
      * @throws \InvalidArgumentException
+     *
+     * @return mixed
      */
     public function random($number = null);
-
-
 }

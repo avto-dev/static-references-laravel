@@ -135,7 +135,7 @@ class StaticReferences implements StaticReferencesInterface
             crc32($class_name)
         ));
     }
-    
+
     /**
      * Производит инициализацию провайдеров справочников, не вызывая конструкторы самих справочников.
      *

@@ -2,10 +2,10 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
-use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
+use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 
 /**
@@ -28,7 +28,7 @@ class StaticReferencesTest extends AbstractUnitTestCase
         $this->instance = new StaticReferencesMock([
             'cache' => [
                 'enabled' => true,
-            ]
+            ],
         ]);
     }
 

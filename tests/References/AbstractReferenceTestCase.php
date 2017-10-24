@@ -2,10 +2,10 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests\References;
 
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
-use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 use AvtoDev\StaticReferencesLaravel\Tests\AbstractUnitTestCase;
+use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
 
 /**
  * Class AbstractReferenceTestCase.
@@ -44,7 +44,7 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        $this->static_references = new StaticReferencesMock();
+        $this->static_references  = new StaticReferencesMock();
         $this->reference_instance = $this->static_references->make($this->reference_provider_class);
 
         $this->assertInstanceOf($this->reference_class, $this->reference_instance);

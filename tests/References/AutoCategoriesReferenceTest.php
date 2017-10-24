@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests\References;
 
+use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
-use Illuminate\Support\Str;
 
 class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
 {
@@ -47,7 +47,6 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
         $this->assertTrue($this->reference_instance->hasCode('A '));
         $this->assertTrue($this->reference_instance->hasCode(' а'));
         $this->assertFalse($this->reference_instance->hasCode('Ы'));
-
 
         /*
          * По описаниям.
