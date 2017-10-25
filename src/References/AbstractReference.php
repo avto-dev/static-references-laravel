@@ -126,7 +126,7 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
      */
     protected function getVendorPath($additional = 'avto-dev/static-references-data')
     {
-        $reflector = new ReflectionClass('\Composer\Autoload\ClassLoader');
+        $reflector = new ReflectionClass('\\Composer\\Autoload\\ClassLoader');
         $vendor    = realpath(dirname($reflector->getFileName()) . '/..');
 
         return $vendor . (! empty($additional)
