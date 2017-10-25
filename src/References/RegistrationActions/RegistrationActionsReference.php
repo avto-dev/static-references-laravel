@@ -2,18 +2,18 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References\RegistrationActions;
 
-use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 
 /**
- * Class RegistrationActionsProvider
+ * Class RegistrationActionsProvider.
  *
  * Справочник "Регистрационные действия".
  */
 class RegistrationActionsReference extends AbstractReference
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @var RegistrationActionEntry[]
      */
@@ -37,8 +37,6 @@ class RegistrationActionsReference extends AbstractReference
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -82,20 +80,20 @@ class RegistrationActionsReference extends AbstractReference
     {
         return $this->getByDescription($description) instanceof RegistrationActionEntry;
     }
-    
-    /**
-     * @inheritdoc
-     */
-    protected function getSourcesFilesPaths()
-    {
-        return $this->getVendorPath() . '/data/registration_actions/registration_actions.json';
-    }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getReferenceEntryClassName()
     {
         return RegistrationActionEntry::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSourcesFilesPaths()
+    {
+        return $this->getVendorPath() . '/data/registration_actions/registration_actions.json';
     }
 }

@@ -2,11 +2,9 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests\References;
 
+use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\RegistrationActionsProvider;
 use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
 
 class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
 {
@@ -50,9 +48,9 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
         /*
          * По описаниям.
          */
-        $description = 'Восстановление регистрации после аннулирования';
+        $description       = 'Восстановление регистрации после аннулирования';
         $description_short = ' после аннулирования';
-        $assert_with = 18;
+        $assert_with       = 18;
 
         $this->assertContains($assert_with, $this->reference_instance->getByDescription($description)->getCodes());
         $this->assertContains($assert_with, $this->reference_instance->getByDescription(' ' . $description)->getCodes());

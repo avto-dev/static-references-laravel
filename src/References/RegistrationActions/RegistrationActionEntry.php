@@ -2,8 +2,8 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References\RegistrationActions;
 
-use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
 
 /**
  * Class RegistrationActionEntry.
@@ -36,7 +36,7 @@ class RegistrationActionEntry extends AbstractReferenceEntry
                 switch ($key = Str::lower((string) $key)) {
                     // Коды регистрационного действия
                     case 'codes':
-                        $value       = !is_array($value) ? explode(',', (string) $value) : $value;
+                        $value       = ! is_array($value) ? explode(',', (string) $value) : $value;
                         $this->codes = array_filter(array_map(function ($item) {
                             return intval($item);
                         }, (array) $value));
@@ -52,7 +52,7 @@ class RegistrationActionEntry extends AbstractReferenceEntry
     }
 
     /**
-     * Возвращает описание регистрационного действия
+     * Возвращает описание регистрационного действия.
      *
      * @return string
      */

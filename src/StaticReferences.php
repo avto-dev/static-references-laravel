@@ -2,8 +2,6 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\RegistrationActionsProvider;
-use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
 use Carbon\Carbon;
 use ReflectionClass;
 use Illuminate\Support\Str;
@@ -15,7 +13,9 @@ use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoRegionsProvider;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\RegistrationActionsProvider;
 use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
+use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
 
 /**
  * Class StaticReferences.
