@@ -6,11 +6,11 @@ use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
 
 /**
- * Class RegionEntry.
+ * Class AutoRegionEntry.
  *
  * Сущность типа "Регион субъекта".
  */
-class RegionEntry extends AbstractReferenceEntry
+class AutoRegionEntry extends AbstractReferenceEntry
 {
     /**
      * Заголовок региона.

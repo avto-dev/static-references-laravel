@@ -13,7 +13,7 @@ use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 class AutoRegionsReference extends AbstractReference
 {
     /**
-     * @var RegionEntry[]
+     * @var AutoRegionEntry[]
      */
     protected $items = [];
 
@@ -22,7 +22,7 @@ class AutoRegionsReference extends AbstractReference
      *
      * @param string|int $region_code
      *
-     * @return RegionEntry|null
+     * @return AutoRegionEntry|null
      */
     public function getByRegionCode($region_code)
     {
@@ -46,7 +46,7 @@ class AutoRegionsReference extends AbstractReference
      */
     public function hasRegionCode($region_code)
     {
-        return $this->getByRegionCode($region_code) instanceof RegionEntry;
+        return $this->getByRegionCode($region_code) instanceof AutoRegionEntry;
     }
 
     /**
@@ -56,7 +56,7 @@ class AutoRegionsReference extends AbstractReference
      * @param string $region_title
      * @param bool   $strict_search
      *
-     * @return RegionEntry|null
+     * @return AutoRegionEntry|null
      */
     public function getByTitle($region_title, $strict_search = false)
     {
@@ -105,7 +105,7 @@ class AutoRegionsReference extends AbstractReference
      */
     public function hasTitle($region_title, $strict_search = false)
     {
-        return $this->getByTitle($region_title, $strict_search) instanceof RegionEntry;
+        return $this->getByTitle($region_title, $strict_search) instanceof AutoRegionEntry;
     }
 
     /**
@@ -113,7 +113,7 @@ class AutoRegionsReference extends AbstractReference
      *
      * @param string|int $auto_code
      *
-     * @return RegionEntry|null
+     * @return AutoRegionEntry|null
      */
     public function getByAutoCode($auto_code)
     {
@@ -139,7 +139,7 @@ class AutoRegionsReference extends AbstractReference
      */
     public function hasAutoCode($auto_code)
     {
-        return $this->getByAutoCode($auto_code) instanceof RegionEntry;
+        return $this->getByAutoCode($auto_code) instanceof AutoRegionEntry;
     }
 
     /**
@@ -147,7 +147,7 @@ class AutoRegionsReference extends AbstractReference
      *
      * @param string|int $okato_code
      *
-     * @return RegionEntry|null
+     * @return AutoRegionEntry|null
      */
     public function getByOkato($okato_code)
     {
@@ -171,7 +171,7 @@ class AutoRegionsReference extends AbstractReference
      */
     public function hasOkato($okato_code)
     {
-        return $this->getByOkato($okato_code) instanceof RegionEntry;
+        return $this->getByOkato($okato_code) instanceof AutoRegionEntry;
     }
 
     /**
@@ -179,7 +179,7 @@ class AutoRegionsReference extends AbstractReference
      *
      * @param string $iso_31662
      *
-     * @return RegionEntry|null
+     * @return AutoRegionEntry|null
      */
     public function getByIso31662($iso_31662)
     {
@@ -203,7 +203,7 @@ class AutoRegionsReference extends AbstractReference
      */
     public function hasIso31662($iso_31662)
     {
-        return $this->getByIso31662($iso_31662) instanceof RegionEntry;
+        return $this->getByIso31662($iso_31662) instanceof AutoRegionEntry;
     }
 
     /**
@@ -211,7 +211,7 @@ class AutoRegionsReference extends AbstractReference
      */
     public function getReferenceEntryClassName()
     {
-        return RegionEntry::class;
+        return AutoRegionEntry::class;
     }
 
     /**

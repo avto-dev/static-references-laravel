@@ -2,6 +2,8 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\RegistrationActionsProvider;
+use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
 use Carbon\Carbon;
 use ReflectionClass;
 use Illuminate\Support\Str;
@@ -11,6 +13,7 @@ use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoRegionsProvider;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
+use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
 use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
 
@@ -20,7 +23,9 @@ use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesRefe
  * Статические справочники. Используются как read-only, реализована отложенная загрузка самих справочников и их
  * кэширование.
  *
- * @property-read AutoCategoriesReference $autoCategories
+ * @property-read AutoCategoriesReference      $autoCategories
+ * @property-read AutoRegionsReference         $autoRegions
+ * @property-read RegistrationActionsReference $registrationActions
  */
 class StaticReferences implements StaticReferencesInterface
 {
@@ -61,6 +66,7 @@ class StaticReferences implements StaticReferencesInterface
         'providers' => [
             AutoCategoriesProvider::class,
             AutoRegionsProvider::class,
+            RegistrationActionsProvider::class,
         ],
     ];
 
