@@ -19,6 +19,13 @@ interface ReferenceInterface
     public function all();
 
     /**
+     * Возвращает класс сущности, с которой работает справочник.
+     *
+     * @return string
+     */
+    public function getReferenceEntryClassName();
+
+    /**
      * Execute a callback over each item.
      *
      * @param callable $callback

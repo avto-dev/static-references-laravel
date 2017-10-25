@@ -8,7 +8,7 @@ use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 /**
  * Class AutoCategoriesReference.
  *
- * Провайдер данных о категориях ТС.
+ * Справочник "Категории транспортных средств".
  */
 class AutoCategoriesReference extends AbstractReference
 {
@@ -88,7 +88,7 @@ class AutoCategoriesReference extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    protected function getReferenceEntityClassName()
+    public function getReferenceEntryClassName()
     {
         return AutoCategoryEntry::class;
     }

@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoRegionsProvider;
 use Carbon\Carbon;
 use ReflectionClass;
 use Illuminate\Support\Str;
@@ -11,9 +12,15 @@ use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
+use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
 
 /**
  * Class StaticReferences.
+ *
+ * Статические справочники. Используются как read-only, реализована отложенная загрузка самих справочников и их
+ * кэширование.
+ *
+ * @property-read AutoCategoriesReference $autoCategories
  */
 class StaticReferences implements StaticReferencesInterface
 {
@@ -53,6 +60,7 @@ class StaticReferences implements StaticReferencesInterface
         ],
         'providers' => [
             AutoCategoriesProvider::class,
+            AutoRegionsProvider::class,
         ],
     ];
 

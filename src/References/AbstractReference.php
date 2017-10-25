@@ -29,7 +29,7 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
      */
     public function __construct($items = [])
     {
-        if (($class_name = $this->getReferenceEntityClassName()) && class_exists($class_name)) {
+        if (($class_name = $this->getReferenceEntryClassName()) && class_exists($class_name)) {
             $source_items = [];
 
             // Перебираем все файлы-источники
@@ -55,7 +55,7 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
      */
     public function offsetSet($key, $value)
     {
-        $class_name = $this->getReferenceEntityClassName();
+        $class_name = $this->getReferenceEntryClassName();
 
         if (is_null($key)) {
             array_push($this->items, $this->referenceEntityFactory($class_name, $value));
@@ -65,11 +65,9 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
     }
 
     /**
-     * Возвращает класс сущности, с которой работает справочник.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    abstract protected function getReferenceEntityClassName();
+    abstract public function getReferenceEntryClassName();
 
     /**
      * Возвращает массив путей к файлам-источникам справочника.

@@ -62,6 +62,22 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
     }
 
     /**
+     * Тест метода `all()`.
+     *
+     * @return void
+     */
+    public function testAll()
+    {
+        $class = $this->reference_instance->getReferenceEntryClassName();
+
+        foreach ($this->reference_instance->all() as $item) {
+            $this->assertInstanceOf($class, $item);
+        }
+
+        $this->assertInstanceOf($class, $this->reference_instance->random());
+    }
+
+    /**
      * Тест биндов.
      */
     public function testBinds()

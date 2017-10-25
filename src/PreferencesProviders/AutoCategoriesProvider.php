@@ -6,6 +6,8 @@ use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesRefe
 
 /**
  * Class AutoCategoriesProvider.
+ *
+ * Провайдер справочника "Категории транспортных средств".
  */
 class AutoCategoriesProvider extends AbstractReferenceProvider
 {
@@ -22,6 +24,6 @@ class AutoCategoriesProvider extends AbstractReferenceProvider
      */
     public function binds()
     {
-        return ['AutoCategories', AutoCategoriesReference::class];
+        return ['AutoCategories', 'autoCategories', AutoCategoriesReference::class];
     }
 }
