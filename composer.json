@@ -36,6 +36,13 @@
     "scripts": {
         "test": "./vendor/bin/phpunit --no-coverage"
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AvtoDev\\StaticReferencesLaravel\\StaticReferencesServiceProvider"
+            ]
+        }
+    },
     "config": {
         "sort-packages": true
     }

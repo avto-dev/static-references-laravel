@@ -46,7 +46,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
             12,
             $this->reference_instance->getByRegionCode(12)->getRegionCode()
         );
-
+dd($this->reference_instance->getByRegionCode(12));
         $this->assertEquals(
             'RU-ME',
             $this->reference_instance->getByRegionCode(12)->getIso31662()

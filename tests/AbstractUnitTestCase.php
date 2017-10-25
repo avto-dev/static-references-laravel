@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
+use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -23,7 +24,7 @@ abstract class AbstractUnitTestCase extends BaseTestCase
         $app->make(Kernel::class)->bootstrap();
 
         // Register our service-provider manually
-        //$app->register(B2BApiServiceProvider::class);
+        $app->register(StaticReferencesServiceProvider::class);
 
         $this->app = $app; // грязный хак, но тут - срать
         $this->clearCache();
