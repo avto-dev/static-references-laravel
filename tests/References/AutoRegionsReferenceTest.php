@@ -33,7 +33,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     }
 
     /**
-     * Тест метода `getByRegionCode()`.
+     * Тест метода `getByRegionCode()` + has.
      */
     public function testGetByRegionCode()
     {
@@ -51,10 +51,13 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
             'RU-ME',
             $this->reference_instance->getByRegionCode(12)->getIso31662()
         );
+
+        $this->assertTrue($this->reference_instance->hasRegionCode(12));
+        $this->assertFalse($this->reference_instance->hasRegionCode(999));
     }
 
     /**
-     * Тестируем метод `getByAutoCode()`.
+     * Тестируем метод `getByAutoCode()` + has.
      */
     public function testGetByAutoCode()
     {
@@ -81,10 +84,13 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         $this->assertNull($this->reference_instance->getByAutoCode(null));
         $this->assertNull($this->reference_instance->getByAutoCode([]));
         $this->assertNull($this->reference_instance->getByAutoCode('трали вали'));
+
+        $this->assertTrue($this->reference_instance->hasAutoCode(66));
+        $this->assertFalse($this->reference_instance->hasAutoCode(997));
     }
 
     /**
-     * Тестируем метод `getByTitle()`.
+     * Тестируем метод `getByTitle()` + has.
      */
     public function testGetByTitle()
     {
@@ -110,10 +116,13 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         $this->assertEquals($expected, $this->reference_instance->getByTitle('Хмао')->getRegionCode());
         $this->assertEquals($expected, $this->reference_instance->getByTitle('Югра')->getRegionCode());
         $this->assertEquals($expected, $this->reference_instance->getByTitle('Ханты-Мансийский')->getRegionCode());
+
+        $this->assertTrue($this->reference_instance->hasTitle($moscow));
+        $this->assertFalse($this->reference_instance->hasTitle('Мaсcкваaaa'));
     }
 
     /**
-     * Тестируем метод `getByOkato()`.
+     * Тестируем метод `getByOkato()` + has.
      */
     public function testGetByOkato()
     {
@@ -129,10 +138,13 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         $this->assertNull($this->reference_instance->getByOkato(123));
         $this->assertNull($this->reference_instance->getByOkato(null));
         $this->assertNull($this->reference_instance->getByOkato([]));
+
+        $this->assertTrue($this->reference_instance->hasOkato(65));
+        $this->assertFalse($this->reference_instance->hasOkato(123));
     }
 
     /**
-     * Тестируем метод `getByIso31662()`.
+     * Тестируем метод `getByIso31662()` + has.
      */
     public function testGetByIso31662()
     {
@@ -157,5 +169,8 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         $this->assertNull($this->reference_instance->getByIso31662('123123'));
         $this->assertNull($this->reference_instance->getByIso31662('SDFD-RYGF'));
         $this->assertNull($this->reference_instance->getByIso31662(''));
+
+        $this->assertTrue($this->reference_instance->hasIso31662('RU-SMO'));
+        $this->assertFalse($this->reference_instance->hasOkato('SDFD-RYGF'));
     }
 }

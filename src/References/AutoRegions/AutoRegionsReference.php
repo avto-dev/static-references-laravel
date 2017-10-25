@@ -103,7 +103,7 @@ class AutoRegionsReference extends AbstractReference
      *
      * @return bool
      */
-    public function hasByTitle($region_title, $strict_search = false)
+    public function hasTitle($region_title, $strict_search = false)
     {
         return $this->getByTitle($region_title, $strict_search) instanceof RegionEntry;
     }
@@ -137,7 +137,7 @@ class AutoRegionsReference extends AbstractReference
      *
      * @return bool
      */
-    public function hasByAutoCode($auto_code)
+    public function hasAutoCode($auto_code)
     {
         return $this->getByAutoCode($auto_code) instanceof RegionEntry;
     }
@@ -169,7 +169,7 @@ class AutoRegionsReference extends AbstractReference
      *
      * @return bool
      */
-    public function hasByOkato($okato_code)
+    public function hasOkato($okato_code)
     {
         return $this->getByOkato($okato_code) instanceof RegionEntry;
     }
@@ -201,7 +201,7 @@ class AutoRegionsReference extends AbstractReference
      *
      * @return bool
      */
-    public function hasByIso31662($iso_31662)
+    public function hasIso31662($iso_31662)
     {
         return $this->getByIso31662($iso_31662) instanceof RegionEntry;
     }
