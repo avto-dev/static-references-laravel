@@ -122,8 +122,9 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
      *
      * @param string $additional
      *
-     * @return string $additional
      * @throws Exception
+     *
+     * @return string $additional
      */
     protected function getVendorPath($additional = 'avto-dev/static-references-data')
     {
