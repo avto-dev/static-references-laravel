@@ -2,11 +2,11 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
-use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
+use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 
 /**
  * Class StaticReferencesTest.
@@ -17,6 +17,30 @@ class StaticReferencesTest extends AbstractUnitTestCase
      * @var StaticReferencesMock
      */
     protected $instance;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->instance = new StaticReferencesMock([
+            'cache' => [
+                'enabled' => true,
+            ],
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        unset($this->instance);
+
+        parent::tearDown();
+    }
 
     /**
      * Тест реализации.
@@ -53,8 +77,8 @@ class StaticReferencesTest extends AbstractUnitTestCase
 
         // И этот провайдер - провайдер категорий авто
         $auto_categories = new AutoCategoriesProvider();
-        $last_bind = null;
-        $binds = array_merge([AutoCategoriesProvider::class], $auto_categories->binds());
+        $last_bind       = null;
+        $binds           = array_merge([AutoCategoriesProvider::class], $auto_categories->binds());
         // Класс сервис-провайдера должен сам забиндиться
         foreach ($binds as $bind) {
             // Убеждаемся что бинды - есть
@@ -126,29 +150,5 @@ class StaticReferencesTest extends AbstractUnitTestCase
         $this->expectException(InvalidReferenceException::class);
 
         $this->instance->make('bla bla');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->instance = new StaticReferencesMock([
-            'cache' => [
-                'enabled' => true,
-            ],
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        unset($this->instance);
-
-        parent::tearDown();
     }
 }

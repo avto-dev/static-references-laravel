@@ -2,7 +2,6 @@
 
 namespace AvtoDev\StaticReferencesLaravel;
 
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoRegionsProvider;
 use Carbon\Carbon;
 use ReflectionClass;
 use Illuminate\Support\Str;
@@ -10,6 +9,7 @@ use Illuminate\Cache\Repository as CacheRepository;
 use AvtoDev\StaticReferencesLaravel\Traits\InstanceableTrait;
 use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
 use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
+use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoRegionsProvider;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
 use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;

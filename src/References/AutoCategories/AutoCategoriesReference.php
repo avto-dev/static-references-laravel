@@ -80,16 +80,16 @@ class AutoCategoriesReference extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    protected function getSourcesFilesPaths()
+    public function getReferenceEntryClassName()
     {
-        return $this->getVendorPath() . '/data/auto_categories/auto_categories.json';
+        return AutoCategoryEntry::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getReferenceEntryClassName()
+    protected function getSourcesFilesPaths()
     {
-        return AutoCategoryEntry::class;
+        return $this->getVendorPath() . '/data/auto_categories/auto_categories.json';
     }
 }

@@ -2,11 +2,11 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References\AutoRegions;
 
-use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
 
 /**
- * Class RegionEntry
+ * Class RegionEntry.
  *
  * Сущность типа "Регион субъекта".
  */

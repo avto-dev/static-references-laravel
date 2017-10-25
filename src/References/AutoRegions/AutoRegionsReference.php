@@ -30,13 +30,11 @@ class AutoRegionsReference extends AbstractReference
             // Очищаем входящее значение и приводим к числу
             $region_code = (int) preg_replace('~[^0-9]~', '', $region_code);
             foreach ($this->items as $region) {
-                if ($region->getRegionCode() == $region_code) {
+                if ($region->getRegionCode() === $region_code) {
                     return $region;
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -62,7 +60,7 @@ class AutoRegionsReference extends AbstractReference
      */
     public function getByTitle($region_title, $strict_search = false)
     {
-        if (!empty($region_title) && is_string($region_title)) {
+        if (! empty($region_title) && is_string($region_title)) {
             // Ближайшее совпадение
             $closest = null;
             // Наименьшее расстояние
@@ -71,7 +69,7 @@ class AutoRegionsReference extends AbstractReference
             foreach ($this->items as $region) {
                 $titles = [$region->getTitle()];
                 // Проверяем наличие свойства 'short_title', и если оно есть - то берем его в работу
-                if (!empty($region->getShortTitles())) {
+                if (! empty($region->getShortTitles())) {
                     $titles = array_merge($titles, (array) $region->getShortTitles());
                 }
                 foreach ($titles as $title) {
@@ -79,7 +77,7 @@ class AutoRegionsReference extends AbstractReference
                     // Вычисляем расстояние между входным словом и текущим
                     $lev = levenshtein($region_title, $title);
                     // Проверяем полное совпадение
-                    if ($lev == 0) {
+                    if ($lev === 0) {
                         $closest  = $region;
                         $shortest = 0;
                         break 2;
@@ -92,11 +90,9 @@ class AutoRegionsReference extends AbstractReference
             }
 
             return $strict_search === true
-                ? ($shortest == 0 ? $closest : null)
+                ? ($shortest === 0 ? $closest : null)
                 : ($shortest <= 5 ? $closest : null); // Этим числом можно регулировать строгость похожести
         }
-
-        return null;
     }
 
     /**
@@ -126,14 +122,12 @@ class AutoRegionsReference extends AbstractReference
             $auto_code = (int) preg_replace('~[^0-9]~', '', $auto_code);
             foreach ($this->items as $region) {
                 foreach ((array) $region->getAutoCode() as $region_auto_code) {
-                    if ($region_auto_code == $auto_code) {
+                    if ($region_auto_code === $auto_code) {
                         return $region;
                     }
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -161,13 +155,11 @@ class AutoRegionsReference extends AbstractReference
             // Очищаем входящее значение и приводим к числу
             $okato_code = preg_replace('~[^0-9-]~', '', (string) $okato_code);
             foreach ($this->items as $region) {
-                if ($region->getOkato() == $okato_code) {
+                if ($region->getOkato() === $okato_code) {
                     return $region;
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -191,17 +183,15 @@ class AutoRegionsReference extends AbstractReference
      */
     public function getByIso31662($iso_31662)
     {
-        if (!empty($iso_31662) && is_string($iso_31662)) {
+        if (! empty($iso_31662) && is_string($iso_31662)) {
             // Очищаем входящее значение
             $iso_31662 = preg_replace('~[^A-Z-]~', '', Str::upper($iso_31662));
             foreach ($this->items as $region) {
-                if ($region->getIso31662() == $iso_31662) {
+                if ($region->getIso31662() === $iso_31662) {
                     return $region;
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -219,16 +209,16 @@ class AutoRegionsReference extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    protected function getSourcesFilesPaths()
+    public function getReferenceEntryClassName()
     {
-        return $this->getVendorPath() . '/data/auto_regions/auto_regions.json';
+        return RegionEntry::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getReferenceEntryClassName()
+    protected function getSourcesFilesPaths()
     {
-        return RegionEntry::class;
+        return $this->getVendorPath() . '/data/auto_regions/auto_regions.json';
     }
 }
