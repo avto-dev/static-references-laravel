@@ -2,12 +2,12 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References;
 
-use AvtoDev\StaticReferencesLaravel\Exceptions\FileReadingException;
-use AvtoDev\StaticReferencesLaravel\Traits\TransliterateTrait;
 use Exception;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use ReflectionClass;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
+use AvtoDev\StaticReferencesLaravel\Traits\TransliterateTrait;
+use AvtoDev\StaticReferencesLaravel\Exceptions\FileReadingException;
 
 /**
  * Class AbstractReference.
@@ -57,6 +57,20 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
     abstract public function getReferenceEntryClassName();
 
     /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($key, $value)
+    {
+        $class_name = $this->getReferenceEntryClassName();
+
+        if (is_null($key)) {
+            array_push($this->items, $this->referenceEntityFactory($class_name, $value));
+        } else {
+            $this->items[$key] = $this->referenceEntityFactory($class_name, $value);
+        }
+    }
+
+    /**
      * Возвращает массив путей к файлам-источникам справочника.
      *
      * @return string|string[]
@@ -104,20 +118,6 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function offsetSet($key, $value)
-    {
-        $class_name = $this->getReferenceEntryClassName();
-
-        if (is_null($key)) {
-            array_push($this->items, $this->referenceEntityFactory($class_name, $value));
-        } else {
-            $this->items[$key] = $this->referenceEntityFactory($class_name, $value);
-        }
-    }
-
-    /**
      * Возвращает путь к директории 'vendor', и по умолчанию - добавляет путь пакета 'avto-dev/static-references-data'.
      *
      * @param string $additional
@@ -127,7 +127,7 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
     protected function getVendorPath($additional = 'avto-dev/static-references-data')
     {
         $reflector = new ReflectionClass('\Composer\Autoload\ClassLoader');
-        $vendor = realpath(dirname($reflector->getFileName()) . '/..');
+        $vendor    = realpath(dirname($reflector->getFileName()) . '/..');
 
         return $vendor . (! empty($additional)
                 ? '/' . ltrim((string) $additional, '\\/ ')
