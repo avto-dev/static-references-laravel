@@ -25,16 +25,6 @@ class StaticReferencesServiceProvider extends IlluminateServiceProvider
     }
 
     /**
-     * Initialize configs.
-     *
-     * @return void
-     */
-    protected function initializeConfigs()
-    {
-        $this->mergeConfigFrom(static::getConfigFilePath(), static::getConfigRootKeyName());
-    }
-
-    /**
      * Возвращает путь до файла-конфигурации пакета.
      *
      * @return string
@@ -52,6 +42,28 @@ class StaticReferencesServiceProvider extends IlluminateServiceProvider
     public static function getConfigRootKeyName()
     {
         return basename(static::getConfigFilePath(), '.php'); // 'static-references'
+    }
+
+    /**
+     * Выполнение после-регистрационной загрузки сервисов.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            realpath($config_path = static::getConfigFilePath()) => config_path(basename($config_path)),
+        ], 'config');
+    }
+
+    /**
+     * Initialize configs.
+     *
+     * @return void
+     */
+    protected function initializeConfigs()
+    {
+        $this->mergeConfigFrom(static::getConfigFilePath(), static::getConfigRootKeyName());
     }
 
     /**
@@ -75,17 +87,5 @@ class StaticReferencesServiceProvider extends IlluminateServiceProvider
             return new StaticReferences($this->config()->get(static::getConfigRootKeyName()));
         });
         $this->app->bind('static-references', StaticReferences::class);
-    }
-
-    /**
-     * Выполнение после-регистрационной загрузки сервисов.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->publishes([
-            realpath($config_path = static::getConfigFilePath()) => config_path(basename($config_path)),
-        ], 'config');
     }
 }

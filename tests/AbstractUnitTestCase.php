@@ -2,10 +2,10 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
-use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
 
 /**
  * Class AbstractUnitTestCase.

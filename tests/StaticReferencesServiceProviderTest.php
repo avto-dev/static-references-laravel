@@ -2,12 +2,12 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
-use AvtoDev\StaticReferencesLaravel\Facades\StaticReferencesFacade;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
-use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
-use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
+use AvtoDev\StaticReferencesLaravel\Facades\StaticReferencesFacade;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
+use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
+use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
+use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
 
 /**
  * Class StaticReferencesServiceProviderTest.
