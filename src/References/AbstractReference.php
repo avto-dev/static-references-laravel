@@ -123,11 +123,20 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
      * @param string $additional
      *
      * @return string $additional
+     * @throws Exception
      */
     protected function getVendorPath($additional = 'avto-dev/static-references-data')
     {
-        $reflector = new ReflectionClass('\\Composer\\Autoload\\ClassLoader');
-        $vendor    = realpath(dirname($reflector->getFileName()) . '/..');
+        static $vendor = null;
+
+        if (is_null($vendor)) {
+            $reflector = new ReflectionClass('\\Composer\\Autoload\\ClassLoader');
+            $vendor    = realpath(dirname($reflector->getFileName()) . '/..');
+
+            if (! is_dir($vendor) || ! is_readable($vendor)) {
+                throw new Exception(sprintf('Cannot detect vendors directory path: "%s"', $vendor));
+            }
+        }
 
         return $vendor . (! empty($additional)
                 ? '/' . ltrim((string) $additional, '\\/ ')
