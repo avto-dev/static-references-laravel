@@ -14,6 +14,25 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 class StaticReferencesServiceProvider extends IlluminateServiceProvider
 {
     /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
+    /**
+     * Выполнение после-регистрационной загрузки сервисов.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            realpath($config_path = static::getConfigFilePath()) => config_path(basename($config_path)),
+        ], 'config');
+    }
+
+    /**
      * Register any application services.
      *
      * @return void
@@ -42,18 +61,6 @@ class StaticReferencesServiceProvider extends IlluminateServiceProvider
     public static function getConfigRootKeyName()
     {
         return basename(static::getConfigFilePath(), '.php'); // 'static-references'
-    }
-
-    /**
-     * Выполнение после-регистрационной загрузки сервисов.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->publishes([
-            realpath($config_path = static::getConfigFilePath()) => config_path(basename($config_path)),
-        ], 'config');
     }
 
     /**
