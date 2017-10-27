@@ -3,14 +3,12 @@
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
-
-use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
 use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionEntry;
-
-use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
+use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry;
+use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
+use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
 use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionEntry;
+use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
 
 /**
  * Class SomeFeatureTest.
