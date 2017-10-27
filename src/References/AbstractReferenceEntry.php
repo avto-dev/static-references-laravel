@@ -45,7 +45,7 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
      */
     public function offsetExists($offset)
     {
-        return ! in_array($offset, $this->hiddenPropertiesNames()) && property_exists($this, $offset);
+        return ! in_array($offset, (array) $this->hiddenPropertiesNames()) && property_exists($this, $offset);
     }
 
     /**
@@ -101,9 +101,12 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     {
         $result = [];
 
-        // Пробегаемся по всем свойствам объекта, за исключением скрытых
-        foreach (array_diff(get_object_vars($this), $this->hiddenPropertiesNames()) as $property_name => $property_value) {
-            $result[$property_name] = $property_value;
+        $properties_names = array_diff(array_keys(get_object_vars($this)), (array) $this->hiddenPropertiesNames());
+
+        foreach ($properties_names as $property_name) {
+            $result[$property_name] = property_exists($this, $property_name)
+                ? $this->{$property_name}
+                : null;
         }
 
         return $result;
