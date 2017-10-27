@@ -70,15 +70,4 @@ class RegistrationActionEntry extends AbstractReferenceEntry
     {
         return $this->codes;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray()
-    {
-        return [
-            'codes'       => $this->codes,
-            'description' => $this->description,
-        ];
-    }
 }

@@ -33,6 +33,26 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    function testArrayKeys()
+    {
+        $keys = [
+            'title',
+            'short_titles',
+            'region_code',
+            'auto_code',
+            'okato',
+            'iso_31662',
+            'type',
+        ];
+
+        foreach ($keys as $key_name) {
+            $this->assertArrayHasKey($key_name, $this->reference_instance->first()->toArray());
+        }
+    }
+
+    /**
      * Тест метода `getByRegionCode()` + has.
      */
     public function testGetByRegionCode()

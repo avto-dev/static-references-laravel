@@ -24,6 +24,16 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
     protected $reference_provider_class = RegistrationActionsProvider::class;
 
     /**
+     * {@inheritdoc}
+     */
+    function testArrayKeys()
+    {
+        foreach (['codes', 'description'] as $key_name) {
+            $this->assertArrayHasKey($key_name, $this->reference_instance->first()->toArray());
+        }
+    }
+
+    /**
      * Тест базовых акцессоров данных.
      *
      * @return void

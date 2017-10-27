@@ -101,4 +101,11 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
         $this->assertTrue(is_array($first->toArray()));
         $this->assertJson($first->toJson());
     }
+
+    /**
+     * Тест метода преобразования элемента справочника в массив.
+     *
+     * @return void
+     */
+    abstract function testArrayKeys();
 }

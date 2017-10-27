@@ -198,20 +198,4 @@ class AutoRegionEntry extends AbstractReferenceEntry
     {
         return $this->type;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray()
-    {
-        return [
-            'title'        => $this->title,
-            'short_titles' => $this->short_titles,
-            'region_code'  => $this->region_code,
-            'auto_code'    => $this->auto_code,
-            'okato'        => $this->okato,
-            'iso_31662'    => $this->iso_31662,
-            'type'         => $this->type,
-        ];
-    }
 }

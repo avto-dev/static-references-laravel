@@ -2,12 +2,12 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References;
 
-use Exception;
-use ReflectionClass;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use AvtoDev\StaticReferencesLaravel\Traits\TransliterateTrait;
 use AvtoDev\StaticReferencesLaravel\Exceptions\FileReadingException;
+use AvtoDev\StaticReferencesLaravel\Traits\TransliterateTrait;
+use Exception;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use ReflectionClass;
 
 /**
  * Class AbstractReference.
@@ -30,44 +30,32 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
      */
     public function __construct($items = [])
     {
-        if (($class_name = $this->getReferenceEntryClassName()) && class_exists($class_name)) {
-            $source_items = [];
-
-            // Перебираем все файлы-источники
-            foreach ((array) $this->getSourcesFilesPaths() as $file_path) {
-                // Если имя файла говорит о том, что он является json-ом
-                if (Str::endsWith($file_path, 'json')) {
-                    $source_items = array_merge_recursive($source_items, $this->getContentFromJsonFile($file_path));
-                }
-            }
-
-            // Объединяем данные из файлов-источников с переданными в конструктор и преобразуем элементы к объектам
-            // элемента справочника
-            parent::__construct(array_filter(array_map(function ($item_data) use ($class_name) {
-                return $this->referenceEntityFactory($class_name, $item_data);
-            }, array_replace_recursive($this->getArrayableItems($items), $source_items))));
-        } else {
-            throw new Exception(sprintf('Class "%s" in "%s" does not exists', $class_name, static::class));
-        }
+        return parent::__construct(empty($items)
+            ? $this->getStaticEntries()
+            : $items);
     }
 
     /**
-     * {@inheritdoc}
+     * Возвращает массив объектов, прочитав данные о них из статических файлов данных.
+     *
+     * @return ReferenceEntryInterface[]|array
      */
-    abstract public function getReferenceEntryClassName();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetSet($key, $value)
+    protected function getStaticEntries()
     {
-        $class_name = $this->getReferenceEntryClassName();
+        $source_items = [];
 
-        if (is_null($key)) {
-            array_push($this->items, $this->referenceEntityFactory($class_name, $value));
-        } else {
-            $this->items[$key] = $this->referenceEntityFactory($class_name, $value);
+        // Перебираем все файлы-источники
+        foreach ((array) $this->getSourcesFilesPaths() as $file_path) {
+            // Если имя файла говорит о том, что он является json-ом
+            if (Str::endsWith($file_path, 'json')) {
+                $source_items = array_merge_recursive($source_items, $this->getContentFromJsonFile($file_path));
+            }
         }
+
+        // Преобразуем элементы к объектам элемента справочника
+        return array_map(function ($item_data) {
+            return $this->referenceEntityFactory($item_data);
+        }, array_filter($source_items));
     }
 
     /**
@@ -107,14 +95,107 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
     /**
      * Факторка по созданию инстансов элементов справочника.
      *
-     * @param string $entity_class
-     * @param array  ...$arguments
+     * @param array ...$arguments
      *
      * @return ReferenceEntryInterface
+     * @throws Exception
      */
-    protected function referenceEntityFactory($entity_class, ...$arguments)
+    protected function referenceEntityFactory(...$arguments)
     {
-        return new $entity_class(...$arguments);
+        $class_name = $this->getReferenceEntryClassName();
+
+        if (class_exists($class_name)) {
+            return new $class_name(...$arguments);
+        }
+
+        throw new Exception(sprintf('Class "%s" in "%s" does not exists', $class_name, static::class));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getReferenceEntryClassName();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($key, $value)
+    {
+        if (is_null($key)) {
+            array_push($this->items, $this->referenceEntityFactory($value));
+        } else {
+            $this->items[$key] = $this->referenceEntityFactory($value);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function map(callable $callback)
+    {
+        $result = parent::map($callback);
+
+        return $result->contains(function ($item) {
+            return ! $item instanceof static;
+        })
+            ? $result->toBase()
+            : $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pluck($value, $key = null)
+    {
+        return $this->toBase()->pluck($value, $key);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function keys()
+    {
+        return $this->toBase()->keys();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function zip($items)
+    {
+        return call_user_func_array([$this->toBase(), 'zip'], func_get_args());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function collapse()
+    {
+        return $this->toBase()->collapse();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flatten($depth = INF)
+    {
+        return $this->toBase()->flatten($depth);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flip()
+    {
+        return $this->toBase()->flip();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pad($size, $value)
+    {
+        return $this->toBase()->pad($size, $value);
     }
 
     /**
@@ -132,7 +213,7 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
 
         if (is_null($vendor)) {
             $reflector = new ReflectionClass('\\Composer\\Autoload\\ClassLoader');
-            $vendor    = realpath(dirname($reflector->getFileName()) . '/..');
+            $vendor = realpath(dirname($reflector->getFileName()) . '/..');
 
             if (! is_dir($vendor) || ! is_readable($vendor)) {
                 throw new Exception(sprintf('Cannot detect vendors directory path: "%s"', $vendor));

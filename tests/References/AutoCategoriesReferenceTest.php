@@ -24,6 +24,16 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
     protected $reference_provider_class = AutoCategoriesProvider::class;
 
     /**
+     * {@inheritdoc}
+     */
+    function testArrayKeys()
+    {
+        foreach (['code', 'description'] as $key_name) {
+            $this->assertArrayHasKey($key_name, $this->reference_instance->first()->toArray());
+        }
+    }
+
+    /**
      * Тест базовых акцессоров данных.
      *
      * @return void

@@ -71,15 +71,4 @@ class AutoCategoryEntry extends AbstractReferenceEntry
     {
         return $this->description;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray()
-    {
-        return [
-            'code'        => $this->code,
-            'description' => $this->description,
-        ];
-    }
 }
