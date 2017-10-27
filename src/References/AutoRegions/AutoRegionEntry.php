@@ -40,7 +40,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @var int[]|null
      */
-    protected $auto_code;
+    protected $auto_codes;
 
     /**
      * Код региона по ОКАТО.
@@ -100,7 +100,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
                         $value = ! is_array($value)
                             ? explode(',', (string) $value)
                             : $value;
-                        $this->auto_code = array_filter(array_map(function ($item) {
+                        $this->auto_codes = array_filter(array_map(function ($item) {
                             return (int) preg_replace('~[^0-9]~', '', (string) $item);
                         }, (array) $value));
                         break;
@@ -144,9 +144,9 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @return int[]|null
      */
-    public function getAutoCode()
+    public function getAutoCodes()
     {
-        return $this->auto_code;
+        return $this->auto_codes;
     }
 
     /**
@@ -179,7 +179,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
         return $this->short_titles;
     }
 
-    /**string
+    /**
      * Возвращает заголовок региона.
      *
      * @return null|string

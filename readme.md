@@ -76,27 +76,30 @@ $ composer require avto-dev/static-references-laravel "1.*"
 
  * **Категории транспортных средств**: `AutoCategoriesReference`
    * Бинд-алиасы:
-     * `AutoCategoriesReference::class`;
-     * `AutoCategories`;
-     * `autoCategories`;
+     * `AutoCategoriesReference::class`
+     * `AutoCategories`
+     * `autoCategories`
  * **Регионы субъектов** `AutoRegionsReference`
    * Бинд-алиасы: 
-     * `AutoRegions`;
-     * `autoRegions`;
+     * `AutoRegionsReference::class`
+     * `AutoRegions`
+     * `autoRegions`
  * **Регистрационные действия** `RegistrationActionsReference`
    * Бинд-алиасы:
-     * `RegistrationActions`;
-     * `registrationActions`;
+     * `RegistrationActionsReference::class`
+     * `RegistrationActions`
+     * `registrationActions`
 
-### Примеры работы
+### Примеры использования
 
-Использование справочника "Категории транспортных средств":
+#### Справочник "Категории транспортных средств"
+
 ```php
 <?php
 
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
+use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry;
+use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
 
 // Извлекаем инстанс статических справочников из IoC Laravel
 /** @var AutoCategoriesReference $auto_categories */
@@ -128,6 +131,108 @@ AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry {
   #description: "Трициклы"
 }
 */
+```
+
+#### Справочник "Регионы субъектов"
+
+```php
+<?php
+
+use AvtoDev\StaticReferencesLaravel\StaticReferences;
+use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
+
+/** @var AutoRegionsReference $auto_regions */
+$auto_regions = app(StaticReferences::class)->make(AutoRegionsReference::class);
+
+// Перебираем все регионы субъектов
+$auto_regions->each(function (AutoRegionEntry $region) {
+    $region->getRegionCode(); // код субъекта РФ
+    $region->getAutoCodes(); // автомобильные коды (коды ГИБДД)
+    $region->getIso31662(); // код региона по стандарту ISO-31662
+    $region->getOkato(); // код региона по ОКАТО
+    $region->getShortTitles(); // варианты короткого наименования региона
+    $region->getTitle(); // заголовок региона
+    $region->getType(); // тип (республика/край/и т.д.)
+});
+
+// Получаем заголовки всех регионов одним массивом
+$titles = $auto_regions->pluck('title')->toArray(); // === ['Республика Адыгея', 'Республика Алтай', ...];
+
+// Получаем массив вида '%название_региона% => [%его_гибдд_коды%]'
+$map = $auto_regions->mapWithKeys(function (AutoRegionEntry $region) {
+    return [$region->getTitle() => $region->getAutoCodes()];
+})->all();
+
+// Получаем объект региона по его заголовку
+$moscow_region = $auto_regions->getByTitle('Москва');
+/*
+AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionEntry {
+  #title: "Москва"
+  #short_titles: array:2 [
+    0 => "Москва"
+    1 => "МСК"
+  ]
+  #region_code: 77
+  #auto_codes: array:8 [
+    0 => 77
+    1 => 97
+    2 => 99
+    3 => 177
+    4 => 197
+    5 => 199
+    6 => 799
+    7 => 777
+  ]
+  #okato: "45"
+  #iso_31662: "RU-MOW"
+  #type: "Город федерального значения"
+}
+*/
+
+$auto_regions->hasAutoCode(177); // true
+$auto_regions->hasAutoCode(666); // false
+```
+
+#### Справочник "Регистрационные действия"
+
+```php
+<?php
+
+use AvtoDev\StaticReferencesLaravel\StaticReferences;
+use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionEntry;
+use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
+
+/** @var RegistrationActionsReference $reg_actions */
+$reg_actions = app(StaticReferences::class)->make(RegistrationActionsReference::class);
+
+// Перебираем все регистрационные действия
+$reg_actions->each(function (RegistrationActionEntry $reg_action) {
+    $reg_action->getCodes(); // коды регистрационного действия
+    $reg_action->getDescription(); // описание регистрационного действия
+});
+
+// Получаем описания всех регистрационных действий одним массивом
+$descriptions = $reg_actions->pluck('description')->toArray(); // === ['Первичная регистрация', ...];
+
+// Получаем массив вида '%описание_рег_действия% => [%его_коды%]'
+$map = $reg_actions->mapWithKeys(function (RegistrationActionEntry $reg_action) {
+    return [$reg_action->getDescription() => $reg_action->getCodes()];
+})->all();
+
+// Получаем объект категории по его заголовку
+$reg_action = $reg_actions->getByCode(11); // Первичная регистрация
+/*
+AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionEntry {
+  #codes: array:1 [
+    0 => 11
+  ]
+  #description: "Первичная регистрация"
+}
+*/
+
+$reg_actions->hasCode(11); // true
+$reg_actions->hasCode(666); // false
 ```
 
 ## Тестирование

@@ -121,7 +121,7 @@ class AutoRegionsReference extends AbstractReference
             // Очищаем входящее значение и приводим к числу
             $auto_code = (int) preg_replace('~[^0-9]~', '', $auto_code);
             foreach ($this->items as $region) {
-                foreach ((array) $region->getAutoCode() as $region_auto_code) {
+                foreach ((array) $region->getAutoCodes() as $region_auto_code) {
                     if ($region_auto_code === $auto_code) {
                         return $region;
                     }

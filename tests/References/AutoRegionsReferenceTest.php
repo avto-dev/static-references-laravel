@@ -41,7 +41,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
             'title',
             'short_titles',
             'region_code',
-            'auto_code',
+            'auto_codes',
             'okato',
             'iso_31662',
             'type',
@@ -87,14 +87,14 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         $this->assertEquals($moscow, $this->reference_instance->getByAutoCode('арарара 077')->getTitle());
         $this->assertEquals(
             [77, 97, 99, 177, 197, 199, 799, 777],
-            $this->reference_instance->getByAutoCode(77)->getAutoCode()
+            $this->reference_instance->getByAutoCode(77)->getAutoCodes()
         );
 
         $sverdl_obl = 'Свердловская область';
         $this->assertEquals($sverdl_obl, $this->reference_instance->getByAutoCode(66)->getTitle());
         $this->assertEquals($sverdl_obl, $this->reference_instance->getByAutoCode('66')->getTitle());
         $this->assertEquals($sverdl_obl, $this->reference_instance->getByAutoCode('boom 66 пыщь')->getTitle());
-        $this->assertEquals([66, 96, 196], $this->reference_instance->getByAutoCode(66)->getAutoCode());
+        $this->assertEquals([66, 96, 196], $this->reference_instance->getByAutoCode(66)->getAutoCodes());
 
         // И не существующие области
         $this->assertNull($this->reference_instance->getByAutoCode(997));
