@@ -35,7 +35,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    function testArrayKeys()
+    public function testArrayKeys()
     {
         $keys = [
             'title',

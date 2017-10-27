@@ -26,7 +26,7 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    function testArrayKeys()
+    public function testArrayKeys()
     {
         foreach (['code', 'description'] as $key_name) {
             $this->assertArrayHasKey($key_name, $this->reference_instance->first()->toArray());

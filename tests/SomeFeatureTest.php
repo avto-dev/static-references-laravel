@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
+use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry;
+use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
 
 /**
  * Class SomeFeatureTest.
@@ -34,7 +34,7 @@ class SomeFeatureTest extends AbstractUnitTestCase
         $codes = $auto_categories->pluck('code')->toArray(); // === ['A', 'B1', 'B', ...];
 
         foreach ($auto_categories->all() as $category) {
-            /** @var AutoCategoryEntry $category */
+            /* @var AutoCategoryEntry $category */
             $this->assertContains($category->getCode(), $codes);
         }
 
@@ -44,7 +44,7 @@ class SomeFeatureTest extends AbstractUnitTestCase
         })->all();
 
         foreach ($auto_categories->all() as $category) {
-            /** @var AutoCategoryEntry $category */
+            /* @var AutoCategoryEntry $category */
             $this->assertEquals($map[$category->getCode()], $category->getDescription());
         }
 

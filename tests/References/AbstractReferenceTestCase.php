@@ -107,5 +107,5 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
      *
      * @return void
      */
-    abstract function testArrayKeys();
+    abstract public function testArrayKeys();
 }

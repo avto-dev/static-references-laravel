@@ -2,8 +2,8 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References;
 
-use AvtoDev\StaticReferencesLaravel\Traits\TransliterateTrait;
 use ArrayIterator;
+use AvtoDev\StaticReferencesLaravel\Traits\TransliterateTrait;
 
 /**
  * Class AbstractReferenceEntry.
@@ -18,6 +18,14 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     use TransliterateTrait;
 
     /**
+     * {@inheritdoc}
+     */
+    public function __construct($raw_data = [])
+    {
+        $this->configure($raw_data);
+    }
+
+    /**
      * Возвращает массив имен свойств, скрытых для доступа "извне".
      *
      * @return string[]|array
@@ -30,14 +38,6 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct($raw_data = [])
-    {
-        $this->configure($raw_data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     abstract public function configure($input = []);
 
     /**
@@ -45,7 +45,7 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
      */
     public function offsetExists($offset)
     {
-        return !in_array($offset, $this->hiddenPropertiesNames()) && property_exists($this, $offset);
+        return ! in_array($offset, $this->hiddenPropertiesNames()) && property_exists($this, $offset);
     }
 
     /**

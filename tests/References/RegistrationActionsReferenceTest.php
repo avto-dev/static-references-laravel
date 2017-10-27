@@ -26,7 +26,7 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    function testArrayKeys()
+    public function testArrayKeys()
     {
         foreach (['codes', 'description'] as $key_name) {
             $this->assertArrayHasKey($key_name, $this->reference_instance->first()->toArray());
