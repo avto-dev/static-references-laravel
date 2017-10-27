@@ -1,3 +1,4 @@
+
 <p align="center">
   <img alt="laravel" src="https://habrastorage.org/webt/59/e1/c4/59e1c40b83e9d293787547.png" width="70" height="70" />
 </p>
@@ -92,8 +93,9 @@ $ composer require avto-dev/static-references-laravel "1.*"
 
 ### Примеры использования
 
-#### Справочник "Категории транспортных средств"
-
+<details>
+  <summary>Справочник "Категории транспортных средств"</summary>
+  
 ```php
 <?php
 
@@ -132,9 +134,11 @@ AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry {
 }
 */
 ```
+</details>
 
-#### Справочник "Регионы субъектов"
-
+<details>
+  <summary>Справочник "Регионы субъектов"</summary>
+  
 ```php
 <?php
 
@@ -193,9 +197,11 @@ AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionEntry {
 $auto_regions->hasAutoCode(177); // true
 $auto_regions->hasAutoCode(666); // false
 ```
+</details>
 
-#### Справочник "Регистрационные действия"
-
+<details>
+  <summary>Справочник "Регистрационные действия"</summary>
+  
 ```php
 <?php
 
@@ -234,6 +240,7 @@ AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActio
 $reg_actions->hasCode(11); // true
 $reg_actions->hasCode(666); // false
 ```
+</details>
 
 ## Тестирование
 
