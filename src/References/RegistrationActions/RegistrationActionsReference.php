@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References\RegistrationActions;
 
+use AvtoDev\StaticReferencesData\StaticReferencesData;
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 
@@ -92,8 +93,8 @@ class RegistrationActionsReference extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    protected function getSourcesFilesPaths()
+    protected function getRawSourceData()
     {
-        return $this->getVendorPath() . '/data/registration_actions/registration_actions.json';
+        return StaticReferencesData::getRegistrationActionsData();
     }
 }

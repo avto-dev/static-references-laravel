@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References\AutoCategories;
 
+use AvtoDev\StaticReferencesData\StaticReferencesData;
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 
@@ -88,8 +89,8 @@ class AutoCategoriesReference extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    protected function getSourcesFilesPaths()
+    protected function getRawSourceData()
     {
-        return $this->getVendorPath() . '/data/auto_categories/auto_categories.json';
+        return StaticReferencesData::getAutoCategoriesData();
     }
 }

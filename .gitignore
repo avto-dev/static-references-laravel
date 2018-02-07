@@ -4,6 +4,10 @@ composer.lock
 # Vendors
 /vendor
 
+# IDEs
+/nbproject
+/.idea
+
 # Temp dirs & trash
 /temp
 /tmp
@@ -11,3 +15,5 @@ composer.lock
 
 # etc.
 /coverage
+/build
+.DS_Store

@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References\AutoRegions;
 
+use AvtoDev\StaticReferencesData\StaticReferencesData;
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 
@@ -217,8 +218,8 @@ class AutoRegionsReference extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    protected function getSourcesFilesPaths()
+    protected function getRawSourceData()
     {
-        return $this->getVendorPath() . '/data/auto_regions/auto_regions.json';
+        return StaticReferencesData::getAutoRegionsData();
     }
 }
