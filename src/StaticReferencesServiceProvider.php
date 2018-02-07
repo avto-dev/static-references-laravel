@@ -50,7 +50,7 @@ class StaticReferencesServiceProvider extends IlluminateServiceProvider
      */
     public static function getConfigFilePath()
     {
-        return __DIR__ . '/../config/static-references.php';
+        return __DIR__ . '/config/static-references.php';
     }
 
     /**
@@ -90,9 +90,11 @@ class StaticReferencesServiceProvider extends IlluminateServiceProvider
      */
     protected function registerService()
     {
-        $this->app->singleton(StaticReferences::class, function (Application $app) {
-            return new StaticReferences($this->config()->get(static::getConfigRootKeyName()));
+        $this->app->singleton(StaticReferencesInterface::class, function (Application $app) {
+            return new StaticReferences($app->make('config')->get(static::getConfigRootKeyName()));
         });
-        $this->app->bind('static-references', StaticReferences::class);
+
+        $this->app->bind(StaticReferences::class, StaticReferencesInterface::class);
+        $this->app->bind('static-references', StaticReferencesInterface::class);
     }
 }

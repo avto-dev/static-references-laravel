@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
+use AvtoDev\StaticReferencesLaravel\Facades\StaticReferencesFacade;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
@@ -63,6 +64,16 @@ class StaticReferencesTest extends AbstractUnitTestCase
          * @see InstanceableTrait
          */
         $this->assertInstanceOf(StaticReferences::class, $this->instance->instance());
+    }
+
+    /**
+     * Тесты фасадов.
+     *
+     * @return void
+     */
+    public function testFacades()
+    {
+        $this->assertInstanceOf(StaticReferencesInterface::class, StaticReferencesFacade::instance());
     }
 
     /**

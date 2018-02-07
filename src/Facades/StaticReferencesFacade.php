@@ -3,6 +3,7 @@
 namespace AvtoDev\StaticReferencesLaravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
 
 /**
  * Class StaticReferencesFacade.
@@ -16,6 +17,6 @@ class StaticReferencesFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'static-references';
+        return StaticReferencesInterface::class;
     }
 }
