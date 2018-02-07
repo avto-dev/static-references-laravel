@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferencesLaravel\Tests;
 
-use AvtoDev\StaticReferencesLaravel\Facades\StaticReferencesFacade;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesInterface;
+use AvtoDev\StaticReferencesLaravel\Facades\StaticReferencesFacade;
 use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
 use AvtoDev\StaticReferencesLaravel\Exceptions\InvalidReferenceException;
 use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
