@@ -2,8 +2,8 @@
 
 namespace AvtoDev\StaticReferencesLaravel\References\AutoCategories;
 
-use AvtoDev\StaticReferencesData\StaticReferencesData;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
 
 /**
