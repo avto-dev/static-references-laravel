@@ -1,25 +1,26 @@
-
 <p align="center">
-  <img alt="laravel" src="https://habrastorage.org/webt/59/e1/c4/59e1c40b83e9d293787547.png" width="70" height="70" />
+  <img src="https://laravel.com/assets/img/components/logo-laravel.svg" alt="Laravel" width="240" />
 </p>
 
 # Laravel-пакет для работы со статическими справочниками
 
-![Packagist](https://img.shields.io/packagist/v/avto-dev/static-references-laravel.svg?style=flat&maxAge=30)
-[![Build Status](https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/build.png?b=master)](https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/build-status/master)
-![StyleCI](https://styleci.io/repos/107638384/shield?style=flat&maxAge=30)
-[![Code Coverage](https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/?branch=master)
-![GitHub issues](https://img.shields.io/github/issues/avto-dev/static-references-laravel.svg?style=flat&maxAge=30)
+[![Version][badge_version]][link_packagist]
+[![Build Status][badge_build_status]][link_build_status]
+![StyleCI][badge_styleci]
+[![Code Coverage][badge_coverage]][link_build]
+[![Code Quality][badge_quality]][link_build]
+[![License][badge_license]][link_license]
+[![Issues][badge_issues]][link_issues]
+[![Downloads][badge_downloads]][link_packagist]
 
-При помощи данного пакета вы сможете интегрировать сервис по работе со статическими справочниками в ваше **Laravel 5.x** приложение с помощью нескольких простых шагов.
+При помощи данного пакета вы сможете интегрировать сервис по работе со статическими справочниками в ваше **Laravel >=5.4** приложение с помощью нескольких простых шагов.
 
 ## Установка
 
 Для установки данного пакета выполните в терминале следующую команду:
 
 ```shell
-$ composer require avto-dev/static-references-laravel "1.*"
+$ composer require avto-dev/static-references-laravel "^1.1.2"
 ```
 
 > Для этого необходим установленный `composer`. Для его установки перейдите по [данной ссылке][getcomposer].
@@ -247,8 +248,7 @@ $reg_actions->hasCode(666); // false
 Для тестирования данного пакета используется фреймворк `phpunit`. Для запуска тестов выполните в терминале:
 
 ```shell
-$ git clone git@github.com:avto-dev/static-references-laravel.git
-$ cd ./static-references-laravel
+$ git clone git@github.com:avto-dev/static-references-laravel.git ./static-references-laravel && cd &_
 $ composer update --dev
 $ composer test
 ```
@@ -263,4 +263,17 @@ $ composer test
 
 Код данного пакета распространяется под лицензией **MIT**.
 
+[badge_version]:https://img.shields.io/packagist/v/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
+[badge_license]:https://img.shields.io/packagist/l/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
+[badge_build_status]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/build.png?b=master
+[badge_styleci]:https://styleci.io/repos/107638384/shield?style=flat
+[badge_coverage]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/coverage.png?b=master
+[badge_quality]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/quality-score.png?b=master
+[badge_issues]:https://img.shields.io/github/issues/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
+[badge_downloads]:https://img.shields.io/packagist/dt/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
+[link_packagist]:https://packagist.org/packages/avto-dev/static-references-laravel
+[link_license]:https://github.com/avto-dev/static-references-laravel/blob/master/LICENSE
+[link_build]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel
+[link_build_status]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/build-status/master
+[link_issues]:https://github.com/avto-dev/static-references-laravel/issues
 [getcomposer]:https://getcomposer.org/download/
