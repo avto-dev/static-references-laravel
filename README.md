@@ -248,7 +248,7 @@ $reg_actions->hasCode(666); // false
 Для тестирования данного пакета используется фреймворк `phpunit`. Для запуска тестов выполните в терминале:
 
 ```shell
-$ git clone git@github.com:avto-dev/static-references-laravel.git ./static-references-laravel && cd &_
+$ git clone git@github.com:avto-dev/static-references-laravel.git ./static-references-laravel && cd $_
 $ composer update --dev
 $ composer test
 ```
