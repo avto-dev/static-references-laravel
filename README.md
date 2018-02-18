@@ -6,7 +6,7 @@
 
 [![Version][badge_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
-![StyleCI][badge_styleci]
+[![StyleCI][badge_styleci]][link_styleci]
 [![Code Coverage][badge_coverage]][link_build]
 [![Code Quality][badge_quality]][link_build]
 [![License][badge_license]][link_license]
@@ -20,7 +20,7 @@
 Для установки данного пакета выполните в терминале следующую команду:
 
 ```shell
-$ composer require avto-dev/static-references-laravel "^1.1.2"
+$ composer require avto-dev/static-references-laravel "^1.1.3"
 ```
 
 > Для этого необходим установленный `composer`. Для его установки перейдите по [данной ссылке][getcomposer].
@@ -272,6 +272,7 @@ $ composer test
 [badge_issues]:https://img.shields.io/github/issues/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
 [badge_downloads]:https://img.shields.io/packagist/dt/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
 [link_packagist]:https://packagist.org/packages/avto-dev/static-references-laravel
+[link_styleci]:https://styleci.io/repos/107638384/
 [link_license]:https://github.com/avto-dev/static-references-laravel/blob/master/LICENSE
 [link_build]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel
 [link_build_status]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/build-status/master
