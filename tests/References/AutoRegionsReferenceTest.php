@@ -70,6 +70,10 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
             'RU-ME',
             $this->reference_instance->getByRegionCode(12)->getIso31662()
         );
+        $this->assertEquals(
+            'RU-TA',
+            $this->reference_instance->getByRegionCode(16)->getIso31662()
+        );
 
         $this->assertTrue($this->reference_instance->hasRegionCode(12));
         $this->assertFalse($this->reference_instance->hasRegionCode(999));
@@ -95,6 +99,9 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         $this->assertEquals($sverdl_obl, $this->reference_instance->getByAutoCode('66')->getTitle());
         $this->assertEquals($sverdl_obl, $this->reference_instance->getByAutoCode('boom 66 пыщь')->getTitle());
         $this->assertEquals([66, 96, 196], $this->reference_instance->getByAutoCode(66)->getAutoCodes());
+
+        $this->assertTrue($this->reference_instance->hasAutoCode(716));
+        $this->assertEquals('Республика Татарстан', $this->reference_instance->getByAutoCode(716)->getTitle());
 
         // И не существующие области
         $this->assertNull($this->reference_instance->getByAutoCode(997));
