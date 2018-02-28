@@ -2,8 +2,8 @@
 
 namespace AvtoDev\StaticReferences\Tests\References;
 
-use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
 class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
 {
@@ -11,14 +11,6 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
      * @var RegistrationActions
      */
     protected $instance;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getReferenceClassName()
-    {
-        return RegistrationActions::class;
-    }
 
     /**
      * {@inheritdoc}
@@ -67,5 +59,13 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
         $this->assertTrue($this->instance->hasDescription($description));
         $this->assertTrue($this->instance->hasDescription($description_short));
         $this->assertFalse($this->instance->hasDescription('ЫDfsdgfs dsfDFfds'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getReferenceClassName()
+    {
+        return RegistrationActions::class;
     }
 }

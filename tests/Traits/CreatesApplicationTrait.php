@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferences\Tests\Traits;
 
-use AvtoDev\StaticReferences\StaticReferencesServiceProvider;
-use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Console\Kernel;
+use AvtoDev\StaticReferences\StaticReferencesServiceProvider;
 
 trait CreatesApplicationTrait
 {

@@ -2,15 +2,15 @@
 
 namespace AvtoDev\StaticReferences;
 
-use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\ReferenceInterface;
-use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Contracts\Cache\Repository as CacheContract;
+use Carbon\Carbon;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use AvtoDev\StaticReferences\References\ReferenceInterface;
+use Illuminate\Contracts\Cache\Repository as CacheContract;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
+use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
+use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
 /**
  * Class StaticReferencesServiceProvider.
@@ -53,9 +53,9 @@ class StaticReferencesServiceProvider extends ServiceProvider
      * @param string      $references_class
      * @param Application $app
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     protected function bootUpReferenceInstance($references_class, Application $app)
     {

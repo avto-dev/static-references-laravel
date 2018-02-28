@@ -15,14 +15,6 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getReferenceClassName()
-    {
-        return AutoCategories::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function testArrayKeys()
     {
         foreach (['code', 'description'] as $key_name) {
@@ -69,5 +61,13 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
         $this->assertTrue($this->instance->hasDescription($category_name));
         $this->assertTrue($this->instance->hasDescription(' ' . $category_name));
         $this->assertFalse($this->instance->hasDescription('ЫDfsdgfs dsfDFfds'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getReferenceClassName()
+    {
+        return AutoCategories::class;
     }
 }

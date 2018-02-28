@@ -12,14 +12,6 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     protected $instance;
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getReferenceClassName()
-    {
-        return AutoRegions::class;
-    }
-    
-    /**
      * Тест базовых акцессоров данных.
      *
      * @return void
@@ -195,5 +187,13 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
 
         $this->assertTrue($this->instance->hasIso31662('RU-SMO'));
         $this->assertFalse($this->instance->hasOkato('SDFD-RYGF'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getReferenceClassName()
+    {
+        return AutoRegions::class;
     }
 }

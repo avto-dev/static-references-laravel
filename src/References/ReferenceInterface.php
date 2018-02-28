@@ -17,9 +17,9 @@ interface ReferenceInterface
     /**
      * Returns vendor static reference object instance.
      *
-     * @return StaticReferenceInterface
-     *
      * @throws Exception
+     *
+     * @return StaticReferenceInterface
      */
     public static function getVendorStaticReferenceInstance();
 

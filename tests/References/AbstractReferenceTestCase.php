@@ -16,13 +16,6 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
     protected $instance;
 
     /**
-     * Returns reference class name.
-     *
-     * @return string
-     */
-    abstract protected function getReferenceClassName();
-
-    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -65,4 +58,11 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
      * @return void
      */
     abstract public function testArrayKeys();
+
+    /**
+     * Returns reference class name.
+     *
+     * @return string
+     */
+    abstract protected function getReferenceClassName();
 }
