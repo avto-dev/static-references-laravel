@@ -1,11 +1,9 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\Tests\References;
+namespace AvtoDev\StaticReferences\Tests\References;
 
-use AvtoDev\StaticReferencesLaravel\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferencesLaravel\References\ReferenceInterface;
-use AvtoDev\StaticReferencesLaravel\Tests\Mocks\StaticReferencesMock;
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterface;
+use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
+use AvtoDev\StaticReferences\References\ReferenceInterface;
 
 /**
  * Class AbstractReferenceTestCase.
@@ -13,29 +11,16 @@ use AvtoDev\StaticReferencesLaravel\PreferencesProviders\ReferenceProviderInterf
 abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
 {
     /**
-     * @var StaticReferencesMock
-     */
-    protected $static_references;
-
-    /**
      * @var ReferenceInterface
      */
-    protected $reference_instance;
+    protected $instance;
 
     /**
-     * @var string
+     * Returns reference class name.
+     *
+     * @return string
      */
-    protected $reference_class = null;
-
-    /**
-     * @var string
-     */
-    protected $reference_provider_class = null;
-
-    /**
-     * @var string[]
-     */
-    protected $binds = [];
+    abstract protected function getReferenceClassName();
 
     /**
      * {@inheritdoc}
@@ -44,21 +29,7 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        $this->static_references  = new StaticReferencesMock();
-        $this->reference_instance = $this->static_references->make($this->reference_provider_class);
-
-        $this->assertInstanceOf($this->reference_class, $this->reference_instance);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        unset($this->reference_instance);
-        unset($this->static_references);
-
-        parent::tearDown();
+        $this->instance = $this->app->make($this->getReferenceClassName());
     }
 
     /**
@@ -68,27 +39,13 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
      */
     public function testAll()
     {
-        $class = $this->reference_instance->getReferenceEntryClassName();
+        $class = $this->instance->getReferenceEntryClassName();
 
-        foreach ($this->reference_instance->all() as $item) {
+        foreach ($this->instance->all() as $item) {
             $this->assertInstanceOf($class, $item);
         }
 
-        $this->assertInstanceOf($class, $this->reference_instance->random());
-    }
-
-    /**
-     * Тест биндов.
-     */
-    public function testBinds()
-    {
-        /** @var ReferenceProviderInterface $provider */
-        $provider = new $this->reference_provider_class();
-
-        foreach (array_unique(array_merge($provider->binds(), $this->binds)) as $bind) {
-            $this->assertInstanceOf($this->reference_class, $ref = $this->static_references->make($bind));
-            $this->assertEquals($ref, $this->static_references->$bind);
-        }
+        $this->assertInstanceOf($class, $this->instance->random());
     }
 
     /**
@@ -96,7 +53,7 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
      */
     public function testEntryToArrayAndToJson()
     {
-        $first = $this->reference_instance->first();
+        $first = $this->instance->first();
 
         $this->assertTrue(is_array($first->toArray()));
         $this->assertJson($first->toJson());

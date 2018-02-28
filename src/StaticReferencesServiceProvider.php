@@ -1,100 +1,113 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel;
+namespace AvtoDev\StaticReferences;
 
+use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
+use AvtoDev\StaticReferences\References\ReferenceInterface;
+use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Foundation\Application;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 /**
  * Class StaticReferencesServiceProvider.
- *
- * Сервис-провайдер пакета, реализующего работу со статическими справочниками.
  */
-class StaticReferencesServiceProvider extends IlluminateServiceProvider
+class StaticReferencesServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
+     * Возвращает массив имён классов справочников.
      *
-     * @var bool
+     * @return string[]
      */
-    protected $defer = true;
-
-    /**
-     * Выполнение после-регистрационной загрузки сервисов.
-     *
-     * @return void
-     */
-    public function boot()
+    public function getReferencesClasses()
     {
-        $this->publishes([
-            realpath($config_path = static::getConfigFilePath()) => config_path(basename($config_path)),
-        ], 'config');
+        return [
+            AutoRegions::class,
+            AutoCategories::class,
+            RegistrationActions::class,
+        ];
     }
 
     /**
-     * Register any application services.
+     * Register package services.
      *
      * @return void
      */
     public function register()
     {
-        $this->initializeConfigs();
-        $this->registerService();
+        foreach ($this->getReferencesClasses() as $references_class) {
+            $this->app->singleton($references_class, function (Application $app) use ($references_class) {
+                return $this->bootUpReferenceInstance($references_class, $app);
+            });
+        }
     }
 
     /**
-     * Возвращает путь до файла-конфигурации пакета.
+     * Производит инициализацию инстанса справочника по имени его класса.
+     *
+     * Алсо - производит проверку его наличия в кэше, валидируя его актуальность по его хэшу.
+     *
+     * @param string      $references_class
+     * @param Application $app
+     *
+     * @return mixed
+     *
+     * @throws Exception
+     */
+    protected function bootUpReferenceInstance($references_class, Application $app)
+    {
+        $cache = $this->cacheFactory(null, $app);
+
+        /** @var ReferenceInterface $references_class */
+        $hash = $references_class::getVendorStaticReferenceInstance()->getHash();
+
+        if ($cache->has($cache_key = $this->generateCacheKey($references_class, $hash))) {
+            return $cache->get($cache_key);
+        } else {
+            $instance = new $references_class();
+
+            // По умолчанию - храним справочник в кэше одни сутки до его пересоздания
+            $cache->put($cache_key, $instance, Carbon::now()->addDays(1));
+
+            return $instance;
+        }
+    }
+
+    /**
+     * Generate cache key name.
+     *
+     * @param array ...$arguments
      *
      * @return string
      */
-    public static function getConfigFilePath()
+    protected function generateCacheKey(...$arguments)
     {
-        return __DIR__ . '/config/static-references.php';
+        return sprintf('static_reference_%s', crc32(serialize($arguments)));
     }
 
     /**
-     * Get config root key name.
+     * Возвращает инстанс кэша приложения. Если не передать имя хранилища, то будет использовано то, что установлено
+     * у приложения по умолчанию.
      *
-     * @return string
-     */
-    public static function getConfigRootKeyName()
-    {
-        return basename(static::getConfigFilePath(), '.php'); // 'static-references'
-    }
-
-    /**
-     * Initialize configs.
+     * @param null|string      $cache_storage_name Имя используемого хранилища кэша
+     * @param null|Application $app                Инстанс приложения (опционально)
      *
-     * @return void
+     * @return CacheContract
      */
-    protected function initializeConfigs()
+    protected function cacheFactory($cache_storage_name = null, $app = null)
     {
-        $this->mergeConfigFrom(static::getConfigFilePath(), static::getConfigRootKeyName());
-    }
+        /** @var Application $app */
+        $app = $app instanceof Application
+            ? $app
+            : $this->app;
 
-    /**
-     * Возвращает контейнер с конфигурацией приложения.
-     *
-     * @return ConfigRepository
-     */
-    protected function config()
-    {
-        return $this->app->make('config');
-    }
+        $storage_name = empty($name = $cache_storage_name)
+            ? $app->make('config')->get('cache.default')
+            : $name;
 
-    /**
-     * Регистрирует контейнер статических справочников.
-     *
-     * @return void
-     */
-    protected function registerService()
-    {
-        $this->app->singleton(StaticReferencesInterface::class, function (Application $app) {
-            return new StaticReferences($app->make('config')->get(static::getConfigRootKeyName()));
-        });
-
-        $this->app->bind(StaticReferences::class, StaticReferencesInterface::class);
-        $this->app->bind('static-references', StaticReferencesInterface::class);
+        return $app->make('cache')->store($storage_name);
     }
 }

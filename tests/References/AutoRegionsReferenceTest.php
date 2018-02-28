@@ -1,27 +1,24 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\Tests\References;
+namespace AvtoDev\StaticReferences\Tests\References;
 
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoRegionsProvider;
-use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 
 class AutoRegionsReferenceTest extends AbstractReferenceTestCase
 {
     /**
-     * @var AutoRegionsReference
+     * @var AutoRegions
      */
-    protected $reference_instance;
+    protected $instance;
 
     /**
-     * @var string
+     * {@inheritdoc}
      */
-    protected $reference_class = AutoRegionsReference::class;
-
-    /**
-     * @var string
-     */
-    protected $reference_provider_class = AutoRegionsProvider::class;
-
+    protected function getReferenceClassName()
+    {
+        return AutoRegions::class;
+    }
+    
     /**
      * Тест базовых акцессоров данных.
      *
@@ -29,7 +26,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
      */
     public function testBasicData()
     {
-        $this->assertGreaterThan(10, count($this->reference_instance->all()));
+        $this->assertGreaterThan(10, count($this->instance->all()));
     }
 
     /**
@@ -48,7 +45,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         ];
 
         foreach ($keys as $key_name) {
-            $this->assertArrayHasKey($key_name, $this->reference_instance->first()->toArray());
+            $this->assertArrayHasKey($key_name, $this->instance->first()->toArray());
         }
     }
 
@@ -59,24 +56,24 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     {
         $this->assertEquals(
             'Республика Марий Эл',
-            $this->reference_instance->getByRegionCode(12)->getTitle()
+            $this->instance->getByRegionCode(12)->getTitle()
         );
 
         $this->assertEquals(
             12,
-            $this->reference_instance->getByRegionCode(12)->getRegionCode()
+            $this->instance->getByRegionCode(12)->getRegionCode()
         );
         $this->assertEquals(
             'RU-ME',
-            $this->reference_instance->getByRegionCode(12)->getIso31662()
+            $this->instance->getByRegionCode(12)->getIso31662()
         );
         $this->assertEquals(
             'RU-TA',
-            $this->reference_instance->getByRegionCode(16)->getIso31662()
+            $this->instance->getByRegionCode(16)->getIso31662()
         );
 
-        $this->assertTrue($this->reference_instance->hasRegionCode(12));
-        $this->assertFalse($this->reference_instance->hasRegionCode(999));
+        $this->assertTrue($this->instance->hasRegionCode(12));
+        $this->assertFalse($this->instance->hasRegionCode(999));
     }
 
     /**
@@ -86,33 +83,33 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     {
         // Существующие области
         $moscow = 'Москва';
-        $this->assertEquals($moscow, $this->reference_instance->getByAutoCode(77)->getTitle());
-        $this->assertEquals($moscow, $this->reference_instance->getByAutoCode('077')->getTitle());
-        $this->assertEquals($moscow, $this->reference_instance->getByAutoCode('арарара 077')->getTitle());
+        $this->assertEquals($moscow, $this->instance->getByAutoCode(77)->getTitle());
+        $this->assertEquals($moscow, $this->instance->getByAutoCode('077')->getTitle());
+        $this->assertEquals($moscow, $this->instance->getByAutoCode('арарара 077')->getTitle());
         $this->assertEquals(
             [77, 97, 99, 177, 197, 199, 799, 777],
-            $this->reference_instance->getByAutoCode(77)->getAutoCodes()
+            $this->instance->getByAutoCode(77)->getAutoCodes()
         );
 
         $sverdl_obl = 'Свердловская область';
-        $this->assertEquals($sverdl_obl, $this->reference_instance->getByAutoCode(66)->getTitle());
-        $this->assertEquals($sverdl_obl, $this->reference_instance->getByAutoCode('66')->getTitle());
-        $this->assertEquals($sverdl_obl, $this->reference_instance->getByAutoCode('boom 66 пыщь')->getTitle());
-        $this->assertEquals([66, 96, 196], $this->reference_instance->getByAutoCode(66)->getAutoCodes());
+        $this->assertEquals($sverdl_obl, $this->instance->getByAutoCode(66)->getTitle());
+        $this->assertEquals($sverdl_obl, $this->instance->getByAutoCode('66')->getTitle());
+        $this->assertEquals($sverdl_obl, $this->instance->getByAutoCode('boom 66 пыщь')->getTitle());
+        $this->assertEquals([66, 96, 196], $this->instance->getByAutoCode(66)->getAutoCodes());
 
-        $this->assertTrue($this->reference_instance->hasAutoCode(716));
-        $this->assertEquals('Республика Татарстан', $this->reference_instance->getByAutoCode(716)->getTitle());
+        $this->assertTrue($this->instance->hasAutoCode(716));
+        $this->assertEquals('Республика Татарстан', $this->instance->getByAutoCode(716)->getTitle());
 
         // И не существующие области
-        $this->assertNull($this->reference_instance->getByAutoCode(997));
-        $this->assertNull($this->reference_instance->getByAutoCode(299));
-        $this->assertNull($this->reference_instance->getByAutoCode(0));
-        $this->assertNull($this->reference_instance->getByAutoCode(null));
-        $this->assertNull($this->reference_instance->getByAutoCode([]));
-        $this->assertNull($this->reference_instance->getByAutoCode('трали вали'));
+        $this->assertNull($this->instance->getByAutoCode(997));
+        $this->assertNull($this->instance->getByAutoCode(299));
+        $this->assertNull($this->instance->getByAutoCode(0));
+        $this->assertNull($this->instance->getByAutoCode(null));
+        $this->assertNull($this->instance->getByAutoCode([]));
+        $this->assertNull($this->instance->getByAutoCode('трали вали'));
 
-        $this->assertTrue($this->reference_instance->hasAutoCode(66));
-        $this->assertFalse($this->reference_instance->hasAutoCode(997));
+        $this->assertTrue($this->instance->hasAutoCode(66));
+        $this->assertFalse($this->instance->hasAutoCode(997));
     }
 
     /**
@@ -123,28 +120,28 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         $moscow = 'Москва';
 
         // Находит без опечаток
-        $this->assertEquals($moscow, $this->reference_instance->getByTitle('Москва')->getTitle());
+        $this->assertEquals($moscow, $this->instance->getByTitle('Москва')->getTitle());
 
         // Находит с опечатками
-        $this->assertEquals($moscow, $this->reference_instance->getByTitle('Мaсcква')->getTitle());
-        $this->assertEquals($moscow, $this->reference_instance->getByTitle('Мсква')->getTitle());
+        $this->assertEquals($moscow, $this->instance->getByTitle('Мaсcква')->getTitle());
+        $this->assertEquals($moscow, $this->instance->getByTitle('Мсква')->getTitle());
 
         // Не находит, если передан совсем уж пиздец или пустая строка
-        $this->assertNull($this->reference_instance->getByTitle('Мяусикывуа'));
-        $this->assertNull($this->reference_instance->getByTitle(''));
+        $this->assertNull($this->instance->getByTitle('Мяусикывуа'));
+        $this->assertNull($this->instance->getByTitle(''));
 
         // Не находит, если включен режим строго соответствия
-        $this->assertNull($this->reference_instance->getByTitle('Мaсcква', true));
-        $this->assertNull($this->reference_instance->getByTitle('Мaсcкваaaa', true));
+        $this->assertNull($this->instance->getByTitle('Мaсcква', true));
+        $this->assertNull($this->instance->getByTitle('Мaсcкваaaa', true));
 
         // Ну и парочка дополнительных тестов на не строгое соответствие
         $expected = 86;
-        $this->assertEquals($expected, $this->reference_instance->getByTitle('Хмао')->getRegionCode());
-        $this->assertEquals($expected, $this->reference_instance->getByTitle('Югра')->getRegionCode());
-        $this->assertEquals($expected, $this->reference_instance->getByTitle('Ханты-Мансийский')->getRegionCode());
+        $this->assertEquals($expected, $this->instance->getByTitle('Хмао')->getRegionCode());
+        $this->assertEquals($expected, $this->instance->getByTitle('Югра')->getRegionCode());
+        $this->assertEquals($expected, $this->instance->getByTitle('Ханты-Мансийский')->getRegionCode());
 
-        $this->assertTrue($this->reference_instance->hasTitle($moscow));
-        $this->assertFalse($this->reference_instance->hasTitle('Мaсcкваaaa'));
+        $this->assertTrue($this->instance->hasTitle($moscow));
+        $this->assertFalse($this->instance->hasTitle('Мaсcкваaaa'));
     }
 
     /**
@@ -153,20 +150,20 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     public function testGetByOkato()
     {
         $sverdl_obl = 'Свердловская область';
-        $this->assertEquals($sverdl_obl, $this->reference_instance->getByOkato(65)->getTitle());
-        $this->assertEquals($sverdl_obl, $this->reference_instance->getByOkato('65')->getTitle());
+        $this->assertEquals($sverdl_obl, $this->instance->getByOkato(65)->getTitle());
+        $this->assertEquals($sverdl_obl, $this->instance->getByOkato('65')->getTitle());
 
         $this->assertEquals('Ямало-Ненецкий автономный округ',
-            $this->reference_instance->getByOkato('71-9')->getTitle());
-        $this->assertEquals('Ханты-Мансийский автономный округ - Югра', $this->reference_instance->getByOkato('71-8')
+            $this->instance->getByOkato('71-9')->getTitle());
+        $this->assertEquals('Ханты-Мансийский автономный округ - Югра', $this->instance->getByOkato('71-8')
             ->getTitle());
 
-        $this->assertNull($this->reference_instance->getByOkato(123));
-        $this->assertNull($this->reference_instance->getByOkato(null));
-        $this->assertNull($this->reference_instance->getByOkato([]));
+        $this->assertNull($this->instance->getByOkato(123));
+        $this->assertNull($this->instance->getByOkato(null));
+        $this->assertNull($this->instance->getByOkato([]));
 
-        $this->assertTrue($this->reference_instance->hasOkato(65));
-        $this->assertFalse($this->reference_instance->hasOkato(123));
+        $this->assertTrue($this->instance->hasOkato(65));
+        $this->assertFalse($this->instance->hasOkato(123));
     }
 
     /**
@@ -177,26 +174,26 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
         $sverdl_obl = 'Свердловская область';
         $this->assertEquals(
             $sverdl_obl,
-            $this->reference_instance->getByIso31662('RU-SVE')->getTitle()
+            $this->instance->getByIso31662('RU-SVE')->getTitle()
         );
         $this->assertEquals(
             $sverdl_obl,
-            $this->reference_instance->getByIso31662('ууу RU-SVE ыыы')->getTitle()
+            $this->instance->getByIso31662('ууу RU-SVE ыыы')->getTitle()
         );
         $this->assertEquals(
             'Смоленская область',
-            $this->reference_instance->getByIso31662('RU-SMO')->getTitle()
+            $this->instance->getByIso31662('RU-SMO')->getTitle()
         );
         $this->assertEquals(
             'Республика Крым',
-            $this->reference_instance->getByIso31662('RU-CR')->getTitle()
+            $this->instance->getByIso31662('RU-CR')->getTitle()
         );
 
-        $this->assertNull($this->reference_instance->getByIso31662('123123'));
-        $this->assertNull($this->reference_instance->getByIso31662('SDFD-RYGF'));
-        $this->assertNull($this->reference_instance->getByIso31662(''));
+        $this->assertNull($this->instance->getByIso31662('123123'));
+        $this->assertNull($this->instance->getByIso31662('SDFD-RYGF'));
+        $this->assertNull($this->instance->getByIso31662(''));
 
-        $this->assertTrue($this->reference_instance->hasIso31662('RU-SMO'));
-        $this->assertFalse($this->reference_instance->hasOkato('SDFD-RYGF'));
+        $this->assertTrue($this->instance->hasIso31662('RU-SMO'));
+        $this->assertFalse($this->instance->hasOkato('SDFD-RYGF'));
     }
 }

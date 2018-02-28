@@ -1,17 +1,17 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\References\RegistrationActions;
+namespace AvtoDev\StaticReferences\References\RegistrationActions;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
-use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
+use AvtoDev\StaticReferences\References\AbstractReference;
 
 /**
  * Class RegistrationActionsProvider.
  *
  * Справочник "Регистрационные действия".
  */
-class RegistrationActionsReference extends AbstractReference
+class RegistrationActions extends AbstractReference
 {
     /**
      * {@inheritdoc}
@@ -19,6 +19,18 @@ class RegistrationActionsReference extends AbstractReference
      * @var RegistrationActionEntry[]
      */
     protected $items = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getVendorStaticReferenceInstance()
+    {
+        static $instance;
+
+        return is_null($instance)
+            ? $instance = StaticReferencesData::getRegistrationActions()
+            : $instance;
+    }
 
     /**
      * Получаем объект регистрационного действия по его коду.
@@ -88,13 +100,5 @@ class RegistrationActionsReference extends AbstractReference
     public function getReferenceEntryClassName()
     {
         return RegistrationActionEntry::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRawSourceData()
-    {
-        return StaticReferencesData::getRegistrationActionsData();
     }
 }

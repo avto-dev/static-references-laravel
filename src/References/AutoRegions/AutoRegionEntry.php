@@ -1,9 +1,9 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\References\AutoRegions;
+namespace AvtoDev\StaticReferences\References\AutoRegions;
 
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
+use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
 /**
  * Class AutoRegionEntry.

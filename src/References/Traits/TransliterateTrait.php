@@ -1,6 +1,6 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\Traits;
+namespace AvtoDev\StaticReferences\References\Traits;
 
 use Illuminate\Support\Str;
 

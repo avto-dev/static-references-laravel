@@ -1,22 +1,34 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\References\AutoRegions;
+namespace AvtoDev\StaticReferences\References\AutoRegions;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
-use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
+use AvtoDev\StaticReferences\References\AbstractReference;
 
 /**
- * Class AutoRegionsReference.
+ * Class AutoRegions.
  *
  * Справочник "Регионы субъектов".
  */
-class AutoRegionsReference extends AbstractReference
+class AutoRegions extends AbstractReference
 {
     /**
      * @var AutoRegionEntry[]
      */
     protected $items = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getVendorStaticReferenceInstance()
+    {
+        static $instance;
+
+        return is_null($instance)
+            ? $instance = StaticReferencesData::getAutoRegions()
+            : $instance;
+    }
 
     /**
      * Получаем объект региона по коду субъекта РФ.
@@ -213,13 +225,5 @@ class AutoRegionsReference extends AbstractReference
     public function getReferenceEntryClassName()
     {
         return AutoRegionEntry::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRawSourceData()
-    {
-        return StaticReferencesData::getAutoRegionsData();
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\References\RegistrationActions;
+namespace AvtoDev\StaticReferences\References\RegistrationActions;
 
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesLaravel\References\AbstractReferenceEntry;
+use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
 /**
  * Class RegistrationActionEntry.

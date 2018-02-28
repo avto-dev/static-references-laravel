@@ -1,14 +1,13 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\Tests;
+namespace AvtoDev\StaticReferences\Tests;
 
-use AvtoDev\StaticReferencesLaravel\StaticReferences;
-use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionEntry;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoryEntry;
-use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionsReference;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
-use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionEntry;
-use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\AutoCategories\AutoCategoryEntry;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
+use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
+use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActionEntry;
+use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
 /**
  * Class SomeFeatureTest.
@@ -24,9 +23,8 @@ class SomeFeatureTest extends AbstractUnitTestCase
      */
     public function testAutoCategoriesReferenceUsage()
     {
-        /** @var AutoCategoriesReference $auto_categories */
-        $auto_categories = app(StaticReferences::class)->make(AutoCategoriesReference::class);
-        $this->assertInstanceOf(AutoCategoriesReference::class, $auto_categories);
+        /** @var AutoCategories $auto_categories */
+        $auto_categories = resolve(AutoCategories::class);
 
         // Перебираем все категории ТС
         $auto_categories->each(function (AutoCategoryEntry $category) {
@@ -35,7 +33,7 @@ class SomeFeatureTest extends AbstractUnitTestCase
         });
 
         // Получаем коды всех категорий одним массивом
-        $codes = $auto_categories->pluck('code')->toArray(); // === ['A', 'B1', 'B', ...];
+        $codes = collect($auto_categories->toArray())->pluck('code')->all(); // ['A', 'B1', 'B', ...];
 
         foreach ($auto_categories->all() as $category) {
             /* @var AutoCategoryEntry $category */
@@ -43,8 +41,8 @@ class SomeFeatureTest extends AbstractUnitTestCase
         }
 
         // Получаем массив вида '%код_категории% => %её_описание%'
-        $map = $auto_categories->mapWithKeys(function (AutoCategoryEntry $category) {
-            return [$category->getCode() => $category->getDescription()];
+        $map = collect($auto_categories->toArray())->mapWithKeys(function (array $category) {
+            return [$category['code'] => $category['description']];
         })->all();
 
         foreach ($auto_categories->all() as $category) {
@@ -66,9 +64,8 @@ class SomeFeatureTest extends AbstractUnitTestCase
      */
     public function testAutoRegionsReferenceUsage()
     {
-        /** @var AutoRegionsReference $auto_regions */
-        $auto_regions = app(StaticReferences::class)->make(AutoRegionsReference::class);
-        $this->assertInstanceOf(AutoRegionsReference::class, $auto_regions);
+        /** @var AutoRegions $auto_regions */
+        $auto_regions = resolve(AutoRegions::class);
 
         // Перебираем все регионы субъектов
         $auto_regions->each(function (AutoRegionEntry $region) {
@@ -82,7 +79,7 @@ class SomeFeatureTest extends AbstractUnitTestCase
         });
 
         // Получаем заголовки всех регионов одним массивом
-        $title = $auto_regions->pluck('title')->toArray(); // === ['Республика Адыгея', 'Республика Алтай', ...];
+        $title = collect($auto_regions->toArray())->pluck('title')->toArray(); // === ['Республика Адыгея', 'Республика Алтай', ...];
 
         foreach ($auto_regions->all() as $region) {
             /* @var AutoRegionEntry $region */
@@ -90,8 +87,8 @@ class SomeFeatureTest extends AbstractUnitTestCase
         }
 
         // Получаем массив вида '%название_региона% => [%его_гибдд_коды%]'
-        $map = $auto_regions->mapWithKeys(function (AutoRegionEntry $region) {
-            return [$region->getTitle() => $region->getAutoCodes()];
+        $map = collect($auto_regions->toArray())->mapWithKeys(function (array $region) {
+            return [$region['title'] => $region['auto_codes']];
         })->all();
 
         foreach ($auto_regions->all() as $region) {
@@ -113,9 +110,9 @@ class SomeFeatureTest extends AbstractUnitTestCase
      */
     public function testRegistrationActionsReferenceUsage()
     {
-        /** @var RegistrationActionsReference $reg_actions */
-        $reg_actions = app(StaticReferences::class)->make(RegistrationActionsReference::class);
-        $this->assertInstanceOf(RegistrationActionsReference::class, $reg_actions);
+        /** @var RegistrationActions $reg_actions */
+        $reg_actions = resolve(RegistrationActions::class);
+        $this->assertInstanceOf(RegistrationActions::class, $reg_actions);
 
         // Перебираем все регистрационные действия
         $reg_actions->each(function (RegistrationActionEntry $reg_action) {
@@ -124,7 +121,7 @@ class SomeFeatureTest extends AbstractUnitTestCase
         });
 
         // Получаем описания всех регистрационных действий одним массивом
-        $descriptions = $reg_actions->pluck('description')->toArray(); // === ['Первичная регистрация', ...];
+        $descriptions = collect($reg_actions->toArray())->pluck('description')->toArray(); // === ['Первичная регистрация', ...];
 
         foreach ($reg_actions->all() as $reg_action) {
             /* @var RegistrationActionEntry $reg_action */
@@ -132,8 +129,8 @@ class SomeFeatureTest extends AbstractUnitTestCase
         }
 
         // Получаем массив вида '%описание_рег_действия% => [%его_коды%]'
-        $map = $reg_actions->mapWithKeys(function (RegistrationActionEntry $reg_action) {
-            return [$reg_action->getDescription() => $reg_action->getCodes()];
+        $map = collect($reg_actions->toArray())->mapWithKeys(function (array $reg_action) {
+            return [$reg_action['description'] => $reg_action['codes']];
         })->all();
 
         foreach ($reg_actions->all() as $reg_action) {

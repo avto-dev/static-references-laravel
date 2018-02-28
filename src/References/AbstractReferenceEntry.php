@@ -1,9 +1,8 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\References;
+namespace AvtoDev\StaticReferences\References;
 
 use ArrayIterator;
-use AvtoDev\StaticReferencesLaravel\Traits\TransliterateTrait;
 
 /**
  * Class AbstractReferenceEntry.
@@ -15,7 +14,7 @@ use AvtoDev\StaticReferencesLaravel\Traits\TransliterateTrait;
  */
 abstract class AbstractReferenceEntry implements ReferenceEntryInterface
 {
-    use TransliterateTrait;
+    use Traits\TransliterateTrait;
 
     /**
      * {@inheritdoc}

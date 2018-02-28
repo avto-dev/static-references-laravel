@@ -1,8 +1,11 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\References;
+namespace AvtoDev\StaticReferences\References;
 
+use Exception;
+use InvalidArgumentException;
 use Illuminate\Support\Collection;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 /**
  * Interface ReferenceInterface.
@@ -11,6 +14,15 @@ use Illuminate\Support\Collection;
  */
 interface ReferenceInterface
 {
+    /**
+     * Returns vendor static reference object instance.
+     *
+     * @return StaticReferenceInterface
+     *
+     * @throws Exception
+     */
+    public static function getVendorStaticReferenceInstance();
+
     /**
      * Get all of the items in the collection.
      *
@@ -75,7 +87,7 @@ interface ReferenceInterface
      *
      * @param int|null $number
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
      * @return mixed
      */

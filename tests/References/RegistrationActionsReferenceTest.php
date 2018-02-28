@@ -1,27 +1,24 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\Tests\References;
+namespace AvtoDev\StaticReferences\Tests\References;
 
+use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\RegistrationActionsProvider;
-use AvtoDev\StaticReferencesLaravel\References\RegistrationActions\RegistrationActionsReference;
 
 class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
 {
     /**
-     * @var RegistrationActionsReference
+     * @var RegistrationActions
      */
-    protected $reference_instance;
+    protected $instance;
 
     /**
-     * @var string
+     * {@inheritdoc}
      */
-    protected $reference_class = RegistrationActionsReference::class;
-
-    /**
-     * @var string
-     */
-    protected $reference_provider_class = RegistrationActionsProvider::class;
+    protected function getReferenceClassName()
+    {
+        return RegistrationActions::class;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,7 +26,7 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
     public function testArrayKeys()
     {
         foreach (['codes', 'description'] as $key_name) {
-            $this->assertArrayHasKey($key_name, $this->reference_instance->first()->toArray());
+            $this->assertArrayHasKey($key_name, $this->instance->first()->toArray());
         }
     }
 
@@ -40,20 +37,20 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
      */
     public function testBasicData()
     {
-        $this->assertGreaterThan(50, count($this->reference_instance->all()));
+        $this->assertGreaterThan(50, count($this->instance->all()));
         $assert_with = 'Восстановление регистрации после аннулирования';
 
         /*
          * По кодам.
          */
         // На латинице
-        $this->assertEquals($assert_with, $this->reference_instance->getByCode(18)->getDescription());
-        $this->assertEquals($assert_with, $this->reference_instance->getByCode('18')->getDescription());
-        $this->assertEquals($assert_with, $this->reference_instance->getByCode(' 18 ')->getDescription());
+        $this->assertEquals($assert_with, $this->instance->getByCode(18)->getDescription());
+        $this->assertEquals($assert_with, $this->instance->getByCode('18')->getDescription());
+        $this->assertEquals($assert_with, $this->instance->getByCode(' 18 ')->getDescription());
 
-        $this->assertTrue($this->reference_instance->hasCode(18));
-        $this->assertTrue($this->reference_instance->hasCode(' ffff 18 '));
-        $this->assertFalse($this->reference_instance->hasCode('Ы'));
+        $this->assertTrue($this->instance->hasCode(18));
+        $this->assertTrue($this->instance->hasCode(' ffff 18 '));
+        $this->assertFalse($this->instance->hasCode('Ы'));
 
         /*
          * По описаниям.
@@ -62,13 +59,13 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
         $description_short = ' после аннулирования';
         $assert_with       = 18;
 
-        $this->assertContains($assert_with, $this->reference_instance->getByDescription($description)->getCodes());
-        $this->assertContains($assert_with, $this->reference_instance->getByDescription(' ' . $description)->getCodes());
-        $this->assertContains($assert_with, $this->reference_instance->getByDescription($description_short)->getCodes());
-        $this->assertContains($assert_with, $this->reference_instance->getByDescription(Str::upper($description))->getCodes());
+        $this->assertContains($assert_with, $this->instance->getByDescription($description)->getCodes());
+        $this->assertContains($assert_with, $this->instance->getByDescription(' ' . $description)->getCodes());
+        $this->assertContains($assert_with, $this->instance->getByDescription($description_short)->getCodes());
+        $this->assertContains($assert_with, $this->instance->getByDescription(Str::upper($description))->getCodes());
 
-        $this->assertTrue($this->reference_instance->hasDescription($description));
-        $this->assertTrue($this->reference_instance->hasDescription($description_short));
-        $this->assertFalse($this->reference_instance->hasDescription('ЫDfsdgfs dsfDFfds'));
+        $this->assertTrue($this->instance->hasDescription($description));
+        $this->assertTrue($this->instance->hasDescription($description_short));
+        $this->assertFalse($this->instance->hasDescription('ЫDfsdgfs dsfDFfds'));
     }
 }

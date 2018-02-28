@@ -1,22 +1,34 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\References\AutoCategories;
+namespace AvtoDev\StaticReferences\References\AutoCategories;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
-use AvtoDev\StaticReferencesLaravel\References\AbstractReference;
+use AvtoDev\StaticReferences\References\AbstractReference;
 
 /**
  * Class AutoCategoriesReference.
  *
  * Справочник "Категории транспортных средств".
  */
-class AutoCategoriesReference extends AbstractReference
+class AutoCategories extends AbstractReference
 {
     /**
      * @var AutoCategoryEntry[]
      */
     protected $items = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getVendorStaticReferenceInstance()
+    {
+        static $instance;
+
+        return is_null($instance)
+            ? $instance = StaticReferencesData::getAutoCategories()
+            : $instance;
+    }
 
     /**
      * Возвращает объект категории по её коду.
@@ -84,13 +96,5 @@ class AutoCategoriesReference extends AbstractReference
     public function getReferenceEntryClassName()
     {
         return AutoCategoryEntry::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRawSourceData()
-    {
-        return StaticReferencesData::getAutoCategoriesData();
     }
 }

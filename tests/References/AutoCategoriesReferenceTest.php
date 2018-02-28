@@ -1,27 +1,24 @@
 <?php
 
-namespace AvtoDev\StaticReferencesLaravel\Tests\References;
+namespace AvtoDev\StaticReferences\Tests\References;
 
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesLaravel\PreferencesProviders\AutoCategoriesProvider;
-use AvtoDev\StaticReferencesLaravel\References\AutoCategories\AutoCategoriesReference;
+use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 
 class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
 {
     /**
-     * @var AutoCategoriesReference
+     * @var AutoCategories
      */
-    protected $reference_instance;
+    protected $instance;
 
     /**
-     * @var string
+     * {@inheritdoc}
      */
-    protected $reference_class = AutoCategoriesReference::class;
-
-    /**
-     * @var string
-     */
-    protected $reference_provider_class = AutoCategoriesProvider::class;
+    protected function getReferenceClassName()
+    {
+        return AutoCategories::class;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,7 +26,7 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
     public function testArrayKeys()
     {
         foreach (['code', 'description'] as $key_name) {
-            $this->assertArrayHasKey($key_name, $this->reference_instance->first()->toArray());
+            $this->assertArrayHasKey($key_name, $this->instance->first()->toArray());
         }
     }
 
@@ -40,23 +37,23 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
      */
     public function testBasicData()
     {
-        $this->assertGreaterThan(10, count($this->reference_instance->all()));
+        $this->assertGreaterThan(10, count($this->instance->all()));
         $assert_with = 'Мотоциклы';
 
         /*
          * По кодам.
          */
         // На латинице
-        $this->assertEquals($assert_with, $this->reference_instance->getByCode('A ')->getDescription());
-        $this->assertEquals($assert_with, $this->reference_instance->getByCode('  a')->getDescription());
+        $this->assertEquals($assert_with, $this->instance->getByCode('A ')->getDescription());
+        $this->assertEquals($assert_with, $this->instance->getByCode('  a')->getDescription());
 
         // На кириллице
-        $this->assertEquals($assert_with, $this->reference_instance->getByCode('  А ')->getDescription());
-        $this->assertEquals($assert_with, $this->reference_instance->getByCode(' а ')->getDescription());
+        $this->assertEquals($assert_with, $this->instance->getByCode('  А ')->getDescription());
+        $this->assertEquals($assert_with, $this->instance->getByCode(' а ')->getDescription());
 
-        $this->assertTrue($this->reference_instance->hasCode('A '));
-        $this->assertTrue($this->reference_instance->hasCode(' а'));
-        $this->assertFalse($this->reference_instance->hasCode('Ы'));
+        $this->assertTrue($this->instance->hasCode('A '));
+        $this->assertTrue($this->instance->hasCode(' а'));
+        $this->assertFalse($this->instance->hasCode('Ы'));
 
         /*
          * По описаниям.
@@ -64,13 +61,13 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
         $category_name = 'Трициклы';
         $assert_with   = 'B1';
 
-        $this->assertEquals($assert_with, $this->reference_instance->getByDescription($category_name)->getCode());
-        $this->assertEquals($assert_with, $this->reference_instance->getByDescription(' ' . $category_name)->getCode());
-        $this->assertEquals($assert_with, $this->reference_instance->getByDescription($category_name . ' ')->getCode());
-        $this->assertEquals($assert_with, $this->reference_instance->getByDescription(Str::upper($category_name))->getCode());
+        $this->assertEquals($assert_with, $this->instance->getByDescription($category_name)->getCode());
+        $this->assertEquals($assert_with, $this->instance->getByDescription(' ' . $category_name)->getCode());
+        $this->assertEquals($assert_with, $this->instance->getByDescription($category_name . ' ')->getCode());
+        $this->assertEquals($assert_with, $this->instance->getByDescription(Str::upper($category_name))->getCode());
 
-        $this->assertTrue($this->reference_instance->hasDescription($category_name));
-        $this->assertTrue($this->reference_instance->hasDescription(' ' . $category_name));
-        $this->assertFalse($this->reference_instance->hasDescription('ЫDfsdgfs dsfDFfds'));
+        $this->assertTrue($this->instance->hasDescription($category_name));
+        $this->assertTrue($this->instance->hasDescription(' ' . $category_name));
+        $this->assertFalse($this->instance->hasDescription('ЫDfsdgfs dsfDFfds'));
     }
 }
