@@ -46,11 +46,15 @@ $ composer require avto-dev/static-references-laravel "^2.0"
 
 На данный момент реализованы следующие справочники:
 
+ * `AvtoDev\StaticReferences\References\AutoCategories\AutoCategories`
+ * `AvtoDev\StaticReferences\References\AutoRegions\AutoRegions`
+ * `AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions`
+
 Класс справочника | Описание | Поля данных
 ----------------- | -------- | -----------
-`AvtoDev\StaticReferences\References\AutoCategories\AutoCategories` | Категории транспортных средств | `code` - Код категории <br /> `description` - Описание категории
-`AvtoDev\StaticReferences\References\AutoRegions\AutoRegions` | Регионы субъектов | `title` Заголовок региона <br /> `short_titles` - Варианты короткого наименования региона <br /> `region_code` - Код субъекта РФ <br /> `auto_codes` - Автомобильные коды (коды ГИБДД) <br /> `okato` - Код региона по ОКАТО <br /> `iso_31662` - Код региона по стандарту ISO-31662 <br /> `type` - Тип (республика/край/и т.д.)
-`AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions` | Регистрационные действия | `codes` - Коды регистрационного действия <br /> `description` - Описание регистрационного действия
+`AutoCategories` | Категории транспортных средств | `code` - Код категории <br /> `description` - Описание категории
+`AutoRegions` | Регионы субъектов | `title` Заголовок региона <br /> `short_titles` - Варианты короткого наименования региона <br /> `region_code` - Код субъекта РФ <br /> `auto_codes` - Автомобильные коды (коды ГИБДД) <br /> `okato` - Код региона по ОКАТО <br /> `iso_31662` - Код региона по стандарту ISO-31662 <br /> `type` - Тип (республика/край/и т.д.)
+`RegistrationActions` | Регистрационные действия | `codes` - Коды регистрационного действия <br /> `description` - Описание регистрационного действия
 
 ### Примеры использования
 
