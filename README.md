@@ -51,12 +51,14 @@ $ composer require avto-dev/static-references-laravel "^2.0"
  * `AvtoDev\StaticReferences\References\AutoCategories\AutoCategories`
  * `AvtoDev\StaticReferences\References\AutoRegions\AutoRegions`
  * `AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions`
+ * `AvtoDev\StaticReferences\References\RepairMethods\RepairMethods`
 
 Класс справочника | Описание | Поля данных
 ----------------- | -------- | -----------
 `AutoCategories` | Категории транспортных средств | `code` - Код категории <br /> `description` - Описание категории
 `AutoRegions` | Регионы субъектов | `title` Заголовок региона <br /> `short_titles` - Варианты короткого наименования региона <br /> `region_code` - Код субъекта РФ <br /> `auto_codes` - Автомобильные коды (коды ГИБДД) <br /> `okato` - Код региона по ОКАТО <br /> `iso_31662` - Код региона по стандарту ISO-31662 <br /> `type` - Тип (республика/край/и т.д.)
 `RegistrationActions` | Регистрационные действия | `codes` - Коды регистрационного действия <br /> `description` - Описание регистрационного действия
+`RepairMethods` | Методы ремонта | `codes` - Коды метода ремонта <br /> `description` - Описание метода ремонта
 
 ### Примеры использования
 
@@ -145,6 +147,34 @@ $reg_action = $reg_actions->getByCode(11); // 'Первичная регистр
 // Проверяем наличие рег. действия по его коду
 $reg_actions->hasCode(11); // true
 $reg_actions->hasCode(666); // false
+```
+
+Справочник "Методы ремонта":
+
+```php
+<?php
+
+use AvtoDev\StaticReferences\References\RepairMethods\RepairMethodsEntry;
+use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
+
+/** @var RepairMethods $repair_methods */
+$repair_methods = resolve(RepairMethods::class);
+
+// Перебираем все методы ремонта
+$repair_methods->each(function (RepairMethodsEntry $repair_method) {
+    $repair_method->getCodes();       // коды метода ремонта
+    $repair_method->getDescription(); // описание метода ремонта
+});
+
+// Получаем описания всех методов ремонта одним массивом
+$descriptions = collect($repair_methods->toArray())->pluck('description')->toArray(); // ['Частична замена', ...];
+
+// Получаем объект метода ремонта по его коду
+$repair_method = $repair_methods->getByCode('ET'); // 'Частична замена'
+
+// Проверяем наличие метода ремонта по его коду
+$repair_methods->hasCode('ET'); // true
+$repair_methods->hasCode(666); // false
 ```
 
 ## Тестирование
