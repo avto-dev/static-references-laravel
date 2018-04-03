@@ -51,7 +51,8 @@
         "aliases": {
             "AutoCategoriesFacade": "AvtoDev\\StaticReferences\\Facades\\AutoCategoriesFacade",
             "AutoRegionsFacade": "AvtoDev\\StaticReferences\\Facades\\AutoRegionsFacade",
-            "RegistrationActionsFacade": "AvtoDev\\StaticReferences\\Facades\\RegistrationActionsFacade"
+            "RegistrationActionsFacade": "AvtoDev\\StaticReferences\\Facades\\RegistrationActionsFacade",
+            "RepairMethodsFacade": "AvtoDev\\StaticReferences\\Facades\\RepairMethodsFacade"
         }
     },
     "config": {

@@ -63,7 +63,7 @@ class RepairMethods extends AbstractReference
     }
 
     /**
-     * Возвращает объект метода ремонта по его описанию. Поиск НЕ СТРОГИЙ - по наличию подстроки.
+     * Возвращает объект метода ремонта по его описанию. Регистронезависимый.
      *
      * @param string $description
      *
@@ -73,7 +73,7 @@ class RepairMethods extends AbstractReference
     {
         if (is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $repair_method) {
-                if (Str::contains(Str::lower($repair_method->getDescription()), $description)) {
+                if (Str::lower($repair_method->getDescription()) === $description) {
                     return $repair_method;
                 }
             }

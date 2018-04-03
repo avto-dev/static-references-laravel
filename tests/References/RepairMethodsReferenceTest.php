@@ -37,29 +37,23 @@ class RepairMethodsReferenceTest extends AbstractReferenceTestCase
         $this->assertGreaterThan(18, count($this->instance->all()));
         $assert_with = 'Частичная замена';
 
-        /*
-         * По кодам.
-         */
+        // По кодам.
+
         // На латинице
         $this->assertEquals($assert_with, $this->instance->getByCode('ET')->getDescription());
         $this->assertNull($this->instance->getByCode(' ET '));
 
         $this->assertFalse($this->instance->hasCode(' ET '));
 
-        /*
-         * По описаниям.
-         */
-        $description       = 'Частичная замена';
-        $description_short = 'ичная';
-        $assert_with       = 'ET';
+        // По описаниям.
+        $description = 'Частичная замена';
+        $assert_with = 'ET';
 
         $this->assertContains($assert_with, $this->instance->getByDescription($description)->getCodes());
         $this->assertContains($assert_with, $this->instance->getByDescription(' ' . $description)->getCodes());
-        $this->assertContains($assert_with, $this->instance->getByDescription($description_short)->getCodes());
         $this->assertContains($assert_with, $this->instance->getByDescription(Str::upper($description))->getCodes());
 
         $this->assertTrue($this->instance->hasDescription($description));
-        $this->assertTrue($this->instance->hasDescription($description_short));
         $this->assertFalse($this->instance->hasDescription('ЫDfsdgfs dsfDFfds'));
     }
 
