@@ -48,8 +48,6 @@ class RepairMethods extends AbstractReference
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -80,8 +78,6 @@ class RepairMethods extends AbstractReference
                 }
             }
         }
-
-        return null;
     }
 
     /**
