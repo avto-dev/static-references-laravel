@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
+use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
@@ -28,6 +29,7 @@ class StaticReferencesServiceProvider extends ServiceProvider
             AutoRegions::class,
             AutoCategories::class,
             RegistrationActions::class,
+            RepairMethods::class,
         ];
     }
 
@@ -67,7 +69,7 @@ class StaticReferencesServiceProvider extends ServiceProvider
         if ($cache->has($cache_key = $this->generateCacheKey($references_class, $hash))) {
             return $cache->get($cache_key);
         } else {
-            $instance = new $references_class();
+            $instance = new $references_class;
 
             // По умолчанию - храним справочник в кэше одни сутки до его пересоздания
             $cache->put($cache_key, $instance, Carbon::now()->addDays(1));

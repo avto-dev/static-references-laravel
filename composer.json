@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^5.6 || >=7.0 <=7.3",
-        "avto-dev/static-references-data": "^2.0",
+        "avto-dev/static-references-data": "^2.1",
         "laravel/framework": ">=5.4.0 <5.7.0"
     },
     "require-dev": {
@@ -51,7 +51,8 @@
         "aliases": {
             "AutoCategoriesFacade": "AvtoDev\\StaticReferences\\Facades\\AutoCategoriesFacade",
             "AutoRegionsFacade": "AvtoDev\\StaticReferences\\Facades\\AutoRegionsFacade",
-            "RegistrationActionsFacade": "AvtoDev\\StaticReferences\\Facades\\RegistrationActionsFacade"
+            "RegistrationActionsFacade": "AvtoDev\\StaticReferences\\Facades\\RegistrationActionsFacade",
+            "RepairMethodsFacade": "AvtoDev\\StaticReferences\\Facades\\RepairMethodsFacade"
         }
     },
     "config": {
