@@ -3,9 +3,9 @@
 namespace AvtoDev\StaticReferences\Tests;
 
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
+use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
-use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 
 /**
  * Class StaticReferencesServiceProviderTest.
