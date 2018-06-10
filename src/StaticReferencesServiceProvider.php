@@ -4,8 +4,8 @@ namespace AvtoDev\StaticReferences;
 
 use Exception;
 use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
