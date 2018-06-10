@@ -75,10 +75,12 @@ trait ApplicationHelpersTrait
     {
         if ($app instanceof ApplicationContract) {
             return $app;
-        } elseif ($this->app instanceof ApplicationContract) {
-            return $this->app;
-        } else {
-            return $this->createApplication();
         }
+
+        if ($this->app instanceof ApplicationContract) {
+            return $this->app;
+        }
+
+        return $this->createApplication();
     }
 }

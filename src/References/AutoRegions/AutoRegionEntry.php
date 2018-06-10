@@ -6,8 +6,6 @@ use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
 /**
- * Class AutoRegionEntry.
- *
  * Сущность типа "Регион субъекта".
  */
 class AutoRegionEntry extends AbstractReferenceEntry
@@ -68,27 +66,25 @@ class AutoRegionEntry extends AbstractReferenceEntry
      */
     public function configure($input = [])
     {
-        if (is_array($input)) {
+        if (\is_array($input)) {
             foreach ($input as $key => $value) {
                 switch ($key = Str::lower((string) $key)) {
                     // Заголовок региона
                     case 'title':
-                        $this->title = (string) trim($value);
+                        $this->title = trim($value);
                         break;
 
                     // Варианты короткого наименования региона
                     case 'short':
-                        $value = ! is_array($value)
+                        $value = ! \is_array($value)
                             ? explode(',', (string) $value)
                             : $value;
-                        $this->short_titles = array_filter(array_map(function ($item) {
-                            return trim($item);
-                        }, (array) $value));
+                        $this->short_titles = \array_filter(\array_map('trim', (array) $value));
                         break;
 
                     // Код субъекта РФ
                     case 'code':
-                        $this->region_code = (int) preg_replace('~[^0-9]~', '', (string) $value);
+                        $this->region_code = (int) \preg_replace('~\D~', '', (string) $value);
                         break;
 
                     // Автомобильные коды (коды ГИБДД)
@@ -97,11 +93,11 @@ class AutoRegionEntry extends AbstractReferenceEntry
                     case 'gibdd_code':
                     case 'auto_code':
                     case 'autocode':
-                        $value = ! is_array($value)
+                        $value = ! \is_array($value)
                             ? explode(',', (string) $value)
                             : $value;
-                        $this->auto_codes = array_filter(array_map(function ($item) {
-                            return (int) preg_replace('~[^0-9]~', '', (string) $item);
+                        $this->auto_codes = \array_filter(\array_map(function ($item) {
+                            return (int) \preg_replace('~\D~', '', (string) $item);
                         }, (array) $value));
                         break;
 
@@ -116,13 +112,13 @@ class AutoRegionEntry extends AbstractReferenceEntry
                     case 'iso_31662':
                     case 'iso31662':
                         $this->iso_31662 = Str::upper(
-                            preg_replace('~[^a-z-]~i', '', (string) $value)
+                            \preg_replace('~[^a-z-]~i', '', (string) $value)
                         );
                         break;
 
                     // Тип (республика/край/и т.д.)
                     case 'type':
-                        $this->type = (string) trim((string) $value);
+                        $this->type = trim((string) $value);
                         break;
                 }
             }

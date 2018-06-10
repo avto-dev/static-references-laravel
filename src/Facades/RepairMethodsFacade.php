@@ -4,9 +4,6 @@ namespace AvtoDev\StaticReferences\Facades;
 
 use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 
-/**
- * Class RepairMethodsFacade.
- */
 class RepairMethodsFacade extends AbstractFacade
 {
     /**

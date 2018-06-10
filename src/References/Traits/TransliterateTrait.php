@@ -35,7 +35,7 @@ trait TransliterateTrait
 
         // Производим замену латинских символов, которые при дальнейшей транслитерации дают 2 символа на выходе,
         // вместо одного (например 'я' -> 'ya'), и переводим в верхний регистр
-        $string = str_replace($cyr_chars, $latin_chars, Str::upper((string) $string));
+        $string = \str_replace($cyr_chars, $latin_chars, Str::upper((string) $string));
 
         // Производим конечную транслитерацию
         return Str::ascii($string);

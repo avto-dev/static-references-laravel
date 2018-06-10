@@ -7,8 +7,6 @@ use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
 
 /**
- * Class AutoCategoriesReference.
- *
  * Справочник "Категории транспортных средств".
  */
 class AutoCategories extends AbstractReference
@@ -25,7 +23,7 @@ class AutoCategories extends AbstractReference
     {
         static $instance;
 
-        return is_null($instance)
+        return $instance === null
             ? $instance = StaticReferencesData::getAutoCategories()
             : $instance;
     }
@@ -39,7 +37,7 @@ class AutoCategories extends AbstractReference
      */
     public function getByCode($code)
     {
-        if (is_scalar($code) && ! empty($code = trim($this->uppercaseAndSafeTransliterate($code)))) {
+        if (\is_scalar($code) && ! empty($code = trim($this->uppercaseAndSafeTransliterate($code)))) {
             foreach ($this->items as $auto_category) {
                 if ($auto_category->getCode() === $code) {
                     return $auto_category;
@@ -69,7 +67,7 @@ class AutoCategories extends AbstractReference
      */
     public function getByDescription($description)
     {
-        if (is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
+        if (\is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $auto_category) {
                 if (Str::contains(Str::lower($auto_category->getDescription()), $description)) {
                     return $auto_category;

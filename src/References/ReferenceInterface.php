@@ -4,14 +4,8 @@ namespace AvtoDev\StaticReferences\References;
 
 use Exception;
 use InvalidArgumentException;
-use Illuminate\Support\Collection;
 use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
-/**
- * Interface ReferenceInterface.
- *
- * @mixin Collection
- */
 interface ReferenceInterface
 {
     /**

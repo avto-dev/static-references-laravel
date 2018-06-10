@@ -7,8 +7,6 @@ use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
 
 /**
- * Class RepairMethods.
- *
  * Справочник "Методы ремонта".
  */
 class RepairMethods extends AbstractReference
@@ -27,7 +25,7 @@ class RepairMethods extends AbstractReference
     {
         static $instance;
 
-        return is_null($instance)
+        return $instance === null
             ? $instance = StaticReferencesData::getRepairMethods()
             : $instance;
     }
@@ -41,9 +39,9 @@ class RepairMethods extends AbstractReference
      */
     public function getByCode($repair_method_code)
     {
-        if (is_string($repair_method_code)) {
+        if (\is_string($repair_method_code)) {
             foreach ($this->items as $repair_method) {
-                if (in_array($repair_method_code, $repair_method->getCodes())) {
+                if (\in_array($repair_method_code, $repair_method->getCodes(), true)) {
                     return $repair_method;
                 }
             }
@@ -71,7 +69,7 @@ class RepairMethods extends AbstractReference
      */
     public function getByDescription($description)
     {
-        if (is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
+        if (\is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $repair_method) {
                 if (Str::lower($repair_method->getDescription()) === $description) {
                     return $repair_method;

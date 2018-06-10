@@ -4,7 +4,7 @@ namespace AvtoDev\StaticReferences;
 
 use Exception;
 use Carbon\Carbon;
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
@@ -13,9 +13,6 @@ use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
-/**
- * Class StaticReferencesServiceProvider.
- */
 class StaticReferencesServiceProvider extends ServiceProvider
 {
     /**
@@ -68,14 +65,14 @@ class StaticReferencesServiceProvider extends ServiceProvider
 
         if ($cache->has($cache_key = $this->generateCacheKey($references_class, $hash))) {
             return $cache->get($cache_key);
-        } else {
-            $instance = new $references_class;
-
-            // По умолчанию - храним справочник в кэше одни сутки до его пересоздания
-            $cache->put($cache_key, $instance, Carbon::now()->addDays(1));
-
-            return $instance;
         }
+
+        $instance = new $references_class;
+
+        // По умолчанию - храним справочник в кэше одни сутки до его пересоздания
+        $cache->put($cache_key, $instance, Carbon::now()->addDays(1));
+
+        return $instance;
     }
 
     /**
@@ -87,7 +84,7 @@ class StaticReferencesServiceProvider extends ServiceProvider
      */
     protected function generateCacheKey(...$arguments)
     {
-        return sprintf('static_reference_%s', crc32(serialize($arguments)));
+        return sprintf('static_reference_%s', \crc32(\serialize($arguments)));
     }
 
     /**
@@ -106,9 +103,9 @@ class StaticReferencesServiceProvider extends ServiceProvider
             ? $app
             : $this->app;
 
-        $storage_name = empty($name = $cache_storage_name)
+        $storage_name = $cache_storage_name === null
             ? $app->make('config')->get('cache.default')
-            : $name;
+            : $cache_storage_name;
 
         return $app->make('cache')->store($storage_name);
     }

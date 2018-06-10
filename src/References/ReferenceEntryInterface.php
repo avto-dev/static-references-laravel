@@ -7,9 +7,6 @@ use IteratorAggregate;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
-/**
- * Interface ReferenceEntryInterface.
- */
 interface ReferenceEntryInterface extends ArrayAccess, IteratorAggregate, Arrayable, Jsonable
 {
     /**

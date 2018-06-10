@@ -6,8 +6,6 @@ use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
 /**
- * Class RepairMethodsEntry.
- *
  * Сущность типа "Метод ремонта".
  */
 class RepairMethodsEntry extends AbstractReferenceEntry
@@ -31,7 +29,7 @@ class RepairMethodsEntry extends AbstractReferenceEntry
      */
     public function configure($input = [])
     {
-        if (is_array($input)) {
+        if (\is_array($input)) {
             foreach ($input as $key => $value) {
                 switch ($key = Str::lower((string) $key)) {
                     // Коды регистрационного действия
@@ -39,14 +37,14 @@ class RepairMethodsEntry extends AbstractReferenceEntry
                         $value       = ! is_array($value)
                             ? explode(',', (string) $value)
                             : $value;
-                        $this->codes = array_filter(array_map(function ($item) {
-                            return (string) ($item);
+                        $this->codes = \array_filter(\array_map(function ($item) {
+                            return (string) $item;
                         }, (array) $value));
                         break;
 
                     // Описание регистрационного действия
                     case 'description':
-                        $this->description = (string) trim((string) $value);
+                        $this->description = trim((string) $value);
                         break;
                 }
             }

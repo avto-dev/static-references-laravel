@@ -4,9 +4,6 @@ namespace AvtoDev\StaticReferences\Facades;
 
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 
-/**
- * Class RepositoryFacade.
- */
 class AutoCategoriesFacade extends AbstractFacade
 {
     /**

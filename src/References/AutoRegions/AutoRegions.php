@@ -7,8 +7,6 @@ use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
 
 /**
- * Class AutoRegions.
- *
  * Справочник "Регионы субъектов".
  */
 class AutoRegions extends AbstractReference
@@ -25,7 +23,7 @@ class AutoRegions extends AbstractReference
     {
         static $instance;
 
-        return is_null($instance)
+        return $instance === null
             ? $instance = StaticReferencesData::getAutoRegions()
             : $instance;
     }
@@ -39,9 +37,9 @@ class AutoRegions extends AbstractReference
      */
     public function getByRegionCode($region_code)
     {
-        if (is_scalar($region_code)) {
+        if (\is_scalar($region_code)) {
             // Очищаем входящее значение и приводим к числу
-            $region_code = (int) preg_replace('~[^0-9]~', '', $region_code);
+            $region_code = (int) \preg_replace('~\D~', '', $region_code);
             foreach ($this->items as $region) {
                 if ($region->getRegionCode() === $region_code) {
                     return $region;
@@ -73,7 +71,7 @@ class AutoRegions extends AbstractReference
      */
     public function getByTitle($region_title, $strict_search = false)
     {
-        if (! empty($region_title) && is_string($region_title)) {
+        if (! empty($region_title) && \is_string($region_title)) {
             // Ближайшее совпадение
             $closest = null;
             // Наименьшее расстояние
@@ -83,12 +81,12 @@ class AutoRegions extends AbstractReference
                 $titles = [$region->getTitle()];
                 // Проверяем наличие свойства 'short_title', и если оно есть - то берем его в работу
                 if (! empty($region->getShortTitles())) {
-                    $titles = array_merge($titles, (array) $region->getShortTitles());
+                    $titles = \array_merge($titles, (array) $region->getShortTitles());
                 }
                 foreach ($titles as $title) {
                     $title = trim($title);
                     // Вычисляем расстояние между входным словом и текущим
-                    $lev = levenshtein($region_title, $title);
+                    $lev = \levenshtein($region_title, $title);
                     // Проверяем полное совпадение
                     if ($lev === 0) {
                         $closest  = $region;
@@ -130,9 +128,9 @@ class AutoRegions extends AbstractReference
      */
     public function getByAutoCode($auto_code)
     {
-        if (is_scalar($auto_code)) {
+        if (\is_scalar($auto_code)) {
             // Очищаем входящее значение и приводим к числу
-            $auto_code = (int) preg_replace('~[^0-9]~', '', $auto_code);
+            $auto_code = (int) \preg_replace('~\D~', '', $auto_code);
             foreach ($this->items as $region) {
                 foreach ((array) $region->getAutoCodes() as $region_auto_code) {
                     if ($region_auto_code === $auto_code) {
@@ -164,9 +162,9 @@ class AutoRegions extends AbstractReference
      */
     public function getByOkato($okato_code)
     {
-        if (is_scalar($okato_code)) {
+        if (\is_scalar($okato_code)) {
             // Очищаем входящее значение и приводим к числу
-            $okato_code = preg_replace('~[^0-9-]~', '', (string) $okato_code);
+            $okato_code = \preg_replace('~[^0-9-]~', '', (string) $okato_code);
             foreach ($this->items as $region) {
                 if ($region->getOkato() === $okato_code) {
                     return $region;
@@ -196,9 +194,9 @@ class AutoRegions extends AbstractReference
      */
     public function getByIso31662($iso_31662)
     {
-        if (! empty($iso_31662) && is_string($iso_31662)) {
+        if (! empty($iso_31662) && \is_string($iso_31662)) {
             // Очищаем входящее значение
-            $iso_31662 = preg_replace('~[^A-Z-]~', '', Str::upper($iso_31662));
+            $iso_31662 = \preg_replace('~[^A-Z-]~', '', Str::upper($iso_31662));
             foreach ($this->items as $region) {
                 if ($region->getIso31662() === $iso_31662) {
                     return $region;

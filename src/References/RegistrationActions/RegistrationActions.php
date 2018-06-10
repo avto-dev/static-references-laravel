@@ -7,8 +7,6 @@ use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
 
 /**
- * Class RegistrationActionsProvider.
- *
  * Справочник "Регистрационные действия".
  */
 class RegistrationActions extends AbstractReference
@@ -27,7 +25,7 @@ class RegistrationActions extends AbstractReference
     {
         static $instance;
 
-        return is_null($instance)
+        return $instance === null
             ? $instance = StaticReferencesData::getRegistrationActions()
             : $instance;
     }
@@ -41,11 +39,11 @@ class RegistrationActions extends AbstractReference
      */
     public function getByCode($reg_action_code)
     {
-        if (is_int($reg_action_code) || is_string($reg_action_code)) {
+        if (\is_int($reg_action_code) || \is_string($reg_action_code)) {
             // Очищаем входящее значение и приводим к числу
-            $reg_action_code = (int) preg_replace('~[^0-9]~', '', $reg_action_code);
+            $reg_action_code = (int) \preg_replace('~\D~', '', $reg_action_code);
             foreach ($this->items as $reg_action) {
-                if (in_array($reg_action_code, $reg_action->getCodes())) {
+                if (\in_array($reg_action_code, $reg_action->getCodes(), true)) {
                     return $reg_action;
                 }
             }
@@ -73,7 +71,7 @@ class RegistrationActions extends AbstractReference
      */
     public function getByDescription($description)
     {
-        if (is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
+        if (\is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $registration_action) {
                 if (Str::contains(Str::lower($registration_action->getDescription()), $description)) {
                     return $registration_action;

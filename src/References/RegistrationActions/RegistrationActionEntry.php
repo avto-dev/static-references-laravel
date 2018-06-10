@@ -6,8 +6,6 @@ use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
 /**
- * Class RegistrationActionEntry.
- *
  * Сущность типа "Регистрационное действие".
  */
 class RegistrationActionEntry extends AbstractReferenceEntry
@@ -31,20 +29,20 @@ class RegistrationActionEntry extends AbstractReferenceEntry
      */
     public function configure($input = [])
     {
-        if (is_array($input)) {
+        if (\is_array($input)) {
             foreach ($input as $key => $value) {
                 switch ($key = Str::lower((string) $key)) {
                     // Коды регистрационного действия
                     case 'codes':
-                        $value       = ! is_array($value) ? explode(',', (string) $value) : $value;
-                        $this->codes = array_filter(array_map(function ($item) {
-                            return intval($item);
-                        }, (array) $value));
+                        $value       = ! \is_array($value)
+                            ? explode(',', (string) $value)
+                            : $value;
+                        $this->codes = \array_filter(\array_map('intval', (array) $value));
                         break;
 
                     // Описание регистрационного действия
                     case 'description':
-                        $this->description = (string) trim((string) $value);
+                        $this->description = trim((string) $value);
                         break;
                 }
             }

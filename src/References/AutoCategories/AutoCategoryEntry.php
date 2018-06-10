@@ -6,8 +6,6 @@ use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
 /**
- * Class AutoCategoryEntry.
- *
  * Сущность типа "Категория автомобиля".
  */
 class AutoCategoryEntry extends AbstractReferenceEntry
@@ -31,7 +29,7 @@ class AutoCategoryEntry extends AbstractReferenceEntry
      */
     public function configure($input = [])
     {
-        if (is_array($input)) {
+        if (\is_array($input)) {
             foreach ($input as $key => $value) {
                 switch ($key = Str::lower((string) $key)) {
                     // Код категории

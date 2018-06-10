@@ -4,9 +4,6 @@ namespace AvtoDev\StaticReferences\Facades;
 
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
-/**
- * Class RepositoryFacade.
- */
 class RegistrationActionsFacade extends AbstractFacade
 {
     /**

@@ -5,8 +5,6 @@ namespace AvtoDev\StaticReferences\References;
 use ArrayIterator;
 
 /**
- * Class AbstractReferenceEntry.
- *
  * Абстрактный класс сущности справочника.
  *
  * Главная особенность - это хранение данных в protected-свойствах, и их имена - являются ключами доступа (используются
@@ -44,7 +42,7 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
      */
     public function offsetExists($offset)
     {
-        return ! in_array($offset, (array) $this->hiddenPropertiesNames()) && property_exists($this, $offset);
+        return ! \in_array($offset, (array) $this->hiddenPropertiesNames(), true) && \property_exists($this, $offset);
     }
 
     /**
@@ -90,7 +88,7 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
      */
     public function toJson($options = 0)
     {
-        return json_encode($this->toArray(), $options);
+        return \json_encode($this->toArray(), $options);
     }
 
     /**
@@ -100,10 +98,10 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     {
         $result = [];
 
-        $properties_names = array_diff(array_keys(get_object_vars($this)), (array) $this->hiddenPropertiesNames());
+        $properties_names = \array_diff(\array_keys(\get_object_vars($this)), (array) $this->hiddenPropertiesNames());
 
         foreach ($properties_names as $property_name) {
-            $result[$property_name] = property_exists($this, $property_name)
+            $result[$property_name] = \property_exists($this, $property_name)
                 ? $this->{$property_name}
                 : null;
         }

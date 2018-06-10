@@ -6,9 +6,7 @@ use Exception;
 use Illuminate\Support\Collection;
 
 /**
- * Class AbstractReference.
- *
- * Абстрактный класс единичного справочника.
+ * Абстрактный класс справочника.
  */
 abstract class AbstractReference extends Collection implements ReferenceInterface
 {
@@ -23,10 +21,12 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function __construct()
     {
-        return parent::__construct(array_map(function ($item_data) {
+        parent::__construct(array_map(function ($item_data) {
             return $this->referenceEntityFactory($item_data);
         }, array_filter(static::getVendorStaticReferenceInstance()->getContent())));
     }
@@ -38,11 +38,13 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function offsetSet($key, $value)
     {
-        if (is_null($key)) {
-            array_push($this->items, $this->referenceEntityFactory($value));
+        if ($key === null) {
+            $this->items[] = $this->referenceEntityFactory($value);
         } else {
             $this->items[$key] = $this->referenceEntityFactory($value);
         }
