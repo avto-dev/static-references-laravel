@@ -11,11 +11,10 @@ checks:
 
 build_failure_conditions:
   - 'elements.rating(<= D).exists'                                # No classes/methods with a rating of D or worse
-  - 'project.metric_change("scrutinizer.test_coverage", < -0.10)' # Coverage decreased from prev. inspection > 10%
+  - 'project.metric_change("scrutinizer.test_coverage", < -0.05)' # Coverage decreased from prev. inspection > 5%
 
 build:
   environment:
-    timezone: UTC
     mysql: false
     postgresql: false
     mongodb: false
