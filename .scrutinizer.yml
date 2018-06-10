@@ -24,9 +24,6 @@ build:
     memcached: false
     neo4j: false
     rabbitmq: false
-    php:
-      ini:
-        memory_limit: 128
 
   tests:
     override:
