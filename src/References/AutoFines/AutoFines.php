@@ -29,26 +29,6 @@ class AutoFines extends AbstractReference
     }
 
     /**
-     * Производим "безопасные" замены в значении статьи (например: "11.23 Ч.2" или "12.18") для осуществления более
-     * "мягкого" поиска (без зависимости точного указания, например, "Ч" или "часть").
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function clearArticleValue($value)
-    {
-        // Заменяем все символы, кроме чисел - на точки + trim по точкам
-        $value = \trim(\preg_replace('/[\D]/', '.', (string) $value), '.');
-
-        // Множественные точки - заменяем на одинарные
-        $value = \preg_replace('/\.+/', '.', $value);
-
-        // И возвращаем значение
-        return (string) $value;
-    }
-
-    /**
      * Возвращает объект правонарушения по коду статьи.
      *
      * @param string $article
@@ -118,5 +98,25 @@ class AutoFines extends AbstractReference
     public function getReferenceEntryClassName()
     {
         return AutoFineEntry::class;
+    }
+
+    /**
+     * Производим "безопасные" замены в значении статьи (например: "11.23 Ч.2" или "12.18") для осуществления более
+     * "мягкого" поиска (без зависимости точного указания, например, "Ч" или "часть").
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function clearArticleValue($value)
+    {
+        // Заменяем все символы, кроме чисел - на точки + trim по точкам
+        $value = \trim(\preg_replace('/[\D]/', '.', (string) $value), '.');
+
+        // Множественные точки - заменяем на одинарные
+        $value = \preg_replace('/\.+/', '.', $value);
+
+        // И возвращаем значение
+        return (string) $value;
     }
 }
