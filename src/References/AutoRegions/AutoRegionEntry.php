@@ -68,7 +68,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
     {
         if (\is_array($input)) {
             foreach ($input as $key => $value) {
-                switch ($key = Str::lower((string) $key)) {
+                switch (Str::lower((string) $key)) {
                     // Заголовок региона
                     case 'title':
                         $this->title = trim($value);
