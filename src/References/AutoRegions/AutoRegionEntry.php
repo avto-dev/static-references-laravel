@@ -89,10 +89,6 @@ class AutoRegionEntry extends AbstractReferenceEntry
 
                     // Автомобильные коды (коды ГИБДД)
                     case 'gibdd':
-                    case 'gibddcode':
-                    case 'gibdd_code':
-                    case 'auto_code':
-                    case 'autocode':
                         $value = ! \is_array($value)
                             ? explode(',', (string) $value)
                             : $value;
@@ -108,9 +104,6 @@ class AutoRegionEntry extends AbstractReferenceEntry
 
                     // Код региона по стандарту ISO-31662
                     case 'code_iso_31662':
-                    case 'codeiso31662':
-                    case 'iso_31662':
-                    case 'iso31662':
                         $this->iso_31662 = Str::upper(
                             \preg_replace('~[^a-z-]~i', '', (string) $value)
                         );
