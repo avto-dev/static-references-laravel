@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.3.1
+
+### Added
+
+- Added facade for reference `AutoFines`
+
 ## v2.3.0
 
 ### Added

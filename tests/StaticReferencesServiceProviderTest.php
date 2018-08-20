@@ -2,6 +2,11 @@
 
 namespace AvtoDev\StaticReferences\Tests;
 
+use AvtoDev\StaticReferences\Facades\AutoCategoriesFacade;
+use AvtoDev\StaticReferences\Facades\AutoFinesFacade;
+use AvtoDev\StaticReferences\Facades\AutoRegionsFacade;
+use AvtoDev\StaticReferences\Facades\RegistrationActionsFacade;
+use AvtoDev\StaticReferences\Facades\RepairMethodsFacade;
 use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
@@ -22,18 +27,23 @@ class StaticReferencesServiceProviderTest extends AbstractUnitTestCase
     {
         $this->assertInstanceOf(AutoRegions::class, $this->app[AutoRegions::class]);
         $this->assertInstanceOf(AutoRegions::class, app(AutoRegions::class));
+        $this->assertInstanceOf(AutoRegions::class, AutoRegionsFacade::getFacadeRoot());
 
         $this->assertInstanceOf(AutoCategories::class, $this->app[AutoCategories::class]);
         $this->assertInstanceOf(AutoCategories::class, app(AutoCategories::class));
+        $this->assertInstanceOf(AutoCategories::class, AutoCategoriesFacade::getFacadeRoot());
 
         $this->assertInstanceOf(RegistrationActions::class, $this->app[RegistrationActions::class]);
         $this->assertInstanceOf(RegistrationActions::class, app(RegistrationActions::class));
+        $this->assertInstanceOf(RegistrationActions::class, RegistrationActionsFacade::getFacadeRoot());
 
         $this->assertInstanceOf(RepairMethods::class, $this->app[RepairMethods::class]);
         $this->assertInstanceOf(RepairMethods::class, app(RepairMethods::class));
+        $this->assertInstanceOf(RepairMethods::class, RepairMethodsFacade::getFacadeRoot());
 
         $this->assertInstanceOf(AutoFines::class, $this->app[AutoFines::class]);
         $this->assertInstanceOf(AutoFines::class, app(AutoFines::class));
+        $this->assertInstanceOf(AutoFines::class, AutoFinesFacade::getFacadeRoot());
     }
 
     /**
