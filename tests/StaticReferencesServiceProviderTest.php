@@ -2,12 +2,12 @@
 
 namespace AvtoDev\StaticReferences\Tests;
 
-use AvtoDev\StaticReferences\Facades\AutoCategoriesFacade;
 use AvtoDev\StaticReferences\Facades\AutoFinesFacade;
 use AvtoDev\StaticReferences\Facades\AutoRegionsFacade;
-use AvtoDev\StaticReferences\Facades\RegistrationActionsFacade;
 use AvtoDev\StaticReferences\Facades\RepairMethodsFacade;
+use AvtoDev\StaticReferences\Facades\AutoCategoriesFacade;
 use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
+use AvtoDev\StaticReferences\Facades\RegistrationActionsFacade;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
