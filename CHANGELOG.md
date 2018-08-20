@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.3.0
+
+### Added
+
+- Reference `AutoFines`
+
 ## v2.2.0
 
 ### Changed

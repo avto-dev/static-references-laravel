@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Foundation\Application;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
+use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
@@ -27,6 +28,7 @@ class StaticReferencesServiceProvider extends ServiceProvider
             AutoCategories::class,
             RegistrationActions::class,
             RepairMethods::class,
+            AutoFines::class,
         ];
     }
 

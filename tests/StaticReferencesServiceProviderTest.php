@@ -2,6 +2,7 @@
 
 namespace AvtoDev\StaticReferences\Tests;
 
+use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
@@ -30,6 +31,9 @@ class StaticReferencesServiceProviderTest extends AbstractUnitTestCase
 
         $this->assertInstanceOf(RepairMethods::class, $this->app[RepairMethods::class]);
         $this->assertInstanceOf(RepairMethods::class, app(RepairMethods::class));
+
+        $this->assertInstanceOf(AutoFines::class, $this->app[AutoFines::class]);
+        $this->assertInstanceOf(AutoFines::class, app(AutoFines::class));
     }
 
     /**

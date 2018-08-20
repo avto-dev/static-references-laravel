@@ -4,14 +4,13 @@
 
 # Laravel-пакет для работы со статическими справочниками
 
-[![Version][badge_version]][link_packagist]
+[![Version][badge_packagist_version]][link_packagist]
+[![Version][badge_php_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
-[![StyleCI][badge_styleci]][link_styleci]
-[![Code Coverage][badge_coverage]][link_build]
-[![Code Quality][badge_quality]][link_build]
+[![Coverage][badge_coverage]][link_coverage]
+[![Code quality][badge_code_quality]][link_coverage]
+[![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
-[![Issues][badge_issues]][link_issues]
-[![Downloads][badge_downloads]][link_packagist]
 
 При помощи данного пакета вы сможете интегрировать сервис по работе со статическими справочниками в ваше **Laravel >=5.4** приложение с помощью нескольких простых шагов.
 
@@ -20,7 +19,7 @@
 Для установки данного пакета выполните в терминале следующую команду:
 
 ```shell
-$ composer require avto-dev/static-references-laravel "^2.0"
+$ composer require avto-dev/static-references-laravel "^2.3"
 ```
 
 > Для этого необходим установленный `composer`. Для его установки перейдите по [данной ссылке][getcomposer].
@@ -52,6 +51,7 @@ $ composer require avto-dev/static-references-laravel "^2.0"
  * `AvtoDev\StaticReferences\References\AutoRegions\AutoRegions`
  * `AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions`
  * `AvtoDev\StaticReferences\References\RepairMethods\RepairMethods`
+ * `AvtoDev\StaticReferences\References\AutoFines\AutoFines`
 
 Класс справочника | Описание | Поля данных
 ----------------- | -------- | -----------
@@ -59,6 +59,7 @@ $ composer require avto-dev/static-references-laravel "^2.0"
 `AutoRegions` | Регионы субъектов | `title` Заголовок региона <br /> `short_titles` - Варианты короткого наименования региона <br /> `region_code` - Код субъекта РФ <br /> `auto_codes` - Автомобильные коды (коды ГИБДД) <br /> `okato` - Код региона по ОКАТО <br /> `iso_31662` - Код региона по стандарту ISO-31662 <br /> `type` - Тип (республика/край/и т.д.)
 `RegistrationActions` | Регистрационные действия | `codes` - Коды регистрационного действия <br /> `description` - Описание регистрационного действия
 `RepairMethods` | Методы ремонта | `codes` - Коды метода ремонта <br /> `description` - Описание метода ремонта
+`AutoFines` | Правонарушения в области дорожного движения | `article` - Статья правонарушения <br /> `description` - Описание правонарушения
 
 ### Примеры использования
 
@@ -121,94 +122,53 @@ $auto_regions->hasAutoCode(177); // true
 $auto_regions->hasAutoCode(666); // false
 ```
 
-Справочник "Регистрационные действия":
+### Testing
 
-```php
-<?php
-
-use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActionEntry;
-use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
-
-/** @var RegistrationActions $reg_actions */
-$reg_actions = resolve(RegistrationActions::class);
-
-// Перебираем все регистрационные действия
-$reg_actions->each(function (RegistrationActionEntry $reg_action) {
-    $reg_action->getCodes();       // коды регистрационного действия
-    $reg_action->getDescription(); // описание регистрационного действия
-});
-
-// Получаем описания всех регистрационных действий одним массивом
-$descriptions = collect($reg_actions->toArray())->pluck('description')->toArray(); // ['Первичная регистрация', ...];
-
-// Получаем объект рег. действия по его коду
-$reg_action = $reg_actions->getByCode(11); // 'Первичная регистрация'
-
-// Проверяем наличие рег. действия по его коду
-$reg_actions->hasCode(11); // true
-$reg_actions->hasCode(666); // false
-```
-
-Справочник "Методы ремонта":
-
-```php
-<?php
-
-use AvtoDev\StaticReferences\References\RepairMethods\RepairMethodsEntry;
-use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
-
-/** @var RepairMethods $repair_methods */
-$repair_methods = resolve(RepairMethods::class);
-
-// Перебираем все методы ремонта
-$repair_methods->each(function (RepairMethodsEntry $repair_method) {
-    $repair_method->getCodes();       // коды метода ремонта
-    $repair_method->getDescription(); // описание метода ремонта
-});
-
-// Получаем описания всех методов ремонта одним массивом
-$descriptions = collect($repair_methods->toArray())->pluck('description')->toArray(); // ['Частична замена', ...];
-
-// Получаем объект метода ремонта по его коду
-$repair_method = $repair_methods->getByCode('ET'); // 'Частична замена'
-
-// Проверяем наличие метода ремонта по его коду
-$repair_methods->hasCode('ET'); // true
-$repair_methods->hasCode(666); // false
-```
-
-## Тестирование
-
-Для тестирования данного пакета используется фреймворк `phpunit`. Для запуска тестов выполните в терминале:
+For package testing we use `phpunit` framework. Just write into your terminal:
 
 ```shell
 $ git clone git@github.com:avto-dev/static-references-laravel.git ./static-references-laravel && cd $_
-$ composer update --dev
+$ composer install
 $ composer test
 ```
 
-## Поддержка и развитие
+## Changes log
 
-Если у вас возникли какие-либо проблемы по работе с данным пакетом, пожалуйста, создайте соответствующий `issue` в данном репозитории.
+[![Release date][badge_release_date]][link_releases]
+[![Commits since latest release][badge_commits_since_release]][link_commits]
 
-Если вы способны самостоятельно реализовать тот функционал, что вам необходим - создайте PR с соответствующими изменениями. Крайне желательно сопровождать PR соответствующими тестами, фиксирующими работу ваших изменений. После проверки и принятия изменений будет опубликована новая минорная версия.
+Changes log can be [found here][link_changes_log].
 
-## Лицензирование
+## Support
 
-Код данного пакета распространяется под лицензией **MIT**.
+[![Issues][badge_issues]][link_issues]
+[![Issues][badge_pulls]][link_pulls]
 
-[badge_version]:https://img.shields.io/packagist/v/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
-[badge_license]:https://img.shields.io/packagist/l/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
-[badge_build_status]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/build.png?b=master
-[badge_styleci]:https://styleci.io/repos/107638384/shield?style=flat
-[badge_coverage]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/coverage.png?b=master
-[badge_quality]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/badges/quality-score.png?b=master
-[badge_issues]:https://img.shields.io/github/issues/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
-[badge_downloads]:https://img.shields.io/packagist/dt/avto-dev/static-references-laravel.svg?style=flat&maxAge=30
+If you will find any package errors, please, [make an issue][link_create_issue] in current repository.
+
+## License
+
+This is open-sourced software licensed under the [MIT License][link_license].
+
+[badge_packagist_version]:https://img.shields.io/packagist/v/avto-dev/static-references-laravel.svg?style=flat-square&maxAge=180
+[badge_php_version]:https://img.shields.io/packagist/php-v/avto-dev/static-references-laravel.svg?style=flat-square&longCache=true
+[badge_build_status]:https://img.shields.io/scrutinizer/build/g/avto-dev/static-references-laravel.svg?style=flat-square&maxAge=180&logo=scrutinizer
+[badge_code_quality]:https://img.shields.io/scrutinizer/g/avto-dev/static-references-laravel.svg?style=flat-square&maxAge=180
+[badge_coverage]:https://img.shields.io/scrutinizer/coverage/g/avto-dev/static-references-laravel.svg?style=flat-square&maxAge=180
+[badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/static-references-laravel.svg?style=flat-square&maxAge=180
+[badge_license]:https://img.shields.io/packagist/l/avto-dev/static-references-laravel.svg?style=flat-square&longCache=true
+[badge_release_date]:https://img.shields.io/github/release-date/avto-dev/static-references-laravel.svg?style=flat-square&maxAge=180
+[badge_commits_since_release]:https://img.shields.io/github/commits-since/avto-dev/static-references-laravel/latest.svg?style=flat-square&maxAge=180
+[badge_issues]:https://img.shields.io/github/issues/avto-dev/static-references-laravel.svg?style=flat-square&maxAge=180
+[badge_pulls]:https://img.shields.io/github/issues-pr/avto-dev/static-references-laravel.svg?style=flat-square&maxAge=180
+[link_releases]:https://github.com/avto-dev/static-references-laravel/releases
 [link_packagist]:https://packagist.org/packages/avto-dev/static-references-laravel
-[link_styleci]:https://styleci.io/repos/107638384/
-[link_license]:https://github.com/avto-dev/static-references-laravel/blob/master/LICENSE
-[link_build]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel
 [link_build_status]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/build-status/master
+[link_coverage]:https://scrutinizer-ci.com/g/avto-dev/static-references-laravel/?branch=master
+[link_changes_log]:https://github.com/avto-dev/static-references-laravel/blob/master/CHANGELOG.md
 [link_issues]:https://github.com/avto-dev/static-references-laravel/issues
+[link_create_issue]:https://github.com/avto-dev/static-references-laravel/issues/new/choose
+[link_commits]:https://github.com/avto-dev/static-references-laravel/commits
+[link_pulls]:https://github.com/avto-dev/static-references-laravel/pulls
+[link_license]:https://github.com/avto-dev/static-references-laravel/blob/master/LICENSE
 [getcomposer]:https://getcomposer.org/download/
