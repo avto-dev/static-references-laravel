@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 
 /**
- * Class AbstractReferenceTestCase.
+ * @covers \AvtoDev\StaticReferences\References\AutoCategories\AutoCategoryEntry::configure
+ * @covers \AvtoDev\StaticReferences\References\AutoFines\AutoFineEntry::configure
+ * @covers \AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry::configure
+ * @covers \AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActionEntry::configure
+ * @covers \AvtoDev\StaticReferences\References\RepairMethods\RepairMethodsEntry::configure
  */
 abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
 {
@@ -18,19 +24,19 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
+
+        $this->clearCache();
 
         $this->instance = $this->app->make($this->getReferenceClassName());
     }
 
     /**
-     * Тест метода `all()`.
-     *
      * @return void
      */
-    public function testAll()
+    public function testAll(): void
     {
         $class = $this->instance->getReferenceEntryClassName();
 
@@ -42,27 +48,23 @@ abstract class AbstractReferenceTestCase extends AbstractUnitTestCase
     }
 
     /**
-     * Тест преобразования элементов справочника в массив и json.
+     * @return void
      */
-    public function testEntryToArrayAndToJson()
+    public function testEntryToArrayAndToJson(): void
     {
         $first = $this->instance->first();
 
-        $this->assertTrue(is_array($first->toArray()));
+        $this->assertInternalType('array', $first->toArray());
         $this->assertJson($first->toJson());
     }
 
     /**
-     * Тест метода преобразования элемента справочника в массив.
-     *
      * @return void
      */
-    abstract public function testArrayKeys();
+    abstract public function testArrayKeys(): void;
 
     /**
-     * Returns reference class name.
-     *
      * @return string
      */
-    abstract protected function getReferenceClassName();
+    abstract protected function getReferenceClassName(): string;
 }

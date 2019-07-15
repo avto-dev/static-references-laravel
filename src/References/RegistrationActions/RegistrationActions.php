@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\RegistrationActions;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
-/**
- * Справочник "Регистрационные действия".
- */
 class RegistrationActions extends AbstractReference
 {
     /**
-     * {@inheritdoc}
-     *
      * @var RegistrationActionEntry[]
      */
     protected $items = [];
@@ -21,33 +19,33 @@ class RegistrationActions extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public static function getVendorStaticReferenceInstance()
+    public static function getVendorStaticReferenceInstance(): StaticReferenceInterface
     {
         static $instance;
 
-        return $instance === null
-            ? $instance = StaticReferencesData::getRegistrationActions()
-            : $instance;
+        return $instance ?? $instance = StaticReferencesData::getRegistrationActions();
     }
 
     /**
      * Получаем объект регистрационного действия по его коду.
      *
-     * @param string|int $reg_action_code
+     * @param string|int|mixed $reg_action_code
      *
      * @return RegistrationActionEntry|null
      */
-    public function getByCode($reg_action_code)
+    public function getByCode($reg_action_code): ?RegistrationActionEntry
     {
         if (\is_int($reg_action_code) || \is_string($reg_action_code)) {
             // Очищаем входящее значение и приводим к числу
-            $reg_action_code = (int) \preg_replace('~\D~', '', $reg_action_code);
+            $reg_action_code = (int) \preg_replace('~\D~', '', (string) $reg_action_code);
             foreach ($this->items as $reg_action) {
                 if (\in_array($reg_action_code, $reg_action->getCodes(), true)) {
                     return $reg_action;
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -57,7 +55,7 @@ class RegistrationActions extends AbstractReference
      *
      * @return bool
      */
-    public function hasCode($reg_action_code)
+    public function hasCode($reg_action_code): bool
     {
         return $this->getByCode($reg_action_code) instanceof RegistrationActionEntry;
     }
@@ -69,7 +67,7 @@ class RegistrationActions extends AbstractReference
      *
      * @return RegistrationActionEntry|null
      */
-    public function getByDescription($description)
+    public function getByDescription($description): ?RegistrationActionEntry
     {
         if (\is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $registration_action) {
@@ -78,6 +76,8 @@ class RegistrationActions extends AbstractReference
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -87,7 +87,7 @@ class RegistrationActions extends AbstractReference
      *
      * @return bool
      */
-    public function hasDescription($description)
+    public function hasDescription($description): bool
     {
         return $this->getByDescription($description) instanceof RegistrationActionEntry;
     }
@@ -95,7 +95,7 @@ class RegistrationActions extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public function getReferenceEntryClassName()
+    public function getReferenceEntryClassName(): string
     {
         return RegistrationActionEntry::class;
     }

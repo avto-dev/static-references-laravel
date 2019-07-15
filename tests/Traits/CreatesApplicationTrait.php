@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests\Traits;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
-use AvtoDev\StaticReferences\StaticReferencesServiceProvider;
+use AvtoDev\StaticReferences\ServiceProvider;
 
 trait CreatesApplicationTrait
 {
@@ -20,7 +22,7 @@ trait CreatesApplicationTrait
         $app->make(Kernel::class)->bootstrap();
 
         // Register our service-provider manually
-        $app->register(StaticReferencesServiceProvider::class);
+        $app->register(ServiceProvider::class);
 
         return $app;
     }

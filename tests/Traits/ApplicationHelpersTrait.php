@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests\Traits;
 
 use Illuminate\Contracts\Console\Kernel;
@@ -7,10 +9,6 @@ use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 /**
- * Class ApplicationHelpersTrait.
- *
- * Трейт вспомогательных методов по работе с инстансом приложения и подобные.
- *
  * @mixin \Illuminate\Foundation\Testing\TestCase
  */
 trait ApplicationHelpersTrait
@@ -31,7 +29,7 @@ trait ApplicationHelpersTrait
      *
      * @return Kernel|\App\Console\Kernel
      */
-    public function console(ApplicationContract $app = null)
+    public function console(ApplicationContract $app = null): Kernel
     {
         $app = $this->resolveApplication($app);
 
@@ -45,7 +43,7 @@ trait ApplicationHelpersTrait
      *
      * @return ConfigRepository
      */
-    public function config(ApplicationContract $app = null)
+    public function config(ApplicationContract $app = null): ConfigRepository
     {
         $app = $this->resolveApplication($app);
 
@@ -59,7 +57,7 @@ trait ApplicationHelpersTrait
      *
      * @return void
      */
-    public function clearCache(ApplicationContract $app = null)
+    public function clearCache(ApplicationContract $app = null): void
     {
         $this->console($app)->call('cache:clear');
     }

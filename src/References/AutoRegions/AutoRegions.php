@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\AutoRegions;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
-/**
- * Справочник "Регионы субъектов".
- */
 class AutoRegions extends AbstractReference
 {
     /**
@@ -19,33 +19,33 @@ class AutoRegions extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public static function getVendorStaticReferenceInstance()
+    public static function getVendorStaticReferenceInstance(): StaticReferenceInterface
     {
         static $instance;
 
-        return $instance === null
-            ? $instance = StaticReferencesData::getAutoRegions()
-            : $instance;
+        return $instance ?? $instance = StaticReferencesData::getAutoRegions();
     }
 
     /**
      * Получаем объект региона по коду субъекта РФ.
      *
-     * @param string|int $region_code
+     * @param string|int|mixed $region_code
      *
      * @return AutoRegionEntry|null
      */
-    public function getByRegionCode($region_code)
+    public function getByRegionCode($region_code): ?AutoRegionEntry
     {
-        if (\is_scalar($region_code)) {
+        if (\is_string($region_code) || \is_int($region_code)) {
             // Очищаем входящее значение и приводим к числу
-            $region_code = (int) \preg_replace('~\D~', '', $region_code);
+            $region_code = (int) \preg_replace('~\D~', '', (string) $region_code);
             foreach ($this->items as $region) {
                 if ($region->getRegionCode() === $region_code) {
                     return $region;
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -55,7 +55,7 @@ class AutoRegions extends AbstractReference
      *
      * @return bool
      */
-    public function hasRegionCode($region_code)
+    public function hasRegionCode($region_code): bool
     {
         return $this->getByRegionCode($region_code) instanceof AutoRegionEntry;
     }
@@ -69,9 +69,9 @@ class AutoRegions extends AbstractReference
      *
      * @return AutoRegionEntry|null
      */
-    public function getByTitle($region_title, $strict_search = false)
+    public function getByTitle($region_title, bool $strict_search = false): ?AutoRegionEntry
     {
-        if (! empty($region_title) && \is_string($region_title)) {
+        if (\is_string($region_title) && $region_title !== '') {
             // Ближайшее совпадение
             $closest = null;
             // Наименьшее расстояние
@@ -84,9 +84,8 @@ class AutoRegions extends AbstractReference
                     $titles = \array_merge($titles, (array) $region->getShortTitles());
                 }
                 foreach ($titles as $title) {
-                    $title = trim($title);
                     // Вычисляем расстояние между входным словом и текущим
-                    $lev = \levenshtein($region_title, $title);
+                    $lev = \levenshtein($region_title, \trim((string) $title));
                     // Проверяем полное совпадение
                     if ($lev === 0) {
                         $closest  = $region;
@@ -100,10 +99,14 @@ class AutoRegions extends AbstractReference
                 }
             }
 
-            return $strict_search === true
-                ? ($shortest === 0 ? $closest : null)
-                : ($shortest <= 5 ? $closest : null); // Этим числом можно регулировать строгость похожести
+            if ($strict_search) {
+                return $shortest === 0 ? $closest : null;
+            }
+
+            return $shortest <= 5 ? $closest : null; // Этим числом можно регулировать строгость похожести
         }
+
+        return null;
     }
 
     /**
@@ -114,7 +117,7 @@ class AutoRegions extends AbstractReference
      *
      * @return bool
      */
-    public function hasTitle($region_title, $strict_search = false)
+    public function hasTitle($region_title, bool $strict_search = false): bool
     {
         return $this->getByTitle($region_title, $strict_search) instanceof AutoRegionEntry;
     }
@@ -122,15 +125,15 @@ class AutoRegions extends AbstractReference
     /**
      * Получаем регион по его авто-коду (коду региона по ГИБДД).
      *
-     * @param string|int $auto_code
+     * @param string|int|mixed $auto_code
      *
      * @return AutoRegionEntry|null
      */
-    public function getByAutoCode($auto_code)
+    public function getByAutoCode($auto_code): ?AutoRegionEntry
     {
-        if (\is_scalar($auto_code)) {
+        if (\is_string($auto_code) || \is_int($auto_code)) {
             // Очищаем входящее значение и приводим к числу
-            $auto_code = (int) \preg_replace('~\D~', '', $auto_code);
+            $auto_code = (int) \preg_replace('~\D~', '', (string) $auto_code);
             foreach ($this->items as $region) {
                 foreach ((array) $region->getAutoCodes() as $region_auto_code) {
                     if ($region_auto_code === $auto_code) {
@@ -139,6 +142,8 @@ class AutoRegions extends AbstractReference
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -148,7 +153,7 @@ class AutoRegions extends AbstractReference
      *
      * @return bool
      */
-    public function hasAutoCode($auto_code)
+    public function hasAutoCode($auto_code): bool
     {
         return $this->getByAutoCode($auto_code) instanceof AutoRegionEntry;
     }
@@ -160,7 +165,7 @@ class AutoRegions extends AbstractReference
      *
      * @return AutoRegionEntry|null
      */
-    public function getByOkato($okato_code)
+    public function getByOkato($okato_code): ?AutoRegionEntry
     {
         if (\is_scalar($okato_code)) {
             // Очищаем входящее значение и приводим к числу
@@ -171,6 +176,8 @@ class AutoRegions extends AbstractReference
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -180,7 +187,7 @@ class AutoRegions extends AbstractReference
      *
      * @return bool
      */
-    public function hasOkato($okato_code)
+    public function hasOkato($okato_code): bool
     {
         return $this->getByOkato($okato_code) instanceof AutoRegionEntry;
     }
@@ -188,13 +195,13 @@ class AutoRegions extends AbstractReference
     /**
      * Получаем объект региона по коду ISO-31662.
      *
-     * @param string $iso_31662
+     * @param string|mixed $iso_31662
      *
      * @return AutoRegionEntry|null
      */
-    public function getByIso31662($iso_31662)
+    public function getByIso31662($iso_31662): ?AutoRegionEntry
     {
-        if (! empty($iso_31662) && \is_string($iso_31662)) {
+        if (\is_string($iso_31662) && $iso_31662 !== '') {
             // Очищаем входящее значение
             $iso_31662 = \preg_replace('~[^A-Z-]~', '', Str::upper($iso_31662));
             foreach ($this->items as $region) {
@@ -203,6 +210,8 @@ class AutoRegions extends AbstractReference
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -212,7 +221,7 @@ class AutoRegions extends AbstractReference
      *
      * @return bool
      */
-    public function hasIso31662($iso_31662)
+    public function hasIso31662($iso_31662): bool
     {
         return $this->getByIso31662($iso_31662) instanceof AutoRegionEntry;
     }
@@ -220,7 +229,7 @@ class AutoRegions extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public function getReferenceEntryClassName()
+    public function getReferenceEntryClassName(): string
     {
         return AutoRegionEntry::class;
     }

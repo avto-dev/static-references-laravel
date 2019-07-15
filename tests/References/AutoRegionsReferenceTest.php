@@ -1,9 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 
+/**
+ * @covers \AvtoDev\StaticReferences\References\AutoRegions\AutoRegions<extended>
+ * @covers \AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry<extended>
+ */
 class AutoRegionsReferenceTest extends AbstractReferenceTestCase
 {
     /**
@@ -16,7 +22,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
      *
      * @return void
      */
-    public function testBasicData()
+    public function testBasicData(): void
     {
         $this->assertGreaterThan(10, count($this->instance->all()));
     }
@@ -24,7 +30,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    public function testArrayKeys()
+    public function testArrayKeys(): void
     {
         $keys = [
             'title',
@@ -44,7 +50,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     /**
      * Тест метода `getByRegionCode()` + has.
      */
-    public function testGetByRegionCode()
+    public function testGetByRegionCode(): void
     {
         $this->assertEquals(
             'Республика Марий Эл',
@@ -71,7 +77,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     /**
      * Тестируем метод `getByAutoCode()` + has.
      */
-    public function testGetByAutoCode()
+    public function testGetByAutoCode(): void
     {
         // Существующие области
         $moscow = 'Москва';
@@ -107,7 +113,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     /**
      * Тестируем метод `getByTitle()` + has.
      */
-    public function testGetByTitle()
+    public function testGetByTitle(): void
     {
         $moscow = 'Москва';
 
@@ -139,7 +145,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     /**
      * Тестируем метод `getByOkato()` + has.
      */
-    public function testGetByOkato()
+    public function testGetByOkato(): void
     {
         $sverdl_obl = 'Свердловская область';
         $this->assertEquals($sverdl_obl, $this->instance->getByOkato(65)->getTitle());
@@ -161,7 +167,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     /**
      * Тестируем метод `getByIso31662()` + has.
      */
-    public function testGetByIso31662()
+    public function testGetByIso31662(): void
     {
         $sverdl_obl = 'Свердловская область';
         $this->assertEquals(
@@ -192,7 +198,7 @@ class AutoRegionsReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getReferenceClassName()
+    protected function getReferenceClassName(): string
     {
         return AutoRegions::class;
     }

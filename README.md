@@ -19,21 +19,19 @@
 Require this package with composer using the following command:
 
 ```shell
-$ composer require avto-dev/static-references-laravel "^2.4"
+$ composer require avto-dev/static-references-laravel "^3.0"
 ```
 
 > Installed `composer` is required ([how to install composer][getcomposer]).
 
 > You need to fix the major version of package.
 
-> **Внимание!** Версии 1.x и 2.x имеют кардинальные отличия, поэтому при переходе с версии 1.x на 2.x пожалуйста ознакомьтесь с изменения и в коде.
-
 Если вы используете Laravel версии 5.5 и выше, то сервис-провайдер данного пакета будет зарегистрирован автоматически. В противном случае вам необходимо самостоятельно зарегистрировать сервис-провайдер в секции `providers` файла `./config/app.php`:
 
 ```php
 'providers' => [
     // ...
-    AvtoDev\StaticReferences\StaticReferencesServiceProvider::class,
+    AvtoDev\StaticReferences\ServiceProvider::class,
 ]
 ```
 
@@ -124,12 +122,12 @@ $auto_regions->hasAutoCode(666); // false
 
 ### Testing
 
-For package testing we use `phpunit` framework. Just write into your terminal:
+For package testing we use `phpunit` framework and `docker-ce` + `docker-compose` as develop environment. So, just write into your terminal after repository cloning:
 
-```shell
-$ git clone git@github.com:avto-dev/static-references-laravel.git ./static-references-laravel && cd $_
-$ composer install
-$ composer test
+```bash
+$ make build
+$ make latest # or 'make lowest'
+$ make test
 ```
 
 ## Changes log

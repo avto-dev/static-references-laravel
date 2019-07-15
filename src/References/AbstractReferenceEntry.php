@@ -1,15 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References;
 
 use ArrayIterator;
 
-/**
- * Абстрактный класс сущности справочника.
- *
- * Главная особенность - это хранение данных в protected-свойствах, и их имена - являются ключами доступа (используются
- * при обращении к объекту как к массиву, а так же преобразованию объекта в массив).
- */
 abstract class AbstractReferenceEntry implements ReferenceEntryInterface
 {
     use Traits\TransliterateTrait;
@@ -23,11 +19,11 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     }
 
     /**
-     * Возвращает массив имен свойств, скрытых для доступа "извне".
+     * Get "hidden" property names.
      *
      * @return string[]|array
      */
-    public function hiddenPropertiesNames()
+    public function hiddenPropertiesNames(): array
     {
         return [];
     }
@@ -35,12 +31,7 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function configure($input = []);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return ! \in_array($offset, (array) $this->hiddenPropertiesNames(), true) && \property_exists($this, $offset);
     }
@@ -58,7 +49,7 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($this->offsetExists($offset)) {
             $this->{$offset} = $value;
@@ -68,7 +59,7 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if ($this->offsetExists($offset)) {
             unset($this->{$offset});
@@ -78,7 +69,7 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->toArray());
     }
@@ -86,15 +77,15 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
     /**
      * {@inheritdoc}
      */
-    public function toJson($options = 0)
+    public function toJson($options = 0): string
     {
-        return \json_encode($this->toArray(), $options);
+        return (string) \json_encode($this->toArray(), $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(): array
     {
         $result = [];
 

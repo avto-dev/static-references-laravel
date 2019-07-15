@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
+/**
+ * @covers \AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions<extended>
+ * @covers \AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActionEntry<extended>
+ */
 class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
 {
     /**
@@ -15,7 +21,7 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    public function testArrayKeys()
+    public function testArrayKeys(): void
     {
         foreach (['codes', 'description'] as $key_name) {
             $this->assertArrayHasKey($key_name, $this->instance->first()->toArray());
@@ -27,7 +33,7 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
      *
      * @return void
      */
-    public function testBasicData()
+    public function testBasicData(): void
     {
         $this->assertGreaterThan(50, count($this->instance->all()));
         $assert_with = 'Восстановление регистрации после аннулирования';
@@ -64,7 +70,7 @@ class RegistrationActionsReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getReferenceClassName()
+    protected function getReferenceClassName(): string
     {
         return RegistrationActions::class;
     }

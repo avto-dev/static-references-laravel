@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 
+/**
+ * @covers \AvtoDev\StaticReferences\References\AutoCategories\AutoCategories<extended>
+ * @covers \AvtoDev\StaticReferences\References\AutoCategories\AutoCategoryEntry<extended>
+ */
 class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
 {
     /**
@@ -15,7 +21,7 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    public function testArrayKeys()
+    public function testArrayKeys(): void
     {
         foreach (['code', 'description'] as $key_name) {
             $this->assertArrayHasKey($key_name, $this->instance->first()->toArray());
@@ -27,7 +33,7 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
      *
      * @return void
      */
-    public function testBasicData()
+    public function testBasicData(): void
     {
         $this->assertGreaterThan(10, count($this->instance->all()));
         $assert_with = 'Мотоциклы';
@@ -66,7 +72,7 @@ class AutoCategoriesReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getReferenceClassName()
+    protected function getReferenceClassName(): string
     {
         return AutoCategories::class;
     }

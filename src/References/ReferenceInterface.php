@@ -25,11 +25,11 @@ interface ReferenceInterface
     public function all();
 
     /**
-     * Возвращает класс сущности, с которой работает справочник.
+     * Get reference entity class name.
      *
      * @return string
      */
-    public function getReferenceEntryClassName();
+    public function getReferenceEntryClassName(): string;
 
     /**
      * Execute a callback over each item.

@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 
 /**
- * Class RepairMethodsReferenceTest.
+ * @covers \AvtoDev\StaticReferences\References\RepairMethods\RepairMethods<extended>
+ * @covers \AvtoDev\StaticReferences\References\RepairMethods\RepairMethodsEntry<extended>
  *
  * @group repair_methods
  */
@@ -20,7 +23,7 @@ class RepairMethodsReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    public function testArrayKeys()
+    public function testArrayKeys(): void
     {
         foreach (['codes', 'description'] as $key_name) {
             $this->assertArrayHasKey($key_name, $this->instance->first()->toArray());
@@ -32,7 +35,7 @@ class RepairMethodsReferenceTest extends AbstractReferenceTestCase
      *
      * @return void
      */
-    public function testBasicData()
+    public function testBasicData(): void
     {
         $this->assertGreaterThan(18, count($this->instance->all()));
         $assert_with = 'Частичная замена';
@@ -60,7 +63,7 @@ class RepairMethodsReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getReferenceClassName()
+    protected function getReferenceClassName(): string
     {
         return RepairMethods::class;
     }

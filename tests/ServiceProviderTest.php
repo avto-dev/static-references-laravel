@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests;
 
 use AvtoDev\StaticReferences\Facades\AutoFinesFacade;
@@ -14,16 +16,22 @@ use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
 /**
- * Class StaticReferencesServiceProviderTest.
+ * @covers \AvtoDev\StaticReferences\ServiceProvider<extended>
  */
-class StaticReferencesServiceProviderTest extends AbstractUnitTestCase
+class ServiceProviderTest extends AbstractUnitTestCase
 {
     /**
      * Tests service-provider loading.
      *
+     * @covers \AvtoDev\StaticReferences\Facades\AutoCategoriesFacade
+     * @covers \AvtoDev\StaticReferences\Facades\AutoFinesFacade
+     * @covers \AvtoDev\StaticReferences\Facades\AutoRegionsFacade
+     * @covers \AvtoDev\StaticReferences\Facades\RegistrationActionsFacade
+     * @covers \AvtoDev\StaticReferences\Facades\RepairMethodsFacade
+     *
      * @return void
      */
-    public function testServiceProviderLoading()
+    public function testServiceProviderLoading(): void
     {
         $this->assertInstanceOf(AutoRegions::class, $this->app[AutoRegions::class]);
         $this->assertInstanceOf(AutoRegions::class, app(AutoRegions::class));
@@ -53,10 +61,11 @@ class StaticReferencesServiceProviderTest extends AbstractUnitTestCase
      *
      * @return void
      */
-    public function testResolvingInstanceFromCache()
+    public function testResolvingInstanceFromCache(): void
     {
         $this->assertInstanceOf(AutoRegions::class, $this->app[AutoRegions::class]);
 
+        $this->clearCache();
         $this->refreshApplication();
 
         $this->assertInstanceOf(AutoRegions::class, $this->app[AutoRegions::class]);

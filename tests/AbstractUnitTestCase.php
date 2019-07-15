@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
-/**
- * Class AbstractUnitTestCase.
- */
 abstract class AbstractUnitTestCase extends BaseTestCase
 {
     use Traits\ApplicationHelpersTrait,

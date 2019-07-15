@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v3.0.0
+
+### Added
+
+- Docker-based environment for development
+- Project `Makefile`
+
+### Changed
+
+- Minimal `PHP` version now is `^7.1.3`
+- Maximal `Laravel` version now is `5.8.x`
+- Dependency `laravel/framework` changed to `illuminate/*`
+- Composer scripts
+- Argument and return types
+- Class `\AvtoDev\StaticReferences\StaticReferencesServiceProvider` renamed to `\AvtoDev\StaticReferences\ServiceProvider`
+- Service provider dependency `\Illuminate\Contracts\Foundation\Application` changed to `\Illuminate\Contracts\Container\Container`
+
 ## v2.4.0
 
 ### Changed
