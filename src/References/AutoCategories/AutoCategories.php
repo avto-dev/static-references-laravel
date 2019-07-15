@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\AutoCategories;
 
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
 
-/**
- * Справочник "Категории транспортных средств".
- */
 class AutoCategories extends AbstractReference
 {
     /**
@@ -19,13 +19,11 @@ class AutoCategories extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public static function getVendorStaticReferenceInstance()
+    public static function getVendorStaticReferenceInstance(): StaticReferenceInterface
     {
         static $instance;
 
-        return $instance === null
-            ? $instance = StaticReferencesData::getAutoCategories()
-            : $instance;
+        return $instance ?? $instance = StaticReferencesData::getAutoCategories();
     }
 
     /**
@@ -35,7 +33,7 @@ class AutoCategories extends AbstractReference
      *
      * @return AutoCategoryEntry|null
      */
-    public function getByCode($code)
+    public function getByCode($code): ?AutoCategoryEntry
     {
         if (\is_scalar($code) && ! empty($code = trim($this->uppercaseAndSafeTransliterate($code)))) {
             foreach ($this->items as $auto_category) {
@@ -44,6 +42,8 @@ class AutoCategories extends AbstractReference
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -53,7 +53,7 @@ class AutoCategories extends AbstractReference
      *
      * @return bool
      */
-    public function hasCode($code)
+    public function hasCode($code): bool
     {
         return $this->getByCode($code) instanceof AutoCategoryEntry;
     }
@@ -65,15 +65,20 @@ class AutoCategories extends AbstractReference
      *
      * @return AutoCategoryEntry|null
      */
-    public function getByDescription($description)
+    public function getByDescription($description): ?AutoCategoryEntry
     {
-        if (\is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
+        if (\is_string($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $auto_category) {
-                if (Str::contains(Str::lower($auto_category->getDescription()), $description)) {
+                if (
+                    \is_string($auto_category->getDescription()) &&
+                    Str::contains(Str::lower($auto_category->getDescription()), $description)
+                ) {
                     return $auto_category;
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -83,7 +88,7 @@ class AutoCategories extends AbstractReference
      *
      * @return bool
      */
-    public function hasDescription($description)
+    public function hasDescription($description): bool
     {
         return $this->getByDescription($description) instanceof AutoCategoryEntry;
     }
@@ -91,7 +96,7 @@ class AutoCategories extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public function getReferenceEntryClassName()
+    public function getReferenceEntryClassName(): string
     {
         return AutoCategoryEntry::class;
     }

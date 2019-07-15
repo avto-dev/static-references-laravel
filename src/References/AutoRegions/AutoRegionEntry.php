@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\AutoRegions;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
-/**
- * Сущность типа "Регион субъекта".
- */
 class AutoRegionEntry extends AbstractReferenceEntry
 {
     /**
@@ -64,7 +63,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
     /**
      * {@inheritdoc}
      */
-    public function configure($input = [])
+    public function configure($input = []): void
     {
         if (\is_array($input)) {
             foreach ($input as $key => $value) {
@@ -105,7 +104,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
                     // Код региона по стандарту ISO-31662
                     case 'code_iso_31662':
                         $this->iso_31662 = Str::upper(
-                            \preg_replace('~[^a-z-]~i', '', (string) $value)
+                            (string) \preg_replace('~[^a-z-]~i', '', (string) $value)
                         );
                         break;
 
@@ -123,7 +122,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @return int|null
      */
-    public function getRegionCode()
+    public function getRegionCode(): ?int
     {
         return $this->region_code;
     }
@@ -133,7 +132,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @return int[]|null
      */
-    public function getAutoCodes()
+    public function getAutoCodes(): ?array
     {
         return $this->auto_codes;
     }
@@ -143,7 +142,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @return null|string
      */
-    public function getIso31662()
+    public function getIso31662(): ?string
     {
         return $this->iso_31662;
     }
@@ -153,7 +152,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @return null|string
      */
-    public function getOkato()
+    public function getOkato(): ?string
     {
         return $this->okato;
     }
@@ -163,7 +162,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @return string[]|null
      */
-    public function getShortTitles()
+    public function getShortTitles(): ?array
     {
         return $this->short_titles;
     }
@@ -173,7 +172,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @return null|string
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -183,7 +182,7 @@ class AutoRegionEntry extends AbstractReferenceEntry
      *
      * @return null|string
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }

@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\AutoFines;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
-/**
- * Сущность типа "Правонарушение в области дорожного движения".
- */
 class AutoFineEntry extends AbstractReferenceEntry
 {
     /**
@@ -27,7 +26,7 @@ class AutoFineEntry extends AbstractReferenceEntry
     /**
      * {@inheritdoc}
      */
-    public function configure($input = [])
+    public function configure($input = []): void
     {
         if (\is_array($input)) {
             foreach ($input as $key => $value) {
@@ -51,7 +50,7 @@ class AutoFineEntry extends AbstractReferenceEntry
      *
      * @return null|string
      */
-    public function getArticle()
+    public function getArticle(): ?string
     {
         return $this->article;
     }
@@ -61,7 +60,7 @@ class AutoFineEntry extends AbstractReferenceEntry
      *
      * @return null|string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }

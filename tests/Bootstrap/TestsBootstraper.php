@@ -3,7 +3,7 @@
 namespace AvtoDev\StaticReferences\Tests\Bootstrap;
 
 use Illuminate\Contracts\Console\Kernel;
-use AvtoDev\StaticReferences\StaticReferencesServiceProvider;
+use AvtoDev\StaticReferences\ServiceProvider;
 
 /**
  * Class TestsBootstraper.
@@ -21,7 +21,7 @@ class TestsBootstraper extends AbstractTestsBootstraper
     {
         $this->log('Register service-provider');
 
-        $this->app->register(StaticReferencesServiceProvider::class);
+        $this->app->register(ServiceProvider::class);
 
         return true;
     }

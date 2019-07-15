@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\AutoCategories;
 
 use Illuminate\Support\Str;
@@ -27,7 +29,7 @@ class AutoCategoryEntry extends AbstractReferenceEntry
     /**
      * {@inheritdoc}
      */
-    public function configure($input = [])
+    public function configure($input = []): void
     {
         if (\is_array($input)) {
             foreach ($input as $key => $value) {
@@ -55,7 +57,7 @@ class AutoCategoryEntry extends AbstractReferenceEntry
      *
      * @return null|string
      */
-    public function getCode()
+    public function getCode(): ?string
     {
         return $this->code;
     }
@@ -65,7 +67,7 @@ class AutoCategoryEntry extends AbstractReferenceEntry
      *
      * @return null|string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }

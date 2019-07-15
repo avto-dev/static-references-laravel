@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References;
 
 use Exception;
@@ -26,22 +28,17 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
      */
     public function __construct()
     {
-        parent::__construct(array_map(function ($item_data) {
+        parent::__construct(\array_map(function ($item_data) {
             return $this->referenceEntityFactory($item_data);
-        }, array_filter(static::getVendorStaticReferenceInstance()->getContent())));
+        }, \array_filter(static::getVendorStaticReferenceInstance()->getContent())));
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getReferenceEntryClassName();
 
     /**
      * {@inheritdoc}
      *
      * @throws Exception
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         if ($key === null) {
             $this->items[] = $this->referenceEntityFactory($value);

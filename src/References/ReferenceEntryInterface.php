@@ -10,18 +10,18 @@ use Illuminate\Contracts\Support\Arrayable;
 interface ReferenceEntryInterface extends ArrayAccess, IteratorAggregate, Arrayable, Jsonable
 {
     /**
-     * ReferenceEntryInterface constructor.
+     * Create a new reference entry instance.
      *
      * @param array $raw_data
      */
     public function __construct($raw_data = []);
 
     /**
-     * Выполняет собственную конфигурации в зависимости от входящих данных.
+     * Configure self using passed array.
      *
      * @param array|mixed $input
      *
      * @return void
      */
-    public function configure($input = []);
+    public function configure($input = []): void;
 }

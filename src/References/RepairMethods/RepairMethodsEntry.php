@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\RepairMethods;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
-/**
- * Сущность типа "Метод ремонта".
- */
 class RepairMethodsEntry extends AbstractReferenceEntry
 {
     /**
@@ -27,7 +26,7 @@ class RepairMethodsEntry extends AbstractReferenceEntry
     /**
      * {@inheritdoc}
      */
-    public function configure($input = [])
+    public function configure($input = []): void
     {
         if (\is_array($input)) {
             foreach ($input as $key => $value) {
@@ -56,7 +55,7 @@ class RepairMethodsEntry extends AbstractReferenceEntry
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -66,7 +65,7 @@ class RepairMethodsEntry extends AbstractReferenceEntry
      *
      * @return string[]|array
      */
-    public function getCodes()
+    public function getCodes(): array
     {
         return $this->codes;
     }
