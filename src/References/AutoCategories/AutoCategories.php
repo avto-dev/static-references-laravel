@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\AutoCategories;
 
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 class AutoCategories extends AbstractReference
 {
