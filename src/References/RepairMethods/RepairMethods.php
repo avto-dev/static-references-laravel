@@ -59,7 +59,7 @@ class RepairMethods extends AbstractReference
     }
 
     /**
-     * Get repair method by description (description is case insensitive)
+     * Get repair method by description (description is case insensitive).
      *
      * @param string $description
      *
