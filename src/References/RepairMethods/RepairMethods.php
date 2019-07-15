@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\RepairMethods;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
-/**
- * Справочник "Методы ремонта".
- */
 class RepairMethods extends AbstractReference
 {
     /**
-     * {@inheritdoc}
-     *
      * @var RepairMethodsEntry[]
      */
     protected $items = [];
@@ -21,23 +19,21 @@ class RepairMethods extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public static function getVendorStaticReferenceInstance()
+    public static function getVendorStaticReferenceInstance(): StaticReferenceInterface
     {
         static $instance;
 
-        return $instance === null
-            ? $instance = StaticReferencesData::getRepairMethods()
-            : $instance;
+        return $instance ?? $instance = StaticReferencesData::getRepairMethods();
     }
 
     /**
-     * Получаем объект метода ремонта по его коду.
+     * Get repair method by code.
      *
      * @param string $repair_method_code
      *
      * @return RepairMethodsEntry|null
      */
-    public function getByCode($repair_method_code)
+    public function getByCode($repair_method_code): ?RepairMethodsEntry
     {
         if (\is_string($repair_method_code)) {
             foreach ($this->items as $repair_method) {
@@ -46,28 +42,30 @@ class RepairMethods extends AbstractReference
                 }
             }
         }
+
+        return null;
     }
 
     /**
-     * Проверяет наличие объекта метода ремонта по его коду.
+     * Repair method by code is exists?
      *
      * @param string $repair_method_code
      *
      * @return bool
      */
-    public function hasCode($repair_method_code)
+    public function hasCode($repair_method_code): bool
     {
         return $this->getByCode($repair_method_code) instanceof RepairMethodsEntry;
     }
 
     /**
-     * Возвращает объект метода ремонта по его описанию. Регистронезависимый.
+     * Get repair method by description (description is case insensitive)
      *
      * @param string $description
      *
      * @return RepairMethodsEntry|null
      */
-    public function getByDescription($description)
+    public function getByDescription($description): ?RepairMethodsEntry
     {
         if (\is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $repair_method) {
@@ -76,6 +74,8 @@ class RepairMethods extends AbstractReference
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -85,7 +85,7 @@ class RepairMethods extends AbstractReference
      *
      * @return bool
      */
-    public function hasDescription($description)
+    public function hasDescription($description): bool
     {
         return $this->getByDescription($description) instanceof RepairMethodsEntry;
     }
@@ -93,7 +93,7 @@ class RepairMethods extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public function getReferenceEntryClassName()
+    public function getReferenceEntryClassName(): string
     {
         return RepairMethodsEntry::class;
     }

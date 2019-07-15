@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\References\AutoFines;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\AbstractReference;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 /**
  * Справочник "Правонарушения в области дорожного движения".
@@ -19,13 +22,11 @@ class AutoFines extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public static function getVendorStaticReferenceInstance()
+    public static function getVendorStaticReferenceInstance(): StaticReferenceInterface
     {
         static $instance;
 
-        return $instance === null
-            ? $instance = StaticReferencesData::getAutoFines()
-            : $instance;
+        return $instance ?? $instance = StaticReferencesData::getAutoFines();
     }
 
     /**
@@ -35,18 +36,23 @@ class AutoFines extends AbstractReference
      *
      * @return AutoFineEntry|null
      */
-    public function getByArticle($article)
+    public function getByArticle($article): ?AutoFineEntry
     {
-        if (\is_scalar($article) && ! empty($article = \trim($article))) {
+        if (\is_string($article) && ! empty($article = \trim($article))) {
             // Производим "очистку" входящего значения
             $article = $this->clearArticleValue($article);
 
             foreach ($this->items as $auto_fine_entry) {
-                if ($this->clearArticleValue($auto_fine_entry->getArticle()) === $article) {
+                if (
+                    \is_string($auto_fine_entry->getArticle()) &&
+                    $this->clearArticleValue($auto_fine_entry->getArticle()) === $article
+                ) {
                     return $auto_fine_entry;
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -56,7 +62,7 @@ class AutoFines extends AbstractReference
      *
      * @return bool
      */
-    public function hasArticle($code)
+    public function hasArticle($code): bool
     {
         return $this->getByArticle($code) instanceof AutoFineEntry;
     }
@@ -69,15 +75,20 @@ class AutoFines extends AbstractReference
      *
      * @return AutoFineEntry|null
      */
-    public function getByDescription($description)
+    public function getByDescription($description): ?AutoFineEntry
     {
         if (\is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
             foreach ($this->items as $auto_fine_entry) {
-                if (Str::contains(Str::lower($auto_fine_entry->getDescription()), $description)) {
+                if (
+                    \is_string($auto_fine_entry->getDescription()) &&
+                    Str::contains(Str::lower($auto_fine_entry->getDescription()), $description)
+                ) {
                     return $auto_fine_entry;
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -87,7 +98,7 @@ class AutoFines extends AbstractReference
      *
      * @return bool
      */
-    public function hasDescription($description)
+    public function hasDescription($description): bool
     {
         return $this->getByDescription($description) instanceof AutoFineEntry;
     }
@@ -95,7 +106,7 @@ class AutoFines extends AbstractReference
     /**
      * {@inheritdoc}
      */
-    public function getReferenceEntryClassName()
+    public function getReferenceEntryClassName(): string
     {
         return AutoFineEntry::class;
     }
@@ -108,10 +119,10 @@ class AutoFines extends AbstractReference
      *
      * @return string
      */
-    protected function clearArticleValue($value)
+    protected function clearArticleValue($value): string
     {
         // Заменяем все символы, кроме чисел - на точки + trim по точкам
-        $value = \trim(\preg_replace('/[\D]/', '.', (string) $value), '.');
+        $value = \trim((string) \preg_replace('/[\D]/', '.', (string) $value), '.');
 
         // Множественные точки - заменяем на одинарные
         $value = \preg_replace('/\.+/', '.', $value);
