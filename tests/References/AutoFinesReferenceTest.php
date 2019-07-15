@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 
+/**
+ * @covers \AvtoDev\StaticReferences\References\AutoFines\AutoFines<extended>
+ * @covers \AvtoDev\StaticReferences\References\AutoFines\AutoFineEntry<extended>
+ */
 class AutoFinesReferenceTest extends AbstractReferenceTestCase
 {
     /**
@@ -15,7 +21,7 @@ class AutoFinesReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    public function testArrayKeys()
+    public function testArrayKeys(): void
     {
         foreach (['article', 'description'] as $key_name) {
             $this->assertArrayHasKey($key_name, $this->instance->first()->toArray());
@@ -27,7 +33,7 @@ class AutoFinesReferenceTest extends AbstractReferenceTestCase
      *
      * @return void
      */
-    public function testBasicData()
+    public function testBasicData(): void
     {
         $this->assertGreaterThanOrEqual(179, count($this->instance->all()));
         $assert_with = 'Нарушение правил перевозки грузов, а равно правил буксировки';
@@ -91,7 +97,7 @@ class AutoFinesReferenceTest extends AbstractReferenceTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getReferenceClassName()
+    protected function getReferenceClassName(): string
     {
         return AutoFines::class;
     }

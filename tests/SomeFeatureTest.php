@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\StaticReferences\Tests;
 
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
@@ -10,9 +12,9 @@ use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActionEntry;
 
 /**
- * Class SomeFeatureTest.
- *
  * @group feature
+ *
+ * @coversNothing
  */
 class SomeFeatureTest extends AbstractUnitTestCase
 {
@@ -21,7 +23,7 @@ class SomeFeatureTest extends AbstractUnitTestCase
      *
      * @return void
      */
-    public function testAutoCategoriesReferenceUsage()
+    public function testAutoCategoriesReferenceUsage(): void
     {
         /** @var AutoCategories $auto_categories */
         $auto_categories = resolve(AutoCategories::class);
@@ -62,7 +64,7 @@ class SomeFeatureTest extends AbstractUnitTestCase
      *
      * @return void
      */
-    public function testAutoRegionsReferenceUsage()
+    public function testAutoRegionsReferenceUsage(): void
     {
         /** @var AutoRegions $auto_regions */
         $auto_regions = resolve(AutoRegions::class);
@@ -108,7 +110,7 @@ class SomeFeatureTest extends AbstractUnitTestCase
      *
      * @return void
      */
-    public function testRegistrationActionsReferenceUsage()
+    public function testRegistrationActionsReferenceUsage(): void
     {
         /** @var RegistrationActions $reg_actions */
         $reg_actions = resolve(RegistrationActions::class);
