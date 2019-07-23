@@ -13,6 +13,7 @@ use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -30,6 +31,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             RegistrationActions::class,
             RepairMethods::class,
             AutoFines::class,
+            CadastralRegions::class,
         ];
     }
 

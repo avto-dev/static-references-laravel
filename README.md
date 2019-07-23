@@ -49,6 +49,7 @@ $ composer require avto-dev/static-references-laravel "^3.0"
  * `AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions`
  * `AvtoDev\StaticReferences\References\RepairMethods\RepairMethods`
  * `AvtoDev\StaticReferences\References\AutoFines\AutoFines`
+ * `AvtoDev\StaticReferences\References\CadastralRegions\CadastralRegions`
 
 Класс справочника | Описание | Поля данных
 ----------------- | -------- | -----------
@@ -57,6 +58,7 @@ $ composer require avto-dev/static-references-laravel "^3.0"
 `RegistrationActions` | Регистрационные действия | `codes` - Коды регистрационного действия <br /> `description` - Описание регистрационного действия
 `RepairMethods` | Методы ремонта | `codes` - Коды метода ремонта <br /> `description` - Описание метода ремонта
 `AutoFines` | Правонарушения в области дорожного движения | `article` - Статья правонарушения <br /> `description` - Описание правонарушения
+`CadastralRegions` | Полный список кодов субъектов и кадастровых районов РФ | `code` - Код субъекта<br /> `name` - Название субъекта<br /> `districts` - Список кадастровых районов субъекта <br /> `districts.code` - Номер района<br /> `districts.name` - Название района
 
 ### Примеры использования
 
@@ -117,6 +119,52 @@ $moscow_region = $auto_regions->getByTitle('Москва');
 // Проверяем наличие региона по его коду
 $auto_regions->hasAutoCode(177); // true
 $auto_regions->hasAutoCode(666); // false
+```
+
+Справочник "Кадастровые округа и районы"
+  
+```php
+<?php
+
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntry;
+
+/** @var CadastralRegions $cadastral_regions */
+$cadastral_regions = resolve(CadastralRegions::class);
+
+// Перебираем все субъекты
+$cadastral_regions->each(function (CadastralRegionEntry $region) {
+    $region->getRegionCode();  // код субъекта РФ
+    $region->getRegionName();  // название субъекта
+    $region->getDistricts();   // список районов в субъекте
+        
+    $region->getDistricts()->each(function (CadastralDistrictEntry $district){
+       $district->getDistrictCode(); // номер кадастрового района
+       $district->getDistrictName(); // название кадастрового района
+    });
+});
+
+// Получаем названия всех субъектов
+$titles = collect($cadastral_regions->toArray())->pluck('name')->toArray(); // ["Адыгейский", "Башкирский", "Бурятский", "Алтайский республиканский", ...];
+
+// Получаем объект округа по коду
+$cadastral_regions->getRegionByName(20); //Чеченский
+
+// Проверяем наличие региона по его коду
+$cadastral_regions->hasRegionCode(66);  // true
+$cadastral_regions->hasRegionCode(111); // false
+
+// Получаем список районов по округу
+$cadastral_regions->getRegionByCode(20)->getDistricts();
+
+// Получаем район по округу
+$cadastral_regions->getRegionByCode(20)->getDistricts()->getDistrictByCode(1); // "Ачхой-Мартановский"
+$cadastral_regions->getRegionByCode(20)->getDistricts()->getDistrictByName('Веденский'); // "02"
+
+// Существует ли район в округе
+$cadastral_regions->getRegionByCode(20)->getDistricts()->hasDistrictCode('17'); // true
+$cadastral_regions->getRegionByCode(20)->getDistricts()->hasDistrictCode('88'); // false
 ```
 
 ### Testing

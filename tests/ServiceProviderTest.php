@@ -8,11 +8,13 @@ use AvtoDev\StaticReferences\Facades\AutoFinesFacade;
 use AvtoDev\StaticReferences\Facades\AutoRegionsFacade;
 use AvtoDev\StaticReferences\Facades\RepairMethodsFacade;
 use AvtoDev\StaticReferences\Facades\AutoCategoriesFacade;
+use AvtoDev\StaticReferences\Facades\CadastralRegionsFacade;
 use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use AvtoDev\StaticReferences\Facades\RegistrationActionsFacade;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 
 /**
@@ -52,6 +54,10 @@ class ServiceProviderTest extends AbstractUnitTestCase
         $this->assertInstanceOf(AutoFines::class, $this->app[AutoFines::class]);
         $this->assertInstanceOf(AutoFines::class, app(AutoFines::class));
         $this->assertInstanceOf(AutoFines::class, AutoFinesFacade::getFacadeRoot());
+
+        $this->assertInstanceOf(CadastralRegions::class, $this->app[CadastralRegions::class]);
+        $this->assertInstanceOf(CadastralRegions::class, app(CadastralRegions::class));
+        $this->assertInstanceOf(CadastralRegions::class, CadastralRegionsFacade::getFacadeRoot());
     }
 
     /**
