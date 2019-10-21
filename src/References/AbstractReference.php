@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References;
 
+use AvtoDev\StaticReferences\References\Traits\CollectionOverwriteToArrayTrait;
 use Exception;
 use Illuminate\Support\Collection;
 
@@ -12,7 +13,7 @@ use Illuminate\Support\Collection;
  */
 abstract class AbstractReference extends Collection implements ReferenceInterface
 {
-    use Traits\TransliterateTrait;
+    use CollectionOverwriteToArrayTrait, Traits\TransliterateTrait;
 
     /**
      * Стек для хранения данных справочника в сыром виде.
