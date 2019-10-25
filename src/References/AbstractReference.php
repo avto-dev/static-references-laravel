@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References;
 
-use AvtoDev\StaticReferences\References\Traits\CollectionOverwriteToArrayTrait;
 use Exception;
 use Illuminate\Support\Collection;
+use AvtoDev\StaticReferences\References\Traits\CollectionOverwriteToArrayTrait;
 
 /**
  * Абстрактный класс справочника.
