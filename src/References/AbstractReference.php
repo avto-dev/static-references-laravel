@@ -8,16 +8,11 @@ use Exception;
 use Illuminate\Support\Collection;
 use AvtoDev\StaticReferences\References\Traits\CollectionOverwriteToArrayTrait;
 
-/**
- * Абстрактный класс справочника.
- */
 abstract class AbstractReference extends Collection implements ReferenceInterface
 {
     use CollectionOverwriteToArrayTrait, Traits\TransliterateTrait;
 
     /**
-     * Стек для хранения данных справочника в сыром виде.
-     *
      * @var ReferenceEntryInterface[]|array
      */
     protected $items = [];

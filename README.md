@@ -18,21 +18,12 @@
 Require this package with composer using the following command:
 
 ```shell
-$ composer require avto-dev/static-references-laravel "^3.0"
+$ composer require avto-dev/static-references-laravel "^4.0"
 ```
 
 > Installed `composer` is required ([how to install composer][getcomposer]).
 
 > You need to fix the major version of package.
-
-Если вы используете Laravel версии 5.5 и выше, то сервис-провайдер данного пакета будет зарегистрирован автоматически. В противном случае вам необходимо самостоятельно зарегистрировать сервис-провайдер в секции `providers` файла `./config/app.php`:
-
-```php
-'providers' => [
-    // ...
-    AvtoDev\StaticReferences\ServiceProvider::class,
-]
-```
 
 ## Использование
 
