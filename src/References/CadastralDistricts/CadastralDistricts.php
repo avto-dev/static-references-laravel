@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\CadastralDistricts;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class CadastralDistricts extends Collection
 {

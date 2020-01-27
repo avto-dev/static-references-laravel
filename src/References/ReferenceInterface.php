@@ -2,9 +2,9 @@
 
 namespace AvtoDev\StaticReferences\References;
 
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 use Exception;
 use InvalidArgumentException;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 interface ReferenceInterface
 {

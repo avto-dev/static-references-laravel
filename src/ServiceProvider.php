@@ -4,17 +4,17 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences;
 
-use Exception;
-use Carbon\Carbon;
-use Illuminate\Contracts\Container\Container;
-use AvtoDev\StaticReferences\References\ReferenceInterface;
-use Illuminate\Contracts\Cache\Repository as CacheContract;
+use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
-use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
+use AvtoDev\StaticReferences\References\ReferenceInterface;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
+use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Contracts\Cache\Repository as CacheContract;
+use Illuminate\Contracts\Container\Container;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
