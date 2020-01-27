@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests\References;
 
-use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\AutoFines\AutoFines<extended>

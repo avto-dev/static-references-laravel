@@ -3,9 +3,9 @@
 namespace AvtoDev\StaticReferences\References;
 
 use ArrayAccess;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use IteratorAggregate;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 
 interface ReferenceEntryInterface extends ArrayAccess, IteratorAggregate, Arrayable, Jsonable
 {

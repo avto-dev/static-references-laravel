@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests;
 
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategoryEntry;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActionEntry;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
+use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActionEntry;
 
 /**
  * @group feature

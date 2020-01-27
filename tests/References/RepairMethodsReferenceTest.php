@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests\References;
 
-use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\RepairMethods\RepairMethods<extended>

@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests\References;
 
-use AvtoDev\StaticReferences\References\ReferenceInterface;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
+use AvtoDev\StaticReferences\References\ReferenceInterface;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\AutoCategories\AutoCategoryEntry::configure

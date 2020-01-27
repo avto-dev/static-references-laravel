@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\AutoFines;
 
-use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
 
 class AutoFineEntry extends AbstractReferenceEntry
 {
