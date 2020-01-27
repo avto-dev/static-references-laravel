@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\CadastralDistricts;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
+use AvtoDev\StaticReferences\References\Traits\CollectionOverwriteToArrayTrait;
 
 class CadastralDistricts extends Collection
 {
+    use CollectionOverwriteToArrayTrait;
+
     /**
      * @var CadastralDistrictEntry[]
      */
