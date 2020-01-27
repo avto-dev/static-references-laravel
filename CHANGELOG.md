@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 - GitHub actions for a tests running
 
+### Removed
+
+- Facades (`AutoCategoriesFacade`, `AutoFinesFacade`, `AutoRegionsFacade`, `CadastralRegionsFacade`, `RegistrationActionsFacade`, `RepairMethodsFacade`)
+
 ## v3.1.0
 
 ### Added
