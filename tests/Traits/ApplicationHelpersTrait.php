@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests\Traits;
 
-use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 /**

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests\Traits;
 
-use Illuminate\Foundation\Application;
-use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\StaticReferences\ServiceProvider;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Application;
 
 trait CreatesApplicationTrait
 {

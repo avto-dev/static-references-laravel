@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests\References;
 
-use Illuminate\Support\Str;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
+use Illuminate\Support\Str;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\AutoCategories\AutoCategories<extended>

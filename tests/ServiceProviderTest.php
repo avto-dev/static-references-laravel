@@ -4,18 +4,18 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests;
 
+use AvtoDev\StaticReferences\Facades\AutoCategoriesFacade;
 use AvtoDev\StaticReferences\Facades\AutoFinesFacade;
 use AvtoDev\StaticReferences\Facades\AutoRegionsFacade;
-use AvtoDev\StaticReferences\Facades\RepairMethodsFacade;
-use AvtoDev\StaticReferences\Facades\AutoCategoriesFacade;
 use AvtoDev\StaticReferences\Facades\CadastralRegionsFacade;
-use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use AvtoDev\StaticReferences\Facades\RegistrationActionsFacade;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
+use AvtoDev\StaticReferences\Facades\RepairMethodsFacade;
 use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
+use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
+use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
 
 /**
  * @covers \AvtoDev\StaticReferences\ServiceProvider<extended>
