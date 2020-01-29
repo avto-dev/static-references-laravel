@@ -4,233 +4,159 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\AutoRegions;
 
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesData\StaticReferencesData;
-use AvtoDev\StaticReferences\References\AbstractReference;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
+use Generator;
+use InvalidArgumentException;
+use Tarampampam\Wrappers\Json;
+use AvtoDev\StaticReferences\References\ReferenceInterface;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 
-class AutoRegions extends AbstractReference
+class AutoRegions implements ReferenceInterface
 {
     /**
-     * @var AutoRegionEntry[]
+     * Key is region code (positive integer value).
+     *
+     * @var array<int, AutoRegionEntry>
      */
-    protected $items = [];
+    protected $entities = [];
 
     /**
-     * {@inheritdoc}
+     * @var array<int, AutoRegionEntry>
      */
-    public static function getVendorStaticReferenceInstance(): StaticReferenceInterface
-    {
-        static $instance;
-
-        return $instance ?? $instance = StaticReferencesData::getAutoRegions();
-    }
+    protected $auto_codes_idx = [];
 
     /**
-     * Получаем объект региона по коду субъекта РФ.
+     * Create a new reference instance.
      *
-     * @param string|int|mixed $region_code
+     * @param StaticReference $static_reference
      *
-     * @return AutoRegionEntry|null
+     * @throws InvalidArgumentException
+     *
+     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getAutoRegions()
      */
-    public function getByRegionCode($region_code): ?AutoRegionEntry
+    public function __construct(StaticReference $static_reference)
     {
-        if (\is_string($region_code) || \is_int($region_code)) {
-            // Очищаем входящее значение и приводим к числу
-            $region_code = (int) \preg_replace('~\D~', '', (string) $region_code);
-            foreach ($this->items as $region) {
-                if ($region->getRegionCode() === $region_code) {
-                    return $region;
-                }
+        foreach ((array) $static_reference->getData(true) as $datum) {
+            if (! $this->validateRawEntry($datum)) {
+                throw new InvalidArgumentException('Wrong reference element passed: ' . Json::encode($datum));
+            }
+
+            $code = $datum['code'];
+
+            $this->entities[$code] = new AutoRegionEntry(
+                $code,
+                $datum['title'] ?? null,
+                $datum['short'] ?? null,
+                $auto_codes = ($datum['gibdd'] ?? null),
+                $datum['okato'] ?? null,
+                $datum['code_iso_31662'] ?? null,
+                $datum['type'] ?? null
+            );
+
+            // burn gibdd codex index
+            foreach ($auto_codes ?? [] as $auto_code) {
+                $this->auto_codes_idx[$auto_code] =& $this->entities[$code];
             }
         }
-
-        return null;
     }
 
     /**
-     * Проверяет наличие данных о регионе в справочнике по коду региона.
+     * Validate raw data entry.
      *
-     * @param string|int $region_code
+     * @param mixed $entry
      *
      * @return bool
      */
-    public function hasRegionCode($region_code): bool
+    protected function validateRawEntry($entry): bool
     {
-        return $this->getByRegionCode($region_code) instanceof AutoRegionEntry;
+        // Entry must be an array with 'code' key
+        if (\is_array($entry) && \array_key_exists('code', $entry) && \is_int($entry['code'])) {
+            // If 'gibdd' key exists - it must be an array
+            if (\array_key_exists('gibdd', $entry) && ! \is_array($entry['gibdd'])) {
+                return false;
+            }
+
+            // If 'code_iso_31662' key exists - it must be string
+            if (\array_key_exists('code_iso_31662', $entry) && ! \is_string($entry['code_iso_31662'])) {
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Получаем регион по его названию. Если параметр $strict_search == false, то производится не строгий поиск по
-     * переданной строке. Внимание - алгоритм не самый надежный, и надо быть с эти дерьмом поаккуратнее.
+     * @return Generator<AutoRegionEntry>|AutoRegionEntry[]
+     */
+    public function getIterator(): Generator
+    {
+        foreach ($this->entities as $item) {
+            yield $item;
+        }
+    }
+
+    /**
+     * @return AutoRegionEntry[]
+     */
+    public function all(): array
+    {
+        return \array_values($this->entities);
+    }
+
+    /**
+     * Get region entry by own code.
      *
-     * @param string $region_title
-     * @param bool   $strict_search
+     * @param int $region_code
      *
      * @return AutoRegionEntry|null
      */
-    public function getByTitle($region_title, bool $strict_search = false): ?AutoRegionEntry
+    public function getByRegionCode(int $region_code): ?AutoRegionEntry
     {
-        if (\is_string($region_title) && $region_title !== '') {
-            // Ближайшее совпадение
-            $closest = null;
-            // Наименьшее расстояние
-            $shortest = 0;
-
-            foreach ($this->items as $region) {
-                $titles = [$region->getTitle()];
-                // Проверяем наличие свойства 'short_title', и если оно есть - то берем его в работу
-                if (! empty($region->getShortTitles())) {
-                    $titles = \array_merge($titles, (array) $region->getShortTitles());
-                }
-                foreach ($titles as $title) {
-                    // Вычисляем расстояние между входным словом и текущим
-                    $lev = \levenshtein($region_title, \trim((string) $title));
-                    // Проверяем полное совпадение
-                    if ($lev === 0) {
-                        $closest  = $region;
-                        $shortest = 0;
-                        break 2;
-                    }
-                    if ($lev <= $shortest || $shortest <= 0) {
-                        $closest  = $region;
-                        $shortest = $lev;
-                    }
-                }
-            }
-
-            if ($strict_search) {
-                return $shortest === 0 ? $closest : null;
-            }
-
-            return $shortest <= 5 ? $closest : null; // Этим числом можно регулировать строгость похожести
-        }
-
-        return null;
+        return $this->entities[$region_code] ?? null;
     }
 
     /**
-     * Проверяет наличие объекта региона по его названию.
+     * Check for region entry exists by own code.
      *
-     * @param string $region_title
-     * @param bool   $strict_search
+     * @param int $region_code
      *
      * @return bool
      */
-    public function hasTitle($region_title, bool $strict_search = false): bool
+    public function hasRegionCode(int $region_code): bool
     {
-        return $this->getByTitle($region_title, $strict_search) instanceof AutoRegionEntry;
+        return isset($this->entities[$region_code]);
     }
 
     /**
-     * Получаем регион по его авто-коду (коду региона по ГИБДД).
+     * Get region entry by auto (gibdd) code.
      *
-     * @param string|int|mixed $auto_code
+     * @param int $auto_code
      *
      * @return AutoRegionEntry|null
      */
-    public function getByAutoCode($auto_code): ?AutoRegionEntry
+    public function getByAutoCode(int $auto_code): ?AutoRegionEntry
     {
-        if (\is_string($auto_code) || \is_int($auto_code)) {
-            // Очищаем входящее значение и приводим к числу
-            $auto_code = (int) \preg_replace('~\D~', '', (string) $auto_code);
-            foreach ($this->items as $region) {
-                foreach ((array) $region->getAutoCodes() as $region_auto_code) {
-                    if ($region_auto_code === $auto_code) {
-                        return $region;
-                    }
-                }
-            }
-        }
-
-        return null;
+        return $this->auto_codes_idx[$auto_code] ?? null;
     }
 
     /**
-     * Проверяет наличие объекта региона по его коду в справочнике.
+     * Check for region entry exists by auto (gibdd) code.
      *
-     * @param string|int $auto_code
+     * @param int $auto_code
      *
      * @return bool
      */
-    public function hasAutoCode($auto_code): bool
+    public function hasAutoCode(int $auto_code): bool
     {
-        return $this->getByAutoCode($auto_code) instanceof AutoRegionEntry;
-    }
-
-    /**
-     * Получаем объект региона по коду ОКАТО.
-     *
-     * @param string|int $okato_code
-     *
-     * @return AutoRegionEntry|null
-     */
-    public function getByOkato($okato_code): ?AutoRegionEntry
-    {
-        if (\is_scalar($okato_code)) {
-            // Очищаем входящее значение и приводим к числу
-            $okato_code = \preg_replace('~[^0-9-]~', '', (string) $okato_code);
-            foreach ($this->items as $region) {
-                if ($region->getOkato() === $okato_code) {
-                    return $region;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Проверяет наличие объекта региона по его коду ОКАТО в справочнике.
-     *
-     * @param string|int $okato_code
-     *
-     * @return bool
-     */
-    public function hasOkato($okato_code): bool
-    {
-        return $this->getByOkato($okato_code) instanceof AutoRegionEntry;
-    }
-
-    /**
-     * Получаем объект региона по коду ISO-31662.
-     *
-     * @param string|mixed $iso_31662
-     *
-     * @return AutoRegionEntry|null
-     */
-    public function getByIso31662($iso_31662): ?AutoRegionEntry
-    {
-        if (\is_string($iso_31662) && $iso_31662 !== '') {
-            // Очищаем входящее значение
-            $iso_31662 = \preg_replace('~[^A-Z-]~', '', Str::upper($iso_31662));
-            foreach ($this->items as $region) {
-                if ($region->getIso31662() === $iso_31662) {
-                    return $region;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Проверяет наличие объекта региона по его коду ISO-31662 в справочнике.
-     *
-     * @param string|int $iso_31662
-     *
-     * @return bool
-     */
-    public function hasIso31662($iso_31662): bool
-    {
-        return $this->getByIso31662($iso_31662) instanceof AutoRegionEntry;
+        return isset($this->auto_codes_idx[$auto_code]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getReferenceEntryClassName(): string
+    public function count(): int
     {
-        return AutoRegionEntry::class;
+        return \count($this->entities);
     }
 }

@@ -4,171 +4,92 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\AutoRegions;
 
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
+use Tarampampam\Wrappers\Json;
+use AvtoDev\StaticReferences\References\ReferenceEntryInterface;
 
-class AutoRegionEntry extends AbstractReferenceEntry
+class AutoRegionEntry implements ReferenceEntryInterface
 {
     /**
-     * Заголовок региона.
+     * @link <https://goo.gl/LnRyLS>
      *
+     * @var int
+     */
+    protected $region_code;
+
+    /**
      * @var string|null
      */
     protected $title;
 
     /**
-     * Варианты короткого наименования региона.
-     *
      * @var string[]|null
      */
     protected $short_titles;
 
     /**
-     * Код субъекта РФ.
-     *
-     * @see <https://goo.gl/LnRyLS>
-     *
-     * @var int|null
-     */
-    protected $region_code;
-
-    /**
-     * Автомобильные коды (коды ГИБДД).
-     *
      * @var int[]|null
      */
     protected $auto_codes;
 
     /**
-     * Код региона по ОКАТО.
-     *
      * @var string|null
      */
     protected $okato;
 
     /**
-     * Код региона по стандарту ISO-31662.
-     *
      * @var string|null
      */
     protected $iso_31662;
 
     /**
-     * Тип (республика/край/и т.д.).
-     *
      * @var string|null
      */
     protected $type;
 
     /**
-     * {@inheritdoc}
+     * Create a new entry instance.
+     *
+     * @param int           $region_code
+     * @param string|null   $title
+     * @param string[]|null $short_titles
+     * @param int[]|null    $auto_codes
+     * @param string|null   $okato
+     * @param string|null   $iso_31662
+     * @param string|null   $type
      */
-    public function configure($input = []): void
+    public function __construct(
+        int $region_code,
+        ?string $title,
+        ?array $short_titles,
+        ?array $auto_codes,
+        ?string $okato,
+        ?string $iso_31662,
+        ?string $type
+    )
     {
-        if (\is_array($input)) {
-            foreach ($input as $key => $value) {
-                switch (Str::lower((string) $key)) {
-                    // Заголовок региона
-                    case 'title':
-                        $this->title = trim($value);
-                        break;
-
-                    // Варианты короткого наименования региона
-                    case 'short':
-                        $value = ! \is_array($value)
-                            ? explode(',', (string) $value)
-                            : $value;
-                        $this->short_titles = \array_filter(\array_map('trim', (array) $value));
-                        break;
-
-                    // Код субъекта РФ
-                    case 'code':
-                        $this->region_code = (int) \preg_replace('~\D~', '', (string) $value);
-                        break;
-
-                    // Автомобильные коды (коды ГИБДД)
-                    case 'gibdd':
-                        $value = ! \is_array($value)
-                            ? explode(',', (string) $value)
-                            : $value;
-                        $this->auto_codes = \array_filter(\array_map(function ($item) {
-                            return (int) \preg_replace('~\D~', '', (string) $item);
-                        }, (array) $value));
-                        break;
-
-                    // Код региона по ОКАТО
-                    case 'okato':
-                        $this->okato = preg_replace('~[^0-9-]~', '', (string) $value);
-                        break;
-
-                    // Код региона по стандарту ISO-31662
-                    case 'code_iso_31662':
-                        $this->iso_31662 = Str::upper(
-                            (string) \preg_replace('~[^a-z-]~i', '', (string) $value)
-                        );
-                        break;
-
-                    // Тип (республика/край/и т.д.)
-                    case 'type':
-                        $this->type = trim((string) $value);
-                        break;
-                }
-            }
-        }
+        $this->region_code  = $region_code;
+        $this->title        = $title;
+        $this->short_titles = $short_titles;
+        $this->auto_codes   = $auto_codes;
+        $this->okato        = $okato;
+        $this->iso_31662    = $iso_31662;
+        $this->type         = $type;
     }
 
     /**
-     * Возвращает код субъекта РФ.
+     * Get region code.
      *
-     * @return int|null
+     * @link <https://goo.gl/LnRyLS>
+     *
+     * @return int
      */
-    public function getRegionCode(): ?int
+    public function getRegionCode(): int
     {
         return $this->region_code;
     }
 
     /**
-     * Возвращает автомобильные коды (коды ГИБДД).
-     *
-     * @return int[]|null
-     */
-    public function getAutoCodes(): ?array
-    {
-        return $this->auto_codes;
-    }
-
-    /**
-     * Возвращает код региона по стандарту ISO-31662.
-     *
-     * @return null|string
-     */
-    public function getIso31662(): ?string
-    {
-        return $this->iso_31662;
-    }
-
-    /**
-     * Возвращает код региона по ОКАТО.
-     *
-     * @return null|string
-     */
-    public function getOkato(): ?string
-    {
-        return $this->okato;
-    }
-
-    /**
-     * Возвращает варианты короткого наименования региона.
-     *
-     * @return string[]|null
-     */
-    public function getShortTitles(): ?array
-    {
-        return $this->short_titles;
-    }
-
-    /**
-     * Возвращает заголовок региона.
+     * Get region title.
      *
      * @return null|string
      */
@@ -178,12 +99,86 @@ class AutoRegionEntry extends AbstractReferenceEntry
     }
 
     /**
-     * Возвращает тип (республика/край/и т.д.).
+     * Get region short titles.
+     *
+     * @return string[]|null
+     */
+    public function getShortTitles(): ?array
+    {
+        return $this->short_titles;
+    }
+
+    /**
+     * Get GIBDD codes.
+     *
+     * @return int[]|null
+     */
+    public function getAutoCodes(): ?array
+    {
+        return $this->auto_codes;
+    }
+
+    /**
+     * Get OKATO region code.
+     *
+     * @return null|string
+     */
+    public function getOkato(): ?string
+    {
+        return $this->okato;
+    }
+
+    /**
+     * Get region code (ISO-31662).
+     *
+     * @return null|string
+     */
+    public function getIso31662(): ?string
+    {
+        return $this->iso_31662;
+    }
+
+    /**
+     * Get type (`республика`, `край`, etc).
      *
      * @return null|string
      */
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array{
+     *   code:int,
+     *   title:?string,
+     *   gibdd:?array,
+     *   code_iso_31662:?string,
+     *   okato:?string,
+     *   short:?array,
+     *   type:?string
+     * }
+     */
+    public function toArray(): array
+    {
+        return [
+            'code'           => $this->region_code,
+            'title'          => $this->title,
+            'gibdd'          => $this->auto_codes,
+            'code_iso_31662' => $this->iso_31662,
+            'okato'          => $this->okato,
+            'short'          => $this->short_titles,
+            'type'           => $this->type,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toJson($options = 0): string
+    {
+        return (string) Json::encode($this->toArray(), $options);
     }
 }
