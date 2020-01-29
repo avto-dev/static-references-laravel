@@ -40,18 +40,6 @@ class AutoFines implements ReferenceInterface
     }
 
     /**
-     * Validate raw data entry.
-     *
-     * @param mixed $entry
-     *
-     * @return bool
-     */
-    protected function validateRawEntry($entry): bool
-    {
-        return \is_array($entry) && \array_key_exists('article', $entry) && \is_string($entry['article']);
-    }
-
-    /**
      * @return Generator<AutoFineEntry>|AutoFineEntry[]
      */
     public function getIterator(): Generator
@@ -94,6 +82,26 @@ class AutoFines implements ReferenceInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function count(): int
+    {
+        return \count($this->entities);
+    }
+
+    /**
+     * Validate raw data entry.
+     *
+     * @param mixed $entry
+     *
+     * @return bool
+     */
+    protected function validateRawEntry($entry): bool
+    {
+        return \is_array($entry) && \array_key_exists('article', $entry) && \is_string($entry['article']);
+    }
+
+    /**
      * Make article value transformation for better searching.
      *
      * Samples:
@@ -118,13 +126,5 @@ class AutoFines implements ReferenceInterface
 
         // И возвращаем значение
         return (string) $value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function count(): int
-    {
-        return \count($this->entities);
     }
 }

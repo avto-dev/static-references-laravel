@@ -7,8 +7,8 @@ namespace AvtoDev\StaticReferences\Tests\References\AutoFines;
 use Illuminate\Support\Str;
 use Tarampampam\Wrappers\Json;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferences\References\ReferenceEntryInterface;
 use AvtoDev\StaticReferences\References\AutoFines\AutoFineEntry;
+use AvtoDev\StaticReferences\References\ReferenceEntryInterface;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\AutoFines\AutoFineEntry<extended>

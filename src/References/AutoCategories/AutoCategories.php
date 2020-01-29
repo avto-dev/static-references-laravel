@@ -38,18 +38,6 @@ class AutoCategories implements ReferenceInterface
     }
 
     /**
-     * Validate raw data entry.
-     *
-     * @param mixed $entry
-     *
-     * @return bool
-     */
-    protected function validateRawEntry($entry): bool
-    {
-        return \is_array($entry) && \array_key_exists('code', $entry) && \is_string($entry['code']);
-    }
-
-    /**
      * @return Generator<AutoCategoryEntry>|AutoCategoryEntry[]
      */
     public function getIterator(): Generator
@@ -92,10 +80,22 @@ class AutoCategories implements ReferenceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function count(): int
     {
         return \count($this->entities);
+    }
+
+    /**
+     * Validate raw data entry.
+     *
+     * @param mixed $entry
+     *
+     * @return bool
+     */
+    protected function validateRawEntry($entry): bool
+    {
+        return \is_array($entry) && \array_key_exists('code', $entry) && \is_string($entry['code']);
     }
 }

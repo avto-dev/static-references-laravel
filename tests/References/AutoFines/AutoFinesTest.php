@@ -10,9 +10,9 @@ use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
 use AvtoDev\StaticReferences\References\AutoFines\AutoFineEntry;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\AutoFines\AutoFines<extended>
@@ -27,7 +27,7 @@ class AutoFinesTest extends AbstractUnitTestCase
     protected $reference;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

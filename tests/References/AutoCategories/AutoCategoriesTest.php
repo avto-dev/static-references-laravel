@@ -27,7 +27,7 @@ class AutoCategoriesTest extends AbstractUnitTestCase
     protected $reference;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
