@@ -54,7 +54,7 @@ class AutoRegions implements ReferenceInterface
 
             // burn gibdd codex index
             foreach ($auto_codes ?? [] as $auto_code) {
-                $this->auto_codes_idx[$auto_code] =& $this->entities[$code];
+                $this->auto_codes_idx[$auto_code] =&$this->entities[$code];
             }
         }
     }

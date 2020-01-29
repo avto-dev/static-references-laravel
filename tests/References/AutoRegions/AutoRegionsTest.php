@@ -216,7 +216,7 @@ class AutoRegionsTest extends AbstractUnitTestCase
      */
     public function testSameObjectOnDifferentGetters(): void
     {
-        $first = $this->reference->getByRegionCode(1);
+        $first  = $this->reference->getByRegionCode(1);
         $second = $this->reference->getByAutoCode(10);
 
         $this->assertSame($first, $second);
