@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Changed
 
-- Maximal `illuminate/*` packages version now is `6.*`
+- Minimal `illuminate/*` packages version now is `^5.5`
+- Maximal `illuminate/*` packages version now is `~6.0`
 - ...
 
 ### Added

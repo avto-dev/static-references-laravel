@@ -42,7 +42,7 @@ class AutoFinesReferenceTest extends AbstractReferenceTestCase
          * По кодам.
          */
         // На кириллице
-        $this->assertEquals($assert_with, $this->instance->getByArticle('12.21 Ч.1')->getDescription());
+        $this->assertEquals($assert_with, $this->instance->getByArticle('12.21.1')->getDescription());
         $this->assertEquals($assert_with, $this->instance->getByArticle('12.21Ч.1')->getDescription());
         $this->assertEquals($assert_with, $this->instance->getByArticle('12.21часть  1')->getDescription());
         $this->assertEquals($assert_with, $this->instance->getByArticle('12.21 часть 1')->getDescription());

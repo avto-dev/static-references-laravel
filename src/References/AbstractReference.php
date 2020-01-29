@@ -22,11 +22,11 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
      *
      * @throws Exception
      */
-    public function __construct()
+    public function create()
     {
-        parent::__construct(\array_map(function ($item_data) {
+        $this->items = \array_map(static function ($item_data) {
             return $this->referenceEntityFactory($item_data);
-        }, \array_filter(static::getVendorStaticReferenceInstance()->getContent())));
+        }, \array_filter(static::getVendorStaticReferenceInstance()->getContent()));
     }
 
     /**
@@ -44,8 +44,6 @@ abstract class AbstractReference extends Collection implements ReferenceInterfac
     }
 
     /**
-     * Факторка по созданию инстансов элементов справочника.
-     *
      * @param array ...$arguments
      *
      * @throws Exception

@@ -4,71 +4,71 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\AutoCategories;
 
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
+use Tarampampam\Wrappers\Json;
+use AvtoDev\StaticReferences\References\ReferenceEntryInterface;
 
-/**
- * Сущность типа "Категория автомобиля".
- */
-class AutoCategoryEntry extends AbstractReferenceEntry
+class AutoCategoryEntry implements ReferenceEntryInterface
 {
     /**
-     * Код категории.
-     *
-     * @var string|null
+     * @var string
      */
     protected $code;
 
     /**
-     * Описание категории.
-     *
      * @var string|null
      */
     protected $description;
 
     /**
-     * {@inheritdoc}
+     * Create a new entry instance.
+     *
+     * @param string      $code
+     * @param string|null $description
      */
-    public function configure($input = []): void
+    public function __construct(string $code, ?string $description)
     {
-        if (\is_array($input)) {
-            foreach ($input as $key => $value) {
-                switch ($key = Str::lower((string) $key)) {
-                    // Код категории
-                    case 'code':
-                    case 'category':
-                    case 'categoryname':
-                    case 'category_name':
-                        $this->code = trim($this->uppercaseAndSafeTransliterate($value));
-                        break;
-
-                    case 'desc':
-                    case 'descr':
-                    case 'description':
-                        $this->description = trim((string) $value);
-                        break;
-                }
-            }
-        }
+        $this->code        = $code;
+        $this->description = $description;
     }
 
     /**
-     * Возвращает код категории.
+     * Get category code.
      *
-     * @return null|string
+     * @return string
      */
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }
 
     /**
-     * Возвращает описание категории.
+     * get category description.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array{code:string, description:?string}
+     */
+    public function toArray(): array
+    {
+        return [
+            'code'        => $this->code,
+            'description' => $this->description,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toJson($options = 0): string
+    {
+        return (string) Json::encode($this->toArray(), $options);
     }
 }

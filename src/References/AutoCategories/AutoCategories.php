@@ -4,100 +4,98 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\AutoCategories;
 
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesData\StaticReferencesData;
-use AvtoDev\StaticReferences\References\AbstractReference;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
+use Generator;
+use InvalidArgumentException;
+use Tarampampam\Wrappers\Json;
+use AvtoDev\StaticReferences\References\ReferenceInterface;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 
-class AutoCategories extends AbstractReference
+class AutoCategories implements ReferenceInterface
 {
     /**
-     * @var AutoCategoryEntry[]
+     * @var array<string, AutoCategoryEntry>
      */
-    protected $items = [];
+    protected $entities = [];
 
     /**
-     * {@inheritdoc}
+     * Create a new reference instance.
+     *
+     * @param StaticReference $static_reference
+     *
+     * @throws InvalidArgumentException
+     *
+     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getAutoCategories()
      */
-    public static function getVendorStaticReferenceInstance(): StaticReferenceInterface
+    public function __construct(StaticReference $static_reference)
     {
-        static $instance;
+        foreach ((array) $static_reference->getData(true) as $datum) {
+            if (! $this->validateRawEntry($datum)) {
+                throw new InvalidArgumentException('Wrong reference element passed: ' . Json::encode($datum));
+            }
 
-        return $instance ?? $instance = StaticReferencesData::getAutoCategories();
+            $this->entities[$datum['code']] = new AutoCategoryEntry($datum['code'], $datum['description'] ?? null);
+        }
     }
 
     /**
-     * Возвращает объект категории по её коду.
+     * Validate raw data entry.
+     *
+     * @param mixed $entry
+     *
+     * @return bool
+     */
+    protected function validateRawEntry($entry): bool
+    {
+        return \is_array($entry) && \array_key_exists('code', $entry) && \is_string($entry['code']);
+    }
+
+    /**
+     * @return Generator<AutoCategoryEntry>|AutoCategoryEntry[]
+     */
+    public function getIterator(): Generator
+    {
+        foreach ($this->entities as $item) {
+            yield $item;
+        }
+    }
+
+    /**
+     * @return AutoCategoryEntry[]
+     */
+    public function all(): array
+    {
+        return \array_values($this->entities);
+    }
+
+    /**
+     * Get category entry by code.
      *
      * @param string $code
      *
      * @return AutoCategoryEntry|null
      */
-    public function getByCode($code): ?AutoCategoryEntry
+    public function getByCode(string $code): ?AutoCategoryEntry
     {
-        if (\is_scalar($code) && ! empty($code = trim($this->uppercaseAndSafeTransliterate($code)))) {
-            foreach ($this->items as $auto_category) {
-                if ($auto_category->getCode() === $code) {
-                    return $auto_category;
-                }
-            }
-        }
-
-        return null;
+        return $this->entities[$code] ?? null;
     }
 
     /**
-     * Возвращает true в том случае, если категория (по коду) имеется в справочнике.
+     * Check for category is exists in reference?
      *
      * @param string $code
      *
      * @return bool
      */
-    public function hasCode($code): bool
+    public function hasCode(string $code): bool
     {
-        return $this->getByCode($code) instanceof AutoCategoryEntry;
+        return isset($this->entities[$code]);
     }
 
     /**
-     * Возвращает объект категории по её описанию. Поиск НЕ СТРОГИЙ - по наличию подстроки.
-     *
-     * @param string $description
-     *
-     * @return AutoCategoryEntry|null
+     * {@inheritDoc}
      */
-    public function getByDescription($description): ?AutoCategoryEntry
+    public function count(): int
     {
-        if (\is_string($description) && ! empty($description = Str::lower(trim((string) $description)))) {
-            foreach ($this->items as $auto_category) {
-                if (
-                    \is_string($auto_category->getDescription()) &&
-                    Str::contains(Str::lower($auto_category->getDescription()), $description)
-                ) {
-                    return $auto_category;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Возвращает true в том случае, если категория (по описанию) имеется в справочнике.
-     *
-     * @param string $description
-     *
-     * @return bool
-     */
-    public function hasDescription($description): bool
-    {
-        return $this->getByDescription($description) instanceof AutoCategoryEntry;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceEntryClassName(): string
-    {
-        return AutoCategoryEntry::class;
+        return \count($this->entities);
     }
 }

@@ -4,64 +4,71 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\AutoFines;
 
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\AbstractReferenceEntry;
+use Tarampampam\Wrappers\Json;
+use AvtoDev\StaticReferences\References\ReferenceEntryInterface;
 
-class AutoFineEntry extends AbstractReferenceEntry
+class AutoFineEntry implements ReferenceEntryInterface
 {
     /**
-     * Статья правонарушения в области дорожного движения.
-     *
-     * @var string|null
+     * @var string
      */
     protected $article;
 
     /**
-     * Описание правонарушения.
-     *
      * @var string|null
      */
     protected $description;
 
     /**
-     * {@inheritdoc}
+     * Create a new entry instance.
+     *
+     * @param string      $article
+     * @param string|null $description
      */
-    public function configure($input = []): void
+    public function __construct(string $article, ?string $description)
     {
-        if (\is_array($input)) {
-            foreach ($input as $key => $value) {
-                switch ($key = Str::lower((string) $key)) {
-                    // Значение статьи правонарушения
-                    case 'article':
-                        $this->article = trim((string) $value);
-                        break;
-
-                    // Описание правонарушения
-                    case 'description':
-                        $this->description = trim((string) $value);
-                        break;
-                }
-            }
-        }
+        $this->article     = $article;
+        $this->description = $description;
     }
 
     /**
-     * Возвращает статью правонарушения в области дорожного движения.
+     * Get auto fine article number.
      *
-     * @return null|string
+     * @return string
      */
-    public function getArticle(): ?string
+    public function getArticle(): string
     {
         return $this->article;
     }
 
     /**
-     * Возвращает описание правонарушения.
+     * Get fine article description.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array{article:string, description:?string}
+     */
+    public function toArray(): array
+    {
+        return [
+            'article'     => $this->article,
+            'description' => $this->description,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toJson($options = 0): string
+    {
+        return (string) Json::encode($this->toArray(), $options);
     }
 }

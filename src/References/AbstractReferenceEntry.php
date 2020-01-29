@@ -5,18 +5,11 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\References;
 
 use ArrayIterator;
+use Tarampampam\Wrappers\Json;
 
 abstract class AbstractReferenceEntry implements ReferenceEntryInterface
 {
     use Traits\TransliterateTrait;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($raw_data = [])
-    {
-        $this->configure($raw_data);
-    }
 
     /**
      * Get "hidden" property names.
@@ -79,24 +72,6 @@ abstract class AbstractReferenceEntry implements ReferenceEntryInterface
      */
     public function toJson($options = 0): string
     {
-        return (string) \json_encode($this->toArray(), $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray(): array
-    {
-        $result = [];
-
-        $properties_names = \array_diff(\array_keys(\get_object_vars($this)), (array) $this->hiddenPropertiesNames());
-
-        foreach ($properties_names as $property_name) {
-            $result[$property_name] = \property_exists($this, $property_name)
-                ? $this->{$property_name}
-                : null;
-        }
-
-        return $result;
+        return (string) Json::encode($this->toArray(), $options);
     }
 }

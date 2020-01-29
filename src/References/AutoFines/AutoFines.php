@@ -4,130 +4,127 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\AutoFines;
 
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferencesData\StaticReferencesData;
-use AvtoDev\StaticReferences\References\AbstractReference;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
+use Generator;
+use InvalidArgumentException;
+use Tarampampam\Wrappers\Json;
+use AvtoDev\StaticReferences\References\ReferenceInterface;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 
-/**
- * Справочник "Правонарушения в области дорожного движения".
- */
-class AutoFines extends AbstractReference
+class AutoFines implements ReferenceInterface
 {
     /**
-     * @var AutoFineEntry[]
+     * @var array<string, AutoFineEntry>
      */
-    protected $items = [];
+    protected $entities = [];
 
     /**
-     * {@inheritdoc}
+     * Create a new reference instance.
+     *
+     * @param StaticReference $static_reference
+     *
+     * @throws InvalidArgumentException
+     *
+     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getAutoFines()
      */
-    public static function getVendorStaticReferenceInstance(): StaticReferenceInterface
+    public function __construct(StaticReference $static_reference)
     {
-        static $instance;
+        foreach ((array) $static_reference->getData(true) as $datum) {
+            if (! $this->validateRawEntry($datum)) {
+                throw new InvalidArgumentException('Wrong reference element passed: ' . Json::encode($datum));
+            }
 
-        return $instance ?? $instance = StaticReferencesData::getAutoFines();
+            $this->entities[$this->clearArticleValue($datum['article'])] = new AutoFineEntry(
+                $datum['article'], $datum['description'] ?? null
+            );
+        }
     }
 
     /**
-     * Возвращает объект правонарушения по коду статьи.
+     * Validate raw data entry.
+     *
+     * @param mixed $entry
+     *
+     * @return bool
+     */
+    protected function validateRawEntry($entry): bool
+    {
+        return \is_array($entry) && \array_key_exists('article', $entry) && \is_string($entry['article']);
+    }
+
+    /**
+     * @return Generator<AutoFineEntry>|AutoFineEntry[]
+     */
+    public function getIterator(): Generator
+    {
+        foreach ($this->entities as $item) {
+            yield $item;
+        }
+    }
+
+    /**
+     * @return AutoFineEntry[]
+     */
+    public function all(): array
+    {
+        return \array_values($this->entities);
+    }
+
+    /**
+     * Get fine entry by number.
      *
      * @param string $article
      *
      * @return AutoFineEntry|null
      */
-    public function getByArticle($article): ?AutoFineEntry
+    public function getByArticle(string $article): ?AutoFineEntry
     {
-        if (\is_string($article) && ! empty($article = \trim($article))) {
-            // Производим "очистку" входящего значения
-            $article = $this->clearArticleValue($article);
-
-            foreach ($this->items as $auto_fine_entry) {
-                if (
-                    \is_string($auto_fine_entry->getArticle()) &&
-                    $this->clearArticleValue($auto_fine_entry->getArticle()) === $article
-                ) {
-                    return $auto_fine_entry;
-                }
-            }
-        }
-
-        return null;
+        return $this->entities[$this->clearArticleValue($article)] ?? null;
     }
 
     /**
-     * Возвращает true в том случае, если объект правонарушения (по коду статьи) имеется в справочнике.
+     * Check for fine exists by article number.
      *
-     * @param string $code
+     * @param string $article
      *
      * @return bool
      */
-    public function hasArticle($code): bool
+    public function hasArticle(string $article): bool
     {
-        return $this->getByArticle($code) instanceof AutoFineEntry;
+        return isset($this->entities[$this->clearArticleValue($article)]);
     }
 
     /**
-     * Возвращает объект правонарушения по его описанию. Поиск НЕ СТРОГИЙ - по наличию подстроки. Возвращает лишь
-     * первое найденное вхождение.
+     * Make article value transformation for better searching.
      *
-     * @param string $description
-     *
-     * @return AutoFineEntry|null
-     */
-    public function getByDescription($description): ?AutoFineEntry
-    {
-        if (\is_scalar($description) && ! empty($description = Str::lower(trim((string) $description)))) {
-            foreach ($this->items as $auto_fine_entry) {
-                if (
-                    \is_string($auto_fine_entry->getDescription()) &&
-                    Str::contains(Str::lower($auto_fine_entry->getDescription()), $description)
-                ) {
-                    return $auto_fine_entry;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Возвращает true в том случае, если объект правонарушения (по описанию) имеется в справочнике.
-     *
-     * @param string $description
-     *
-     * @return bool
-     */
-    public function hasDescription($description): bool
-    {
-        return $this->getByDescription($description) instanceof AutoFineEntry;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceEntryClassName(): string
-    {
-        return AutoFineEntry::class;
-    }
-
-    /**
-     * Производим "безопасные" замены в значении статьи (например: "11.23 Ч.2" или "12.18") для осуществления более
-     * "мягкого" поиска (без зависимости точного указания, например, "Ч" или "часть").
+     * Samples:
+     *  - `12.31.1 Ч.5` -> `12.31.1.5`
+     *  - `12.31 Ч.5` -> `12.31.5`
+     *  - `12.31 Часть 5` -> `12.31.5`
+     *  - `12.31 part 5` -> `12.31.5`
+     *  - `12.1` -> `12.1`
+     *  - `12.1   ` -> `12.1`
      *
      * @param string $value
      *
      * @return string
      */
-    protected function clearArticleValue($value): string
+    protected function clearArticleValue(string $value): string
     {
-        // Заменяем все символы, кроме чисел - на точки + trim по точкам
-        $value = \trim((string) \preg_replace('/[\D]/', '.', (string) $value), '.');
+        // Replace any chars except numbers to dots (`.`) + make dots trimming
+        $value = \trim((string) \preg_replace('/[\D]/', '.', $value), '.');
 
         // Множественные точки - заменяем на одинарные
         $value = \preg_replace('/\.+/', '.', $value);
 
         // И возвращаем значение
         return (string) $value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count(): int
+    {
+        return \count($this->entities);
     }
 }
