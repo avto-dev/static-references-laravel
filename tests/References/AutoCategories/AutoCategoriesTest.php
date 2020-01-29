@@ -6,7 +6,6 @@ namespace AvtoDev\StaticReferences\Tests\References\AutoCategories;
 
 use Mockery as m;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
