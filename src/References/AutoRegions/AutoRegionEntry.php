@@ -65,8 +65,7 @@ class AutoRegionEntry implements ReferenceEntryInterface
         ?string $okato,
         ?string $iso_31662,
         ?string $type
-    )
-    {
+    ) {
         $this->region_code  = $region_code;
         $this->title        = $title;
         $this->short_titles = $short_titles;
@@ -152,14 +151,14 @@ class AutoRegionEntry implements ReferenceEntryInterface
      * Get the instance as an array.
      *
      * @return array{
-     *   code:int,
-     *   title:?string,
-     *   gibdd:?array,
-     *   code_iso_31662:?string,
-     *   okato:?string,
-     *   short:?array,
-     *   type:?string
-     * }
+     *                code:int,
+     *                title:?string,
+     *                gibdd:?array,
+     *                code_iso_31662:?string,
+     *                okato:?string,
+     *                short:?array,
+     *                type:?string
+     *                }
      */
     public function toArray(): array
     {

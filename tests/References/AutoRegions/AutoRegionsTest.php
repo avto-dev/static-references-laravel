@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\Tests\References\AutoRegions;
 
 use Mockery as m;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
