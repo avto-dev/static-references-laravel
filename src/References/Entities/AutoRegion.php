@@ -64,8 +64,7 @@ class AutoRegion implements EntityInterface
         string $okato,
         string $iso_31662,
         string $type
-    )
-    {
+    ) {
         $this->region_code  = $region_code;
         $this->title        = $title;
         $this->short_titles = $short_titles;
@@ -158,7 +157,7 @@ class AutoRegion implements EntityInterface
      *                okato:string,
      *                short_titles:array,
      *                type:string
-     *              }
+     *                }
      */
     public function toArray(): array
     {

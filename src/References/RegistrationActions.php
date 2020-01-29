@@ -39,7 +39,7 @@ class RegistrationActions implements ReferenceInterface
                 $this->codes_idx[$code] = &$this->entities[$counter];
             }
 
-            ++$counter;
+            $counter++;
         }
     }
 

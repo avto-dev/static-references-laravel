@@ -6,11 +6,11 @@ namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
 use Illuminate\Support\Str;
+use AvtoDev\StaticReferences\References\RepairMethods;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
-use AvtoDev\StaticReferences\References\RepairMethods;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 use AvtoDev\StaticReferences\References\Entities\RepairMethod;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\RepairMethods<extended>

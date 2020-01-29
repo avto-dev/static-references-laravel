@@ -6,7 +6,6 @@ namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
 use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
 use AvtoDev\StaticReferences\References\AutoFines;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\Entities\AutoFine;

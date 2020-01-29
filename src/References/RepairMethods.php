@@ -39,7 +39,7 @@ class RepairMethods implements ReferenceInterface
                 $this->repair_codes_idx[$code] = &$this->entities[$counter];
             }
 
-            ++$counter;
+            $counter++;
         }
     }
 
