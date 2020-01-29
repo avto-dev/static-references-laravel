@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\References\AutoFines;
 
 use Generator;
-use InvalidArgumentException;
-use Tarampampam\Wrappers\Json;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 
@@ -22,17 +20,11 @@ class AutoFines implements ReferenceInterface
      *
      * @param StaticReference $static_reference
      *
-     * @throws InvalidArgumentException
-     *
      * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getAutoFines()
      */
     public function __construct(StaticReference $static_reference)
     {
         foreach ((array) $static_reference->getData(true) as $datum) {
-            if (! $this->validateRawEntry($datum)) {
-                throw new InvalidArgumentException('Wrong reference element passed: ' . Json::encode($datum));
-            }
-
             $this->entities[$this->clearArticleValue($datum['article'])] = new AutoFineEntry(
                 $datum['article'], $datum['description'] ?? null
             );
@@ -87,18 +79,6 @@ class AutoFines implements ReferenceInterface
     public function count(): int
     {
         return \count($this->entities);
-    }
-
-    /**
-     * Validate raw data entry.
-     *
-     * @param mixed $entry
-     *
-     * @return bool
-     */
-    protected function validateRawEntry($entry): bool
-    {
-        return \is_array($entry) && \array_key_exists('article', $entry) && \is_string($entry['article']);
     }
 
     /**

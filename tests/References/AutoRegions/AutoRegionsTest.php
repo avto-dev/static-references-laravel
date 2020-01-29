@@ -72,54 +72,6 @@ class AutoRegionsTest extends AbstractUnitTestCase
     /**
      * @return void
      */
-    public function testConstructorThrowsExceptionOnInvalidDataStructure(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('~Wrong.+element~i');
-
-        /** @var m\MockInterface|StaticReference $static_reference */
-        $static_reference = m::mock(StaticReference::class)
-            ->expects('getData')
-            ->andReturn([
-                [
-                    'title'          => 'foo title',
-                    'short'          => ['fo'],
-                    'code'           => 1,
-                    'gibdd'          => '1', // <-- error here
-                    'okato'          => 'okato-1',
-                    'code_iso_31662' => 'foo-1',
-                    'type'           => 'foo type',
-                ],
-            ])
-            ->once()
-            ->getMock();
-
-        new AutoRegions($static_reference);
-    }
-
-    /**
-     * @return void
-     */
-    public function testConstructorThrowsExceptionOnWrongGibddKeyValue(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('~Wrong.+element~i');
-
-        /** @var m\MockInterface|StaticReference $static_reference */
-        $static_reference = m::mock(StaticReference::class)
-            ->expects('getData')
-            ->andReturn([
-                ['foo' => 1, 'description' => 'bar'],
-            ])
-            ->once()
-            ->getMock();
-
-        new AutoRegions($static_reference);
-    }
-
-    /**
-     * @return void
-     */
     public function testIterator(): void
     {
         $array = [];

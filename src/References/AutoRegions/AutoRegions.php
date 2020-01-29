@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\References\AutoRegions;
 
 use Generator;
-use InvalidArgumentException;
-use Tarampampam\Wrappers\Json;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
 
@@ -29,17 +27,11 @@ class AutoRegions implements ReferenceInterface
      *
      * @param StaticReference $static_reference
      *
-     * @throws InvalidArgumentException
-     *
      * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getAutoRegions()
      */
     public function __construct(StaticReference $static_reference)
     {
         foreach ((array) $static_reference->getData(true) as $datum) {
-            if (! $this->validateRawEntry($datum)) {
-                throw new InvalidArgumentException('Wrong reference element passed: ' . Json::encode($datum));
-            }
-
             $code = $datum['code'];
 
             $this->entities[$code] = new AutoRegionEntry(
@@ -54,7 +46,7 @@ class AutoRegions implements ReferenceInterface
 
             // burn gibdd codex index
             foreach ($auto_codes ?? [] as $auto_code) {
-                $this->auto_codes_idx[$auto_code] =&$this->entities[$code];
+                $this->auto_codes_idx[$auto_code] = &$this->entities[$code];
             }
         }
     }
@@ -131,23 +123,5 @@ class AutoRegions implements ReferenceInterface
     public function count(): int
     {
         return \count($this->entities);
-    }
-
-    /**
-     * Validate raw data entry.
-     *
-     * @param mixed $entry
-     *
-     * @return bool
-     */
-    protected function validateRawEntry($entry): bool
-    {
-        // Entry must be an array with 'code' key
-        if (\is_array($entry) && \array_key_exists('code', $entry) && \is_int($entry['code'])) {
-            // If 'gibdd' key exists - it must be an array
-            return ! (\array_key_exists('gibdd', $entry) && ! \is_array($entry['gibdd']));
-        }
-
-        return false;
     }
 }

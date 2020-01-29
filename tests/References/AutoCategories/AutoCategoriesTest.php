@@ -57,26 +57,6 @@ class AutoCategoriesTest extends AbstractUnitTestCase
     /**
      * @return void
      */
-    public function testConstructorThrowsExceptionOnInvalidDataStructure(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('~Wrong.+element~i');
-
-        /** @var m\MockInterface|StaticReference $static_reference */
-        $static_reference = m::mock(StaticReference::class)
-            ->expects('getData')
-            ->andReturn([
-                ['foo' => 1, 'description' => 'bar'],
-            ])
-            ->once()
-            ->getMock();
-
-        new AutoCategories($static_reference);
-    }
-
-    /**
-     * @return void
-     */
     public function testIterator(): void
     {
         $array = [];
