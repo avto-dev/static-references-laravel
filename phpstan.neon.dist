@@ -1,6 +1,4 @@
 parameters:
   level: 'max'
   paths:
-    - src/References/AutoCategories
-    - src/References/AutoFines
-    - src/References/AutoRegions
+    - src

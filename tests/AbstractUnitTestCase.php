@@ -11,8 +11,6 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class AbstractUnitTestCase extends BaseTestCase
 {
-    use Traits\ApplicationHelpersTrait;
-
     /**
      * Creates the application.
      *

@@ -2,12 +2,10 @@
 
 namespace AvtoDev\StaticReferences\References;
 
-interface ReferenceInterface extends \IteratorAggregate, \Countable
+/**
+ * @extends \IteratorAggregate<\AvtoDev\StaticReferences\References\Entities\EntityInterface>
+ */
+interface ReferenceInterface extends \IteratorAggregate, \Countable, \Illuminate\Contracts\Support\Arrayable
 {
-    /**
-     * Get all of the entries in reference.
-     *
-     * @return array<ReferenceEntryInterface|mixed>
-     */
-    public function all(): array;
+    //
 }
