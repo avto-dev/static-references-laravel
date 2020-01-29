@@ -197,7 +197,7 @@ class AutoRegionsTest extends AbstractUnitTestCase
         $this->assertSame('foo title', $this->reference->getByAutoCode(10)->getTitle());
         $this->assertSame('bar title', $this->reference->getByAutoCode(20)->getTitle());
 
-        $this->assertNull($this->reference->getByAutoCode(\random_int(1, 100)));
+        $this->assertNull($this->reference->getByAutoCode(\random_int(21, 100)));
     }
 
     /**
@@ -208,7 +208,18 @@ class AutoRegionsTest extends AbstractUnitTestCase
         $this->assertSame('foo title', $this->reference->getByRegionCode(1)->getTitle());
         $this->assertSame('bar title', $this->reference->getByRegionCode(2)->getTitle());
 
-        $this->assertNull($this->reference->getByRegionCode(\random_int(1, 100)));
+        $this->assertNull($this->reference->getByRegionCode(\random_int(3, 100)));
+    }
+
+    /**
+     * @return void
+     */
+    public function testSameObjectOnDifferentGetters(): void
+    {
+        $first = $this->reference->getByRegionCode(1);
+        $second = $this->reference->getByAutoCode(10);
+
+        $this->assertSame($first, $second);
     }
 
     /**

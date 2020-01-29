@@ -54,7 +54,7 @@ class AutoRegions implements ReferenceInterface
 
             // burn gibdd codex index
             foreach ($auto_codes ?? [] as $auto_code) {
-                $this->auto_codes_idx[$auto_code] =&$this->entities[$code];
+                $this->auto_codes_idx[$auto_code] =& $this->entities[$code];
             }
         }
     }
@@ -145,16 +145,7 @@ class AutoRegions implements ReferenceInterface
         // Entry must be an array with 'code' key
         if (\is_array($entry) && \array_key_exists('code', $entry) && \is_int($entry['code'])) {
             // If 'gibdd' key exists - it must be an array
-            if (\array_key_exists('gibdd', $entry) && ! \is_array($entry['gibdd'])) {
-                return false;
-            }
-
-            // If 'code_iso_31662' key exists - it must be string
-            if (\array_key_exists('code_iso_31662', $entry) && ! \is_string($entry['code_iso_31662'])) {
-                return false;
-            }
-
-            return true;
+            return ! (\array_key_exists('gibdd', $entry) && ! \is_array($entry['gibdd']));
         }
 
         return false;
