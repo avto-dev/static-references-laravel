@@ -59,7 +59,7 @@ class SomeCommand extends \Illuminate\Console\Command
     public function handle(SubjectCodes $subject_codes, VehicleCategories $vehicle_categories): void
     {
         // Print all vehicle categories in a one string
-        $this->info(collect($vehicle_categories)->pluck('code')->implode(', ')); // A, A1, B, BE, B1, C...
+        $this->info(collect($vehicle_categories)->pluck('code')->implode(', ')); // A, A1, B, BE...
 
         // Get all GIBDD codes for moscow subject
         $this->info($subject_codes->getByGibddCode(77)->getGibddCodes()); // [77, 97, 99, 177, ...]
