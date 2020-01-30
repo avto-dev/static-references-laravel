@@ -6,10 +6,10 @@ namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\VehicleFineArticles;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferences\References\Entities\VehicleFineArticle;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
+use AvtoDev\StaticReferences\References\VehicleFineArticles;
+use AvtoDev\StaticReferences\References\Entities\VehicleFineArticle;
 use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 /**
