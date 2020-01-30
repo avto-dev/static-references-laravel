@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Maximal `illuminate\*` packages version now is `~6.0`
 - Interface `References\ReferenceInterface` now extends `IteratorAggregate, Countable, Illuminate\Contracts\Support\Arrayable` and not contains any methods
 - Package service-provider don't use cache for performance optimization
+- Performance improvements in `has*` methods _(indexes used)_
 
 ### Added
 
