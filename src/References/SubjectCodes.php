@@ -63,9 +63,9 @@ class SubjectCodes implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (SubjectCodesInfo $e) {
+        return \array_map(static function (SubjectCodesInfo $e): array {
             return $e->toArray();
-        }, $this->entities);
+        }, \array_values($this->entities));
     }
 
     /**

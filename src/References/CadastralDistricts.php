@@ -5,15 +5,14 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\References;
 
 use Generator;
-use AvtoDev\StaticReferences\References\Entities\VehicleType;
+use AvtoDev\StaticReferences\References\Entities\CadastralArea;
+use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
-class VehicleTypes implements ReferenceInterface
+class CadastralDistricts implements ReferenceInterface
 {
     /**
-     * Key is type code.
-     *
-     * @var array<int, VehicleType>
+     * @var array<int, CadastralDistrict>
      */
     protected $entities = [];
 
@@ -22,19 +21,24 @@ class VehicleTypes implements ReferenceInterface
      *
      * @param StaticReferenceInterface $static_reference
      *
-     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::vehicleTypes()
+     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::cadastralDistricts()
      */
     public function __construct(StaticReferenceInterface $static_reference)
     {
         foreach ((array) $static_reference->getData(true) as $datum) {
-            $this->entities[$datum['code']] = new VehicleType(
-                $datum['code'], $datum['title'], $datum['group_title'], $datum['group_slug']
-            );
+            $code  = $datum['code'];
+            $areas = [];
+
+            foreach ($datum['areas'] as $area_info) {
+                $areas[] = new CadastralArea($area_info['code'], $area_info['name']);
+            }
+
+            $this->entities[$code] = new CadastralDistrict($code, $datum['name'], $areas);
         }
     }
 
     /**
-     * @return Generator<VehicleType>|VehicleType[]
+     * @return Generator<CadastralDistrict>|CadastralDistrict[]
      */
     public function getIterator(): Generator
     {
@@ -48,25 +52,25 @@ class VehicleTypes implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (VehicleType $e): array {
+        return \array_map(static function (CadastralDistrict $e): array {
             return $e->toArray();
         }, \array_values($this->entities));
     }
 
     /**
-     * Get vehicle type entry by code.
+     * Get cadastral district by code.
      *
      * @param int $code
      *
-     * @return VehicleType|null
+     * @return CadastralDistrict|null
      */
-    public function getByCode(int $code): ?VehicleType
+    public function getByCode(int $code): ?CadastralDistrict
     {
         return $this->entities[$code] ?? null;
     }
 
     /**
-     * Check for vehicle type with passed code is exists in reference?
+     * Cadastral district by code is exists?
      *
      * @param int $code
      *

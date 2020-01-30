@@ -44,9 +44,9 @@ class VehicleCategories implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (VehicleCategory $e) {
+        return \array_map(static function (VehicleCategory $e): array {
             return $e->toArray();
-        }, $this->entities);
+        }, \array_values($this->entities));
     }
 
     /**

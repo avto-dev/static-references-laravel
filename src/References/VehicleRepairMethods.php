@@ -58,9 +58,9 @@ class VehicleRepairMethods implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (VehicleRepairMethod $e) {
+        return \array_map(static function (VehicleRepairMethod $e): array {
             return $e->toArray();
-        }, $this->entities);
+        }, \array_values($this->entities));
     }
 
     /**

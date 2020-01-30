@@ -46,9 +46,9 @@ class VehicleFineArticles implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (VehicleFineArticle $e) {
+        return \array_map(static function (VehicleFineArticle $e): array {
             return $e->toArray();
-        }, $this->entities);
+        }, \array_values($this->entities));
     }
 
     /**

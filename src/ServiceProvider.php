@@ -8,6 +8,7 @@ use AvtoDev\StaticReferences\References\SubjectCodes;
 use AvtoDev\StaticReferences\References\VehicleTypes;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
 use AvtoDev\StaticReferences\References\VehicleCategories;
+use AvtoDev\StaticReferences\References\CadastralDistricts;
 use AvtoDev\StaticReferences\References\VehicleFineArticles;
 use AvtoDev\StaticReferences\References\VehicleRepairMethods;
 use AvtoDev\StaticReferences\References\VehicleRegistrationActions;
@@ -21,6 +22,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(CadastralDistricts::class, static function (): CadastralDistricts {
+            return new References\CadastralDistricts(StaticReferencesData::cadastralDistricts());
+        });
+
         $this->app->singleton(SubjectCodes::class, static function (): SubjectCodes {
             return new References\SubjectCodes(StaticReferencesData::subjectCodes());
         });
