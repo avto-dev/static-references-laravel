@@ -5,9 +5,8 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\CadastralDistricts;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
+use AvtoDev\StaticReferences\References\CadastralDistricts;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
