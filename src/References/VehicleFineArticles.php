@@ -5,34 +5,34 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\References;
 
 use Generator;
-use AvtoDev\StaticReferences\References\Entities\AutoFine;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
+use AvtoDev\StaticReferences\References\Entities\VehicleFineArticle;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
-class AutoFines implements ReferenceInterface
+class VehicleFineArticles implements ReferenceInterface
 {
     /**
-     * @var array<string, AutoFine>
+     * @var array<string, VehicleFineArticle>
      */
     protected $entities = [];
 
     /**
      * Create a new reference instance.
      *
-     * @param StaticReference $static_reference
+     * @param StaticReferenceInterface $static_reference
      *
-     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getAutoFines()
+     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::vehicleFineArticles()
      */
-    public function __construct(StaticReference $static_reference)
+    public function __construct(StaticReferenceInterface $static_reference)
     {
         foreach ((array) $static_reference->getData(true) as $datum) {
-            $this->entities[$this->clearArticleValue($datum['article'])] = new AutoFine(
+            $this->entities[$this->clearArticleValue($datum['article'])] = new VehicleFineArticle(
                 $datum['article'], $datum['description']
             );
         }
     }
 
     /**
-     * @return Generator<AutoFine>|AutoFine[]
+     * @return Generator<VehicleFineArticle>|VehicleFineArticle[]
      */
     public function getIterator(): Generator
     {
@@ -46,7 +46,7 @@ class AutoFines implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (AutoFine $e) {
+        return \array_map(static function (VehicleFineArticle $e) {
             return $e->toArray();
         }, $this->entities);
     }
@@ -56,9 +56,9 @@ class AutoFines implements ReferenceInterface
      *
      * @param string $article
      *
-     * @return AutoFine|null
+     * @return VehicleFineArticle|null
      */
-    public function getByArticle(string $article): ?AutoFine
+    public function getByArticle(string $article): ?VehicleFineArticle
     {
         return $this->entities[$this->clearArticleValue($article)] ?? null;
     }

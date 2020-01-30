@@ -5,34 +5,34 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\References;
 
 use Generator;
-use AvtoDev\StaticReferences\References\Entities\RepairMethod;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
+use AvtoDev\StaticReferences\References\Entities\VehicleRepairMethod;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
-class RepairMethods implements ReferenceInterface
+class VehicleRepairMethods implements ReferenceInterface
 {
     /**
-     * @var array<int, RepairMethod>
+     * @var array<int, VehicleRepairMethod>
      */
     protected $entities = [];
 
     /**
-     * @var array<string, RepairMethod>
+     * @var array<string, VehicleRepairMethod>
      */
     protected $repair_codes_idx = [];
 
     /**
      * Create a new reference instance.
      *
-     * @param StaticReference $static_reference
+     * @param StaticReferenceInterface $static_reference
      *
-     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getRepairMethods()
+     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::vehicleRepairMethods()
      */
-    public function __construct(StaticReference $static_reference)
+    public function __construct(StaticReferenceInterface $static_reference)
     {
         $counter = 0;
 
         foreach ((array) $static_reference->getData(true) as $datum) {
-            $this->entities[$counter] = new RepairMethod($datum['codes'], $datum['description']);
+            $this->entities[$counter] = new VehicleRepairMethod($datum['codes'], $datum['description']);
 
             // burn repair codes index
             foreach ($datum['codes'] as $code) {
@@ -44,7 +44,7 @@ class RepairMethods implements ReferenceInterface
     }
 
     /**
-     * @return Generator<RepairMethod>|RepairMethod[]
+     * @return Generator<VehicleRepairMethod>|VehicleRepairMethod[]
      */
     public function getIterator(): Generator
     {
@@ -58,7 +58,7 @@ class RepairMethods implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (RepairMethod $e) {
+        return \array_map(static function (VehicleRepairMethod $e) {
             return $e->toArray();
         }, $this->entities);
     }
@@ -68,9 +68,9 @@ class RepairMethods implements ReferenceInterface
      *
      * @param string $repair_method_code
      *
-     * @return RepairMethod|null
+     * @return VehicleRepairMethod|null
      */
-    public function getByCode(string $repair_method_code): ?RepairMethod
+    public function getByCode(string $repair_method_code): ?VehicleRepairMethod
     {
         return $this->repair_codes_idx[$repair_method_code] ?? null;
     }

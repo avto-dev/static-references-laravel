@@ -5,34 +5,34 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\References;
 
 use Generator;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
-use AvtoDev\StaticReferences\References\Entities\RegistrationAction;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
+use AvtoDev\StaticReferences\References\Entities\VehicleRegistrationAction;
 
-class RegistrationActions implements ReferenceInterface
+class VehicleRegistrationActions implements ReferenceInterface
 {
     /**
-     * @var array<int, RegistrationAction>
+     * @var array<int, VehicleRegistrationAction>
      */
     protected $entities = [];
 
     /**
-     * @var array<int, RegistrationAction>
+     * @var array<int, VehicleRegistrationAction>
      */
     protected $codes_idx = [];
 
     /**
      * Create a new reference instance.
      *
-     * @param StaticReference $static_reference
+     * @param StaticReferenceInterface $static_reference
      *
-     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getRegistrationActions()
+     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::vehicleRegistrationActions()
      */
-    public function __construct(StaticReference $static_reference)
+    public function __construct(StaticReferenceInterface $static_reference)
     {
         $counter = 0;
 
         foreach ((array) $static_reference->getData(true) as $datum) {
-            $this->entities[$counter] = new RegistrationAction($datum['codes'], $datum['description']);
+            $this->entities[$counter] = new VehicleRegistrationAction($datum['codes'], $datum['description']);
 
             // burn codes index
             foreach ($datum['codes'] as $code) {
@@ -44,7 +44,7 @@ class RegistrationActions implements ReferenceInterface
     }
 
     /**
-     * @return Generator<RegistrationAction>|RegistrationAction[]
+     * @return Generator<VehicleRegistrationAction>|VehicleRegistrationAction[]
      */
     public function getIterator(): Generator
     {
@@ -58,7 +58,7 @@ class RegistrationActions implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (RegistrationAction $e) {
+        return \array_map(static function (VehicleRegistrationAction $e) {
             return $e->toArray();
         }, $this->entities);
     }
@@ -68,9 +68,9 @@ class RegistrationActions implements ReferenceInterface
      *
      * @param int $reg_action_code
      *
-     * @return RegistrationAction|null
+     * @return VehicleRegistrationAction|null
      */
-    public function getByCode(int $reg_action_code): ?RegistrationAction
+    public function getByCode(int $reg_action_code): ?VehicleRegistrationAction
     {
         return $this->codes_idx[$reg_action_code] ?? null;
     }

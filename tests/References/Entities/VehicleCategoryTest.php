@@ -7,20 +7,20 @@ namespace AvtoDev\StaticReferences\Tests\References\Entities;
 use Illuminate\Support\Str;
 use Tarampampam\Wrappers\Json;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferences\References\Entities\RepairMethod;
+use AvtoDev\StaticReferences\References\Entities\VehicleCategory;
 use AvtoDev\StaticReferences\References\Entities\EntityInterface;
 
 /**
- * @covers \AvtoDev\StaticReferences\References\Entities\RepairMethod<extended>
+ * @covers \AvtoDev\StaticReferences\References\Entities\VehicleCategory
  */
-class RepairMethodTest extends AbstractUnitTestCase
+class VehicleCategoryTest extends AbstractUnitTestCase
 {
     /**
      * @return void
      */
     public function testImplementation(): void
     {
-        $this->assertInstanceOf(EntityInterface::class, new RepairMethod([\random_int(1, 100)], Str::random()));
+        $this->assertInstanceOf(EntityInterface::class, new VehicleCategory(Str::random(), Str::random()));
     }
 
     /**
@@ -28,7 +28,7 @@ class RepairMethodTest extends AbstractUnitTestCase
      */
     public function testGetCode(): void
     {
-        $this->assertSame($codes = [\random_int(1, 100)], (new RepairMethod($codes, Str::random()))->getCodes());
+        $this->assertSame($code = Str::random(), (new VehicleCategory($code, Str::random()))->getCode());
     }
 
     /**
@@ -36,7 +36,7 @@ class RepairMethodTest extends AbstractUnitTestCase
      */
     public function testGetDescription(): void
     {
-        $this->assertSame($desc = Str::random(), (new RepairMethod([], $desc))->getDescription());
+        $this->assertSame($desc = Str::random(), (new VehicleCategory(Str::random(), $desc))->getDescription());
     }
 
     /**
@@ -44,9 +44,9 @@ class RepairMethodTest extends AbstractUnitTestCase
      */
     public function testToArray(): void
     {
-        $as_array = (new RepairMethod($codes = [\random_int(1, 100)], $description = Str::random()))->toArray();
+        $as_array = (new VehicleCategory($code = Str::random(), $description = Str::random()))->toArray();
 
-        $this->assertSame($codes, $as_array['codes']);
+        $this->assertSame($code, $as_array['code']);
         $this->assertSame($description, $as_array['description']);
     }
 
@@ -55,10 +55,10 @@ class RepairMethodTest extends AbstractUnitTestCase
      */
     public function testToJson(): void
     {
-        $as_json = (new RepairMethod($codes = [\random_int(1, 100)], $description = Str::random()))->toJson();
+        $as_json = (new VehicleCategory($code = Str::random(), $description = Str::random()))->toJson();
 
         $this->assertJsonStringEqualsJsonString(Json::encode([
-            'codes'       => $codes,
+            'code'        => $code,
             'description' => $description,
         ]), $as_json);
     }

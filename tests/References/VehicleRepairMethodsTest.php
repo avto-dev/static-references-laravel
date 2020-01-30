@@ -6,19 +6,19 @@ namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\AutoCategories;
+use AvtoDev\StaticReferences\References\VehicleRepairMethods;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
-use AvtoDev\StaticReferences\References\Entities\AutoCategory;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
+use AvtoDev\StaticReferences\References\Entities\VehicleRepairMethod;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 /**
- * @covers \AvtoDev\StaticReferences\References\AutoCategories<extended>
+ * @covers \AvtoDev\StaticReferences\References\VehicleRepairMethods
  */
-class AutoCategoriesTest extends AbstractUnitTestCase
+class VehicleRepairMethodsTest extends AbstractUnitTestCase
 {
     /**
-     * @var AutoCategories
+     * @var VehicleRepairMethods
      */
     protected $reference;
 
@@ -29,17 +29,17 @@ class AutoCategoriesTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        /** @var m\MockInterface|StaticReference $static_reference */
-        $static_reference = m::mock(StaticReference::class)
+        /** @var m\MockInterface|StaticReferenceInterface $static_reference */
+        $static_reference = m::mock(StaticReferenceInterface::class)
             ->expects('getData')
             ->andReturn([
-                ['code' => 'foo', 'description' => 'foo desc'],
-                ['code' => 'bar', 'description' => 'bar desc'],
+                ['codes' => ['A', 'B'], 'description' => 'foo desc'],
+                ['codes' => ['C'], 'description' => 'bar desc'],
             ])
             ->once()
             ->getMock();
 
-        $this->reference = new AutoCategories($static_reference);
+        $this->reference = new VehicleRepairMethods($static_reference);
     }
 
     /**
@@ -58,7 +58,7 @@ class AutoCategoriesTest extends AbstractUnitTestCase
         $array = [];
 
         foreach ($this->reference as $item) {
-            $this->assertInstanceOf(AutoCategory::class, $item);
+            $this->assertInstanceOf(VehicleRepairMethod::class, $item);
             $array[] = $item;
         }
 
@@ -85,7 +85,10 @@ class AutoCategoriesTest extends AbstractUnitTestCase
      */
     public function testGetByCode(): void
     {
-        $this->assertSame('foo desc', $this->reference->getByCode('foo')->getDescription());
+        $this->assertSame('foo desc', $this->reference->getByCode('A')->getDescription());
+        $this->assertSame('foo desc', $this->reference->getByCode('B')->getDescription());
+        $this->assertSame('bar desc', $this->reference->getByCode('C')->getDescription());
+
         $this->assertNull($this->reference->getByCode(Str::random()));
     }
 
@@ -94,10 +97,22 @@ class AutoCategoriesTest extends AbstractUnitTestCase
      */
     public function testHasCode(): void
     {
-        $this->assertTrue($this->reference->hasCode('foo'));
-        $this->assertTrue($this->reference->hasCode('bar'));
+        $this->assertTrue($this->reference->hasCode('A'));
+        $this->assertTrue($this->reference->hasCode('B'));
+        $this->assertTrue($this->reference->hasCode('C'));
 
         $this->assertFalse($this->reference->hasCode(Str::random()));
+    }
+
+    /**
+     * @return void
+     */
+    public function testSameObjectOnDifferentGetters(): void
+    {
+        $first  = $this->reference->getByCode('A');
+        $second = $this->reference->getByCode('B');
+
+        $this->assertSame($first, $second);
     }
 
     /**

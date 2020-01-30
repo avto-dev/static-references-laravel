@@ -7,20 +7,20 @@ namespace AvtoDev\StaticReferences\Tests\References\Entities;
 use Illuminate\Support\Str;
 use Tarampampam\Wrappers\Json;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferences\References\Entities\AutoFine;
 use AvtoDev\StaticReferences\References\Entities\EntityInterface;
+use AvtoDev\StaticReferences\References\Entities\VehicleRegistrationAction;
 
 /**
- * @covers \AvtoDev\StaticReferences\References\Entities\AutoFine<extended>
+ * @covers \AvtoDev\StaticReferences\References\Entities\VehicleRegistrationAction
  */
-class AutoFineTest extends AbstractUnitTestCase
+class VehicleRegistrationActionTest extends AbstractUnitTestCase
 {
     /**
      * @return void
      */
     public function testImplementation(): void
     {
-        $this->assertInstanceOf(EntityInterface::class, new AutoFine(Str::random(), Str::random()));
+        $this->assertInstanceOf(EntityInterface::class, new VehicleRegistrationAction([\random_int(1, 100)], Str::random()));
     }
 
     /**
@@ -28,7 +28,7 @@ class AutoFineTest extends AbstractUnitTestCase
      */
     public function testGetCode(): void
     {
-        $this->assertSame($article = Str::random(), (new AutoFine($article, Str::random()))->getArticle());
+        $this->assertSame($codes = [\random_int(1, 100)], (new VehicleRegistrationAction($codes, Str::random()))->getCodes());
     }
 
     /**
@@ -36,7 +36,7 @@ class AutoFineTest extends AbstractUnitTestCase
      */
     public function testGetDescription(): void
     {
-        $this->assertSame($desc = Str::random(), (new AutoFine(Str::random(), $desc))->getDescription());
+        $this->assertSame($desc = Str::random(), (new VehicleRegistrationAction([], $desc))->getDescription());
     }
 
     /**
@@ -44,9 +44,9 @@ class AutoFineTest extends AbstractUnitTestCase
      */
     public function testToArray(): void
     {
-        $as_array = (new AutoFine($article = Str::random(), $description = Str::random()))->toArray();
+        $as_array = (new VehicleRegistrationAction($codes = [\random_int(1, 100)], $description = Str::random()))->toArray();
 
-        $this->assertSame($article, $as_array['article']);
+        $this->assertSame($codes, $as_array['codes']);
         $this->assertSame($description, $as_array['description']);
     }
 
@@ -55,10 +55,10 @@ class AutoFineTest extends AbstractUnitTestCase
      */
     public function testToJson(): void
     {
-        $as_json = (new AutoFine($article = Str::random(), $description = Str::random()))->toJson();
+        $as_json = (new VehicleRegistrationAction($codes = [\random_int(1, 100)], $description = Str::random()))->toJson();
 
         $this->assertJsonStringEqualsJsonString(Json::encode([
-            'article'     => $article,
+            'codes'       => $codes,
             'description' => $description,
         ]), $as_json);
     }

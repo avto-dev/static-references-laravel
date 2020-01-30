@@ -5,20 +5,19 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
-use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\RepairMethods;
+use AvtoDev\StaticReferences\References\VehicleTypes;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
-use AvtoDev\StaticReferences\References\Entities\RepairMethod;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
+use AvtoDev\StaticReferences\References\Entities\VehicleType;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 /**
- * @covers \AvtoDev\StaticReferences\References\RepairMethods<extended>
+ * @covers \AvtoDev\StaticReferences\References\VehicleTypes
  */
-class RepairMethodsTest extends AbstractUnitTestCase
+class VehicleTypesTest extends AbstractUnitTestCase
 {
     /**
-     * @var RepairMethods
+     * @var VehicleTypes
      */
     protected $reference;
 
@@ -29,17 +28,17 @@ class RepairMethodsTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        /** @var m\MockInterface|StaticReference $static_reference */
-        $static_reference = m::mock(StaticReference::class)
+        /** @var m\MockInterface|StaticReferenceInterface $static_reference */
+        $static_reference = m::mock(StaticReferenceInterface::class)
             ->expects('getData')
             ->andReturn([
-                ['codes' => ['A', 'B'], 'description' => 'foo desc'],
-                ['codes' => ['C'], 'description' => 'bar desc'],
+                ['code' => 1, 'title' => 'foo title', 'group_title' => 'foo gr.title', 'group_slug' => 'foo gr.slug'],
+                ['code' => 2, 'title' => 'bar title', 'group_title' => 'bar gr.title', 'group_slug' => 'bar gr.slug'],
             ])
             ->once()
             ->getMock();
 
-        $this->reference = new RepairMethods($static_reference);
+        $this->reference = new VehicleTypes($static_reference);
     }
 
     /**
@@ -58,7 +57,7 @@ class RepairMethodsTest extends AbstractUnitTestCase
         $array = [];
 
         foreach ($this->reference as $item) {
-            $this->assertInstanceOf(RepairMethod::class, $item);
+            $this->assertInstanceOf(VehicleType::class, $item);
             $array[] = $item;
         }
 
@@ -85,11 +84,10 @@ class RepairMethodsTest extends AbstractUnitTestCase
      */
     public function testGetByCode(): void
     {
-        $this->assertSame('foo desc', $this->reference->getByCode('A')->getDescription());
-        $this->assertSame('foo desc', $this->reference->getByCode('B')->getDescription());
-        $this->assertSame('bar desc', $this->reference->getByCode('C')->getDescription());
+        $this->assertSame('foo title', $this->reference->getByCode(1)->getTitle());
+        $this->assertSame('bar title', $this->reference->getByCode(2)->getTitle());
 
-        $this->assertNull($this->reference->getByCode(Str::random()));
+        $this->assertNull($this->reference->getByCode(\random_int(3, 100)));
     }
 
     /**
@@ -97,11 +95,10 @@ class RepairMethodsTest extends AbstractUnitTestCase
      */
     public function testHasCode(): void
     {
-        $this->assertTrue($this->reference->hasCode('A'));
-        $this->assertTrue($this->reference->hasCode('B'));
-        $this->assertTrue($this->reference->hasCode('C'));
+        $this->assertTrue($this->reference->hasCode(1));
+        $this->assertTrue($this->reference->hasCode(2));
 
-        $this->assertFalse($this->reference->hasCode(Str::random()));
+        $this->assertFalse($this->reference->hasCode(\random_int(3, 100)));
     }
 
     /**

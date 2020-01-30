@@ -7,9 +7,8 @@ namespace AvtoDev\StaticReferences\Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\StaticReferences\ServiceProvider;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
-abstract class AbstractUnitTestCase extends BaseTestCase
+abstract class AbstractUnitTestCase extends \Illuminate\Foundation\Testing\TestCase
 {
     /**
      * Creates the application.

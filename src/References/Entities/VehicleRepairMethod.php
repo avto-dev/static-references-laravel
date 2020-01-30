@@ -6,12 +6,12 @@ namespace AvtoDev\StaticReferences\References\Entities;
 
 use Tarampampam\Wrappers\Json;
 
-class AutoCategory implements EntityInterface
+class VehicleRepairMethod implements EntityInterface
 {
     /**
-     * @var string
+     * @var string[]
      */
-    protected $code;
+    protected $codes;
 
     /**
      * @var string
@@ -21,27 +21,27 @@ class AutoCategory implements EntityInterface
     /**
      * Create a new entity instance.
      *
-     * @param string $code
-     * @param string $description
+     * @param string[] $codes
+     * @param string   $description
      */
-    public function __construct(string $code, string $description)
+    public function __construct(array $codes, string $description)
     {
-        $this->code        = $code;
+        $this->codes       = $codes;
         $this->description = $description;
     }
 
     /**
-     * Get category code.
+     * Get repair method codes.
      *
-     * @return string
+     * @return string[]
      */
-    public function getCode(): string
+    public function getCodes(): array
     {
-        return $this->code;
+        return $this->codes;
     }
 
     /**
-     * get category description.
+     * Get repair method description.
      *
      * @return string
      */
@@ -53,12 +53,12 @@ class AutoCategory implements EntityInterface
     /**
      * Get the instance as an array.
      *
-     * @return array{code:string, description:string}
+     * @return array{codes:array, description:string}
      */
     public function toArray(): array
     {
         return [
-            'code'        => $this->code,
+            'codes'       => $this->codes,
             'description' => $this->description,
         ];
     }

@@ -6,7 +6,7 @@ namespace AvtoDev\StaticReferences\References\Entities;
 
 use Tarampampam\Wrappers\Json;
 
-class RegistrationAction implements EntityInterface
+class VehicleRegistrationAction implements EntityInterface
 {
     /**
      * @var int[]

@@ -6,12 +6,12 @@ namespace AvtoDev\StaticReferences\References\Entities;
 
 use Tarampampam\Wrappers\Json;
 
-class AutoFine implements EntityInterface
+class VehicleCategory implements EntityInterface
 {
     /**
      * @var string
      */
-    protected $article;
+    protected $code;
 
     /**
      * @var string
@@ -21,27 +21,27 @@ class AutoFine implements EntityInterface
     /**
      * Create a new entity instance.
      *
-     * @param string $article
+     * @param string $code
      * @param string $description
      */
-    public function __construct(string $article, string $description)
+    public function __construct(string $code, string $description)
     {
-        $this->article     = $article;
+        $this->code        = $code;
         $this->description = $description;
     }
 
     /**
-     * Get auto fine article number.
+     * Get category code.
      *
      * @return string
      */
-    public function getArticle(): string
+    public function getCode(): string
     {
-        return $this->article;
+        return $this->code;
     }
 
     /**
-     * Get fine article description.
+     * Get category description.
      *
      * @return string
      */
@@ -53,12 +53,12 @@ class AutoFine implements EntityInterface
     /**
      * Get the instance as an array.
      *
-     * @return array{article:string, description:string}
+     * @return array{code:string, description:string}
      */
     public function toArray(): array
     {
         return [
-            'article'     => $this->article,
+            'code'        => $this->code,
             'description' => $this->description,
         ];
     }

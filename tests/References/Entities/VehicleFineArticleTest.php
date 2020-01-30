@@ -7,20 +7,20 @@ namespace AvtoDev\StaticReferences\Tests\References\Entities;
 use Illuminate\Support\Str;
 use Tarampampam\Wrappers\Json;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
+use AvtoDev\StaticReferences\References\Entities\VehicleFineArticle;
 use AvtoDev\StaticReferences\References\Entities\EntityInterface;
-use AvtoDev\StaticReferences\References\Entities\RegistrationAction;
 
 /**
- * @covers \AvtoDev\StaticReferences\References\Entities\RegistrationAction<extended>
+ * @covers \AvtoDev\StaticReferences\References\Entities\VehicleFineArticle
  */
-class RegistrationActionTest extends AbstractUnitTestCase
+class VehicleFineArticleTest extends AbstractUnitTestCase
 {
     /**
      * @return void
      */
     public function testImplementation(): void
     {
-        $this->assertInstanceOf(EntityInterface::class, new RegistrationAction([\random_int(1, 100)], Str::random()));
+        $this->assertInstanceOf(EntityInterface::class, new VehicleFineArticle(Str::random(), Str::random()));
     }
 
     /**
@@ -28,7 +28,7 @@ class RegistrationActionTest extends AbstractUnitTestCase
      */
     public function testGetCode(): void
     {
-        $this->assertSame($codes = [\random_int(1, 100)], (new RegistrationAction($codes, Str::random()))->getCodes());
+        $this->assertSame($article = Str::random(), (new VehicleFineArticle($article, Str::random()))->getArticle());
     }
 
     /**
@@ -36,7 +36,7 @@ class RegistrationActionTest extends AbstractUnitTestCase
      */
     public function testGetDescription(): void
     {
-        $this->assertSame($desc = Str::random(), (new RegistrationAction([], $desc))->getDescription());
+        $this->assertSame($desc = Str::random(), (new VehicleFineArticle(Str::random(), $desc))->getDescription());
     }
 
     /**
@@ -44,9 +44,9 @@ class RegistrationActionTest extends AbstractUnitTestCase
      */
     public function testToArray(): void
     {
-        $as_array = (new RegistrationAction($codes = [\random_int(1, 100)], $description = Str::random()))->toArray();
+        $as_array = (new VehicleFineArticle($article = Str::random(), $description = Str::random()))->toArray();
 
-        $this->assertSame($codes, $as_array['codes']);
+        $this->assertSame($article, $as_array['article']);
         $this->assertSame($description, $as_array['description']);
     }
 
@@ -55,10 +55,10 @@ class RegistrationActionTest extends AbstractUnitTestCase
      */
     public function testToJson(): void
     {
-        $as_json = (new RegistrationAction($codes = [\random_int(1, 100)], $description = Str::random()))->toJson();
+        $as_json = (new VehicleFineArticle($article = Str::random(), $description = Str::random()))->toJson();
 
         $this->assertJsonStringEqualsJsonString(Json::encode([
-            'codes'       => $codes,
+            'article'     => $article,
             'description' => $description,
         ]), $as_json);
     }

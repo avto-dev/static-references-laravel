@@ -7,17 +7,17 @@ namespace AvtoDev\StaticReferences\Tests\References;
 use Mockery as m;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
-use AvtoDev\StaticReferences\References\RegistrationActions;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
-use AvtoDev\StaticReferences\References\Entities\RegistrationAction;
+use AvtoDev\StaticReferences\References\VehicleRegistrationActions;
+use AvtoDev\StaticReferences\References\Entities\VehicleRegistrationAction;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 /**
- * @covers \AvtoDev\StaticReferences\References\RegistrationActions<extended>
+ * @covers \AvtoDev\StaticReferences\References\VehicleRegistrationActions
  */
-class RegistrationActionsTest extends AbstractUnitTestCase
+class VehicleRegistrationActionsTest extends AbstractUnitTestCase
 {
     /**
-     * @var RegistrationActions
+     * @var VehicleRegistrationActions
      */
     protected $reference;
 
@@ -28,8 +28,8 @@ class RegistrationActionsTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        /** @var m\MockInterface|StaticReference $static_reference */
-        $static_reference = m::mock(StaticReference::class)
+        /** @var m\MockInterface|StaticReferenceInterface $static_reference */
+        $static_reference = m::mock(StaticReferenceInterface::class)
             ->expects('getData')
             ->andReturn([
                 ['codes' => [1, 2], 'description' => 'foo desc'],
@@ -38,7 +38,7 @@ class RegistrationActionsTest extends AbstractUnitTestCase
             ->once()
             ->getMock();
 
-        $this->reference = new RegistrationActions($static_reference);
+        $this->reference = new VehicleRegistrationActions($static_reference);
     }
 
     /**
@@ -57,7 +57,7 @@ class RegistrationActionsTest extends AbstractUnitTestCase
         $array = [];
 
         foreach ($this->reference as $item) {
-            $this->assertInstanceOf(RegistrationAction::class, $item);
+            $this->assertInstanceOf(VehicleRegistrationAction::class, $item);
             $array[] = $item;
         }
 
@@ -103,6 +103,17 @@ class RegistrationActionsTest extends AbstractUnitTestCase
         $this->assertTrue($this->reference->hasCode(4));
 
         $this->assertFalse($this->reference->hasCode(\random_int(5, 100)));
+    }
+
+    /**
+     * @return void
+     */
+    public function testSameObjectOnDifferentGetters(): void
+    {
+        $first  = $this->reference->getByCode(1);
+        $second = $this->reference->getByCode(2);
+
+        $this->assertSame($first, $second);
     }
 
     /**

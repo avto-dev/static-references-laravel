@@ -6,19 +6,19 @@ namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\AutoFines;
+use AvtoDev\StaticReferences\References\VehicleFineArticles;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferences\References\Entities\AutoFine;
+use AvtoDev\StaticReferences\References\Entities\VehicleFineArticle;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 /**
- * @covers \AvtoDev\StaticReferences\References\AutoFines<extended>
+ * @covers \AvtoDev\StaticReferences\References\VehicleFineArticles
  */
-class AutoFinesTest extends AbstractUnitTestCase
+class VehicleFineArticlesTest extends AbstractUnitTestCase
 {
     /**
-     * @var AutoFines
+     * @var VehicleFineArticles
      */
     protected $reference;
 
@@ -29,8 +29,8 @@ class AutoFinesTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        /** @var m\MockInterface|StaticReference $static_reference */
-        $static_reference = m::mock(StaticReference::class)
+        /** @var m\MockInterface|StaticReferenceInterface $static_reference */
+        $static_reference = m::mock(StaticReferenceInterface::class)
             ->expects('getData')
             ->andReturn([
                 ['article' => '1.2.3 Ч.3', 'description' => 'foo desc'],
@@ -39,7 +39,7 @@ class AutoFinesTest extends AbstractUnitTestCase
             ->once()
             ->getMock();
 
-        $this->reference = new AutoFines($static_reference);
+        $this->reference = new VehicleFineArticles($static_reference);
     }
 
     /**
@@ -58,7 +58,7 @@ class AutoFinesTest extends AbstractUnitTestCase
         $array = [];
 
         foreach ($this->reference as $item) {
-            $this->assertInstanceOf(AutoFine::class, $item);
+            $this->assertInstanceOf(VehicleFineArticle::class, $item);
             $array[] = $item;
         }
 

@@ -5,32 +5,32 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\References;
 
 use Generator;
-use AvtoDev\StaticReferences\References\Entities\AutoCategory;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
+use AvtoDev\StaticReferences\References\Entities\VehicleCategory;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
-class AutoCategories implements ReferenceInterface
+class VehicleCategories implements ReferenceInterface
 {
     /**
-     * @var array<string, AutoCategory>
+     * @var array<string, VehicleCategory>
      */
     protected $entities = [];
 
     /**
      * Create a new reference instance.
      *
-     * @param StaticReference $static_reference
+     * @param StaticReferenceInterface $static_reference
      *
-     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::getAutoCategories()
+     * @see \AvtoDev\StaticReferencesData\StaticReferencesData::vehicleCategories()
      */
-    public function __construct(StaticReference $static_reference)
+    public function __construct(StaticReferenceInterface $static_reference)
     {
         foreach ((array) $static_reference->getData(true) as $datum) {
-            $this->entities[$datum['code']] = new AutoCategory($datum['code'], $datum['description']);
+            $this->entities[$datum['code']] = new VehicleCategory($datum['code'], $datum['description']);
         }
     }
 
     /**
-     * @return Generator<AutoCategory>|AutoCategory[]
+     * @return Generator<VehicleCategory>|VehicleCategory[]
      */
     public function getIterator(): Generator
     {
@@ -44,7 +44,7 @@ class AutoCategories implements ReferenceInterface
      */
     public function toArray(): array
     {
-        return \array_map(static function (AutoCategory $e) {
+        return \array_map(static function (VehicleCategory $e) {
             return $e->toArray();
         }, $this->entities);
     }
@@ -54,9 +54,9 @@ class AutoCategories implements ReferenceInterface
      *
      * @param string $code
      *
-     * @return AutoCategory|null
+     * @return VehicleCategory|null
      */
-    public function getByCode(string $code): ?AutoCategory
+    public function getByCode(string $code): ?VehicleCategory
     {
         return $this->entities[$code] ?? null;
     }

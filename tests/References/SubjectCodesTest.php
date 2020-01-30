@@ -5,19 +5,19 @@ declare(strict_types = 1);
 namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
-use AvtoDev\StaticReferences\References\AutoRegions;
+use AvtoDev\StaticReferences\References\SubjectCodes;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
-use AvtoDev\StaticReferences\References\Entities\AutoRegion;
-use AvtoDev\StaticReferencesData\ReferencesData\StaticReference;
+use AvtoDev\StaticReferences\References\Entities\SubjectCodesInfo;
+use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 
 /**
- * @covers \AvtoDev\StaticReferences\References\AutoRegions<extended>
+ * @covers \AvtoDev\StaticReferences\References\SubjectCodes
  */
-class AutoRegionsTest extends AbstractUnitTestCase
+class SubjectCodesTest extends AbstractUnitTestCase
 {
     /**
-     * @var AutoRegions
+     * @var SubjectCodes
      */
     protected $reference;
 
@@ -28,33 +28,27 @@ class AutoRegionsTest extends AbstractUnitTestCase
     {
         parent::setUp();
 
-        /** @var m\MockInterface|StaticReference $static_reference */
-        $static_reference = m::mock(StaticReference::class)
+        /** @var m\MockInterface|StaticReferenceInterface $static_reference */
+        $static_reference = m::mock(StaticReferenceInterface::class)
             ->expects('getData')
             ->andReturn([
                 [
                     'title'          => 'foo title',
-                    'short'          => ['fo'],
                     'code'           => 1,
                     'gibdd'          => [10],
-                    'okato'          => 'okato-1',
                     'code_iso_31662' => 'foo-1',
-                    'type'           => 'foo type',
                 ],
                 [
                     'title'          => 'bar title',
-                    'short'          => ['br'],
                     'code'           => 2,
                     'gibdd'          => [20],
-                    'okato'          => 'okato-2',
                     'code_iso_31662' => 'bar-1',
-                    'type'           => 'bar type',
                 ],
             ])
             ->once()
             ->getMock();
 
-        $this->reference = new AutoRegions($static_reference);
+        $this->reference = new SubjectCodes($static_reference);
     }
 
     /**
@@ -73,7 +67,7 @@ class AutoRegionsTest extends AbstractUnitTestCase
         $array = [];
 
         foreach ($this->reference as $item) {
-            $this->assertInstanceOf(AutoRegion::class, $item);
+            $this->assertInstanceOf(SubjectCodesInfo::class, $item);
             $array[] = $item;
         }
 
@@ -98,45 +92,45 @@ class AutoRegionsTest extends AbstractUnitTestCase
     /**
      * @return void
      */
-    public function testGetByAutoCode(): void
+    public function testGetByGibddCode(): void
     {
-        $this->assertSame('foo title', $this->reference->getByAutoCode(10)->getTitle());
-        $this->assertSame('bar title', $this->reference->getByAutoCode(20)->getTitle());
+        $this->assertSame('foo title', $this->reference->getByGibddCode(10)->getTitle());
+        $this->assertSame('bar title', $this->reference->getByGibddCode(20)->getTitle());
 
-        $this->assertNull($this->reference->getByAutoCode(\random_int(21, 100)));
+        $this->assertNull($this->reference->getByGibddCode(\random_int(21, 100)));
     }
 
     /**
      * @return void
      */
-    public function testHasAutoCode(): void
+    public function testHasGibddCode(): void
     {
-        $this->assertTrue($this->reference->hasAutoCode(10));
-        $this->assertTrue($this->reference->hasAutoCode(20));
+        $this->assertTrue($this->reference->hasGibddCode(10));
+        $this->assertTrue($this->reference->hasGibddCode(20));
 
-        $this->assertFalse($this->reference->hasAutoCode(\random_int(21, 100)));
+        $this->assertFalse($this->reference->hasGibddCode(\random_int(21, 100)));
     }
 
     /**
      * @return void
      */
-    public function testGetByRegionCode(): void
+    public function testGetBySubjectCode(): void
     {
-        $this->assertSame('foo title', $this->reference->getByRegionCode(1)->getTitle());
-        $this->assertSame('bar title', $this->reference->getByRegionCode(2)->getTitle());
+        $this->assertSame('foo title', $this->reference->getBySubjectCode(1)->getTitle());
+        $this->assertSame('bar title', $this->reference->getBySubjectCode(2)->getTitle());
 
-        $this->assertNull($this->reference->getByRegionCode(\random_int(3, 100)));
+        $this->assertNull($this->reference->getBySubjectCode(\random_int(3, 100)));
     }
 
     /**
      * @return void
      */
-    public function testHasRegionCode(): void
+    public function testHasSubjectCode(): void
     {
-        $this->assertTrue($this->reference->hasRegionCode(1));
-        $this->assertTrue($this->reference->hasRegionCode(2));
+        $this->assertTrue($this->reference->hasSubjectCode(1));
+        $this->assertTrue($this->reference->hasSubjectCode(2));
 
-        $this->assertFalse($this->reference->hasRegionCode(\random_int(3, 100)));
+        $this->assertFalse($this->reference->hasSubjectCode(\random_int(3, 100)));
     }
 
     /**
@@ -144,8 +138,8 @@ class AutoRegionsTest extends AbstractUnitTestCase
      */
     public function testSameObjectOnDifferentGetters(): void
     {
-        $first  = $this->reference->getByRegionCode(1);
-        $second = $this->reference->getByAutoCode(10);
+        $first  = $this->reference->getBySubjectCode(1);
+        $second = $this->reference->getByGibddCode(10);
 
         $this->assertSame($first, $second);
     }
