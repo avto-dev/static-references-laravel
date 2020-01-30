@@ -7,8 +7,8 @@ namespace AvtoDev\StaticReferences\Tests\References\Entities;
 use Illuminate\Support\Str;
 use Tarampampam\Wrappers\Json;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
-use AvtoDev\StaticReferences\References\Entities\VehicleFineArticle;
 use AvtoDev\StaticReferences\References\Entities\EntityInterface;
+use AvtoDev\StaticReferences\References\Entities\VehicleFineArticle;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\Entities\VehicleFineArticle

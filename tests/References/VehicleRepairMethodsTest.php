@@ -6,9 +6,9 @@ namespace AvtoDev\StaticReferences\Tests\References;
 
 use Mockery as m;
 use Illuminate\Support\Str;
-use AvtoDev\StaticReferences\References\VehicleRepairMethods;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
+use AvtoDev\StaticReferences\References\VehicleRepairMethods;
 use AvtoDev\StaticReferences\References\Entities\VehicleRepairMethod;
 use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
 

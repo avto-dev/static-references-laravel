@@ -8,8 +8,8 @@ use Mockery as m;
 use AvtoDev\StaticReferences\Tests\AbstractUnitTestCase;
 use AvtoDev\StaticReferences\References\ReferenceInterface;
 use AvtoDev\StaticReferences\References\VehicleRegistrationActions;
-use AvtoDev\StaticReferences\References\Entities\VehicleRegistrationAction;
 use AvtoDev\StaticReferencesData\ReferencesData\StaticReferenceInterface;
+use AvtoDev\StaticReferences\References\Entities\VehicleRegistrationAction;
 
 /**
  * @covers \AvtoDev\StaticReferences\References\VehicleRegistrationActions
