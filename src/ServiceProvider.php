@@ -4,37 +4,17 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences;
 
-use Exception;
-use Carbon\Carbon;
-use Illuminate\Contracts\Container\Container;
-use AvtoDev\StaticReferences\References\ReferenceInterface;
-use Illuminate\Contracts\Cache\Repository as CacheContract;
-use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
-use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
-use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
+use AvtoDev\StaticReferences\References\SubjectCodes;
+use AvtoDev\StaticReferences\References\VehicleTypes;
+use AvtoDev\StaticReferencesData\StaticReferencesData;
+use AvtoDev\StaticReferences\References\VehicleCategories;
+use AvtoDev\StaticReferences\References\CadastralDistricts;
+use AvtoDev\StaticReferences\References\VehicleFineArticles;
+use AvtoDev\StaticReferences\References\VehicleRepairMethods;
+use AvtoDev\StaticReferences\References\VehicleRegistrationActions;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    /**
-     * Get references classes.
-     *
-     * @return string[]
-     */
-    public function getReferencesClasses(): array
-    {
-        return [
-            AutoRegions::class,
-            AutoCategories::class,
-            RegistrationActions::class,
-            RepairMethods::class,
-            AutoFines::class,
-            CadastralRegions::class,
-        ];
-    }
-
     /**
      * Register package services.
      *
@@ -42,64 +22,32 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register(): void
     {
-        foreach ($this->getReferencesClasses() as $references_class) {
-            $this->app->singleton($references_class, function (Container $app) use ($references_class) {
-                return $this->bootUpReferenceInstance($app, $references_class);
-            });
-        }
-    }
+        $this->app->singleton(CadastralDistricts::class, static function (): CadastralDistricts {
+            return new CadastralDistricts(StaticReferencesData::cadastralDistricts());
+        });
 
-    /**
-     * Get reference instance by class name.
-     *
-     * @param Container $app
-     * @param string    $references_class
-     *
-     * @throws Exception
-     *
-     * @return ReferenceInterface
-     */
-    protected function bootUpReferenceInstance(Container $app, string $references_class): ReferenceInterface
-    {
-        $cache = $this->cacheFactory($app);
+        $this->app->singleton(SubjectCodes::class, static function (): SubjectCodes {
+            return new SubjectCodes(StaticReferencesData::subjectCodes());
+        });
 
-        /** @var ReferenceInterface $references_class */
-        $hash = $references_class::getVendorStaticReferenceInstance()->getHash();
+        $this->app->singleton(VehicleCategories::class, static function (): VehicleCategories {
+            return new VehicleCategories(StaticReferencesData::vehicleCategories());
+        });
 
-        if ($cache->has($cache_key = $this->generateCacheKey($references_class, $hash))) {
-            return $cache->get($cache_key);
-        }
+        $this->app->singleton(VehicleFineArticles::class, static function (): VehicleFineArticles {
+            return new VehicleFineArticles(StaticReferencesData::vehicleFineArticles());
+        });
 
-        $instance = new $references_class;
+        $this->app->singleton(VehicleRegistrationActions::class, static function (): VehicleRegistrationActions {
+            return new VehicleRegistrationActions(StaticReferencesData::vehicleRegistrationActions());
+        });
 
-        // По умолчанию - храним справочник в кэше одни сутки до его пересоздания
-        $cache->put($cache_key, $instance, Carbon::now()->addDays(1));
+        $this->app->singleton(VehicleRepairMethods::class, static function (): VehicleRepairMethods {
+            return new VehicleRepairMethods(StaticReferencesData::vehicleRepairMethods());
+        });
 
-        return $instance;
-    }
-
-    /**
-     * Generate cache key name.
-     *
-     * @param array ...$arguments
-     *
-     * @return string
-     */
-    protected function generateCacheKey(...$arguments): string
-    {
-        return \sprintf('static_reference_%s', \crc32(\serialize($arguments)));
-    }
-
-    /**
-     * Get cache instance.
-     *
-     * @param Container   $app
-     * @param null|string $cache_storage_name
-     *
-     * @return CacheContract
-     */
-    protected function cacheFactory(Container $app, ?string $cache_storage_name = null): CacheContract
-    {
-        return $app->make('cache')->store($cache_storage_name ?? $app->make('config')->get('cache.default'));
+        $this->app->singleton(VehicleTypes::class, static function (): VehicleTypes {
+            return new VehicleTypes(StaticReferencesData::vehicleTypes());
+        });
     }
 }

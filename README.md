@@ -2,7 +2,7 @@
   <img src="https://laravel.com/assets/img/components/logo-laravel.svg" alt="Laravel" width="240" />
 </p>
 
-# Laravel-пакет для работы со статическими справочниками
+# Wrappers around data from `static-references-data`
 
 [![Version][badge_packagist_version]][link_packagist]
 [![Version][badge_php_version]][link_packagist]
@@ -11,161 +11,67 @@
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
 
-При помощи данного пакета вы сможете интегрировать сервис по работе со статическими справочниками в ваше **Laravel >=5.4** приложение с помощью нескольких простых шагов.
+Using this package you can get access to the data from package [avto-dev/static-references-data][static-references-data] simpler and more convenient.
+
+Service-provider for integration with Laravel application comes too.
 
 ## Install
 
 Require this package with composer using the following command:
 
 ```shell
-$ composer require avto-dev/static-references-laravel "^3.0"
+$ composer require avto-dev/static-references-laravel "^4.0"
 ```
 
 > Installed `composer` is required ([how to install composer][getcomposer]).
 
 > You need to fix the major version of package.
 
-Если вы используете Laravel версии 5.5 и выше, то сервис-провайдер данного пакета будет зарегистрирован автоматически. В противном случае вам необходимо самостоятельно зарегистрировать сервис-провайдер в секции `providers` файла `./config/app.php`:
+## Usage
 
-```php
-'providers' => [
-    // ...
-    AvtoDev\StaticReferences\ServiceProvider::class,
-]
-```
-
-## Использование
-
-Данный пакет регистрирует IoC-контейнеры объектов справочников, и это является является единой точкой входа в сами справочники. Использование именно IoC (вместо `new SomeReference`) обусловлено тем, что сервис провайдер данного пакета обеспечивает кэширование объектов справочников (целиком) и проверку на валидность кэша (в версиях **до 2.0** была необходимость "сбрасывать" весь кэш ручками при обновлении пакета).
-
-Если вы предпочитаете использовать фасады для доступа к справочникам - они так же имеют место быть.
-
-### Реализованные справочники
-
-На данный момент реализованы следующие справочники:
-
- * `AvtoDev\StaticReferences\References\AutoCategories\AutoCategories`
- * `AvtoDev\StaticReferences\References\AutoRegions\AutoRegions`
- * `AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions`
- * `AvtoDev\StaticReferences\References\RepairMethods\RepairMethods`
- * `AvtoDev\StaticReferences\References\AutoFines\AutoFines`
- * `AvtoDev\StaticReferences\References\CadastralRegions\CadastralRegions`
-
-Класс справочника | Описание | Поля данных
------------------ | -------- | -----------
-`AutoCategories` | Категории транспортных средств | `code` - Код категории <br /> `description` - Описание категории
-`AutoRegions` | Регионы субъектов | `title` Заголовок региона <br /> `short_titles` - Варианты короткого наименования региона <br /> `region_code` - Код субъекта РФ <br /> `auto_codes` - Автомобильные коды (коды ГИБДД) <br /> `okato` - Код региона по ОКАТО <br /> `iso_31662` - Код региона по стандарту ISO-31662 <br /> `type` - Тип (республика/край/и т.д.)
-`RegistrationActions` | Регистрационные действия | `codes` - Коды регистрационного действия <br /> `description` - Описание регистрационного действия
-`RepairMethods` | Методы ремонта | `codes` - Коды метода ремонта <br /> `description` - Описание метода ремонта
-`AutoFines` | Правонарушения в области дорожного движения | `article` - Статья правонарушения <br /> `description` - Описание правонарушения
-`CadastralRegions` | Полный список кодов субъектов и кадастровых районов РФ | `code` - Код субъекта<br /> `name` - Название субъекта<br /> `districts` - Список кадастровых районов субъекта <br /> `districts.code` - Номер района<br /> `districts.name` - Название района
-
-### Примеры использования
-
-Справочник "Категории транспортных средств":
+Use illuminate service container for getting access to the references instances. For example, in artisan command:
 
 ```php
 <?php
 
-use AvtoDev\StaticReferences\References\AutoCategories\AutoCategoryEntry;
-use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
+namespace App\Console\Commands;
 
-// Извлекаем инстанс статических справочников из IoC Laravel
-/** @var AutoCategories $auto_categories */
-$auto_categories = resolve(AutoCategories::class);
+use AvtoDev\StaticReferences\References\SubjectCodes;
+use AvtoDev\StaticReferences\References\VehicleCategories;
 
-// Перебираем все категории ТС
-$auto_categories->each(function (AutoCategoryEntry $category) {
-    $category->getCode();        // код категории
-    $category->getDescription(); // её описание
-});
+class SomeCommand extends \Illuminate\Console\Command
+{
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $name = 'some:command';
+    
+    /**
+     * Execute the console command.
+     *
+     * @param SubjectCodes      $subject_codes
+     * @param VehicleCategories $vehicle_categories
+     *
+     * @return void
+     */
+    public function handle(SubjectCodes $subject_codes, VehicleCategories $vehicle_categories): void
+    {
+        // Print all vehicle categories in a one string
+        $this->info(collect($vehicle_categories)->pluck('code')->implode(', ')); // A, A1, B, BE...
 
-// Проверяем наличие категории по коду
-$auto_categories->hasCode('B1'); // true
-$auto_categories->hasCode('A9'); // false
+        // Get all GIBDD codes for moscow subject
+        $this->info($subject_codes->getByGibddCode(77)->getGibddCodes()); // [77, 97, 99, 177, ...]
 
-// Получаем объект категории по его коду
-$category_b1 = $auto_categories->getByCode('B1');
+        // Make GIBDD codes validation
+        $subject_codes->hasGibddCode(777); // true
+        $subject_codes->hasGibddCode(666); // false
+    }
+}
 ```
 
-Справочник "Регионы субъектов":
-  
-```php
-<?php
-
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-
-/** @var AutoRegions $auto_regions */
-$auto_regions = resolve(AutoRegions::class);
-
-// Перебираем все регионы субъектов
-$auto_regions->each(function (AutoRegionEntry $region) {
-    $region->getRegionCode();  // код субъекта РФ
-    $region->getAutoCodes();   // автомобильные коды (коды ГИБДД)
-    $region->getIso31662();    // код региона по стандарту ISO-31662
-    $region->getOkato();       // код региона по ОКАТО
-    $region->getShortTitles(); // варианты короткого наименования региона
-    $region->getTitle();       // заголовок региона
-    $region->getType();        // тип (республика/край/и т.д.)
-});
-
-// Получаем заголовки всех регионов одним массивом
-$titles = collect($auto_regions->toArray())->pluck('title')->toArray(); // ['Республика Адыгея', 'Республика Алтай', ...];
-
-// Получаем объект региона по его заголовку
-$moscow_region = $auto_regions->getByTitle('Москва');
-
-// Проверяем наличие региона по его коду
-$auto_regions->hasAutoCode(177); // true
-$auto_regions->hasAutoCode(666); // false
-```
-
-Справочник "Кадастровые округа и районы"
-  
-```php
-<?php
-
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntry;
-
-/** @var CadastralRegions $cadastral_regions */
-$cadastral_regions = resolve(CadastralRegions::class);
-
-// Перебираем все субъекты
-$cadastral_regions->each(function (CadastralRegionEntry $region) {
-    $region->getRegionCode();  // код субъекта РФ
-    $region->getRegionName();  // название субъекта
-    $region->getDistricts();   // список районов в субъекте
-        
-    $region->getDistricts()->each(function (CadastralDistrictEntry $district){
-       $district->getDistrictCode(); // номер кадастрового района
-       $district->getDistrictName(); // название кадастрового района
-    });
-});
-
-// Получаем названия всех субъектов
-$titles = collect($cadastral_regions->toArray())->pluck('name')->toArray(); // ["Адыгейский", "Башкирский", "Бурятский", "Алтайский республиканский", ...];
-
-// Получаем объект округа по коду
-$cadastral_regions->getRegionByName(20); //Чеченский
-
-// Проверяем наличие региона по его коду
-$cadastral_regions->hasRegionCode(66);  // true
-$cadastral_regions->hasRegionCode(111); // false
-
-// Получаем список районов по округу
-$cadastral_regions->getRegionByCode(20)->getDistricts();
-
-// Получаем район по округу
-$cadastral_regions->getRegionByCode(20)->getDistricts()->getDistrictByCode(1); // "Ачхой-Мартановский"
-$cadastral_regions->getRegionByCode(20)->getDistricts()->getDistrictByName('Веденский'); // "02"
-
-// Существует ли район в округе
-$cadastral_regions->getRegionByCode(20)->getDistricts()->hasDistrictCode('17'); // true
-$cadastral_regions->getRegionByCode(20)->getDistricts()->hasDistrictCode('88'); // false
-```
+All available references can be found [in this directory](./src/References).
 
 ### Testing
 
@@ -216,3 +122,4 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [link_pulls]:https://github.com/avto-dev/static-references-laravel/pulls
 [link_license]:https://github.com/avto-dev/static-references-laravel/blob/master/LICENSE
 [getcomposer]:https://getcomposer.org/download/
+[static-references-data]:https://github.com/avto-dev/static-references-data

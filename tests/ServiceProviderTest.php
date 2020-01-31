@@ -4,18 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\Tests;
 
-use AvtoDev\StaticReferences\Facades\AutoFinesFacade;
-use AvtoDev\StaticReferences\Facades\AutoRegionsFacade;
-use AvtoDev\StaticReferences\Facades\RepairMethodsFacade;
-use AvtoDev\StaticReferences\Facades\AutoCategoriesFacade;
-use AvtoDev\StaticReferences\Facades\CadastralRegionsFacade;
-use AvtoDev\StaticReferences\References\AutoFines\AutoFines;
-use AvtoDev\StaticReferences\Facades\RegistrationActionsFacade;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\RepairMethods\RepairMethods;
-use AvtoDev\StaticReferences\References\AutoCategories\AutoCategories;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
-use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
+use AvtoDev\StaticReferences\References;
+use AvtoDev\StaticReferencesData\StaticReferencesData;
 
 /**
  * @covers \AvtoDev\StaticReferences\ServiceProvider<extended>
@@ -23,57 +13,75 @@ use AvtoDev\StaticReferences\References\RegistrationActions\RegistrationActions;
 class ServiceProviderTest extends AbstractUnitTestCase
 {
     /**
-     * Tests service-provider loading.
-     *
-     * @covers \AvtoDev\StaticReferences\Facades\AutoCategoriesFacade
-     * @covers \AvtoDev\StaticReferences\Facades\AutoFinesFacade
-     * @covers \AvtoDev\StaticReferences\Facades\AutoRegionsFacade
-     * @covers \AvtoDev\StaticReferences\Facades\RegistrationActionsFacade
-     * @covers \AvtoDev\StaticReferences\Facades\RepairMethodsFacade
-     *
      * @return void
      */
-    public function testServiceProviderLoading(): void
+    public function testReferencesRegistration(): void
     {
-        $this->assertInstanceOf(AutoRegions::class, $this->app[AutoRegions::class]);
-        $this->assertInstanceOf(AutoRegions::class, app(AutoRegions::class));
-        $this->assertInstanceOf(AutoRegions::class, AutoRegionsFacade::getFacadeRoot());
+        $abstracts = [
+            References\CadastralDistricts::class,
+            References\SubjectCodes::class,
+            References\VehicleCategories::class,
+            References\VehicleFineArticles::class,
+            References\VehicleRegistrationActions::class,
+            References\VehicleRepairMethods::class,
+            References\VehicleTypes::class,
+        ];
 
-        $this->assertInstanceOf(AutoCategories::class, $this->app[AutoCategories::class]);
-        $this->assertInstanceOf(AutoCategories::class, app(AutoCategories::class));
-        $this->assertInstanceOf(AutoCategories::class, AutoCategoriesFacade::getFacadeRoot());
+        foreach ($abstracts as $abstract) {
+            $this->assertTrue($this->app->bound($abstract));
 
-        $this->assertInstanceOf(RegistrationActions::class, $this->app[RegistrationActions::class]);
-        $this->assertInstanceOf(RegistrationActions::class, app(RegistrationActions::class));
-        $this->assertInstanceOf(RegistrationActions::class, RegistrationActionsFacade::getFacadeRoot());
+            /** @var References\ReferenceInterface $first */
+            $this->assertInstanceOf($abstract, $first = $this->app->make($abstract));
+            $second = $this->app->make($abstract);
 
-        $this->assertInstanceOf(RepairMethods::class, $this->app[RepairMethods::class]);
-        $this->assertInstanceOf(RepairMethods::class, app(RepairMethods::class));
-        $this->assertInstanceOf(RepairMethods::class, RepairMethodsFacade::getFacadeRoot());
+            $this->assertSame($first, $second, "{$abstract} bound as not singleton");
 
-        $this->assertInstanceOf(AutoFines::class, $this->app[AutoFines::class]);
-        $this->assertInstanceOf(AutoFines::class, app(AutoFines::class));
-        $this->assertInstanceOf(AutoFines::class, AutoFinesFacade::getFacadeRoot());
+            $this->assertGreaterThanOrEqual(1, $first->count());
 
-        $this->assertInstanceOf(CadastralRegions::class, $this->app[CadastralRegions::class]);
-        $this->assertInstanceOf(CadastralRegions::class, app(CadastralRegions::class));
-        $this->assertInstanceOf(CadastralRegions::class, CadastralRegionsFacade::getFacadeRoot());
+            foreach ($first as $item) {
+                $this->assertInstanceOf(References\Entities\EntityInterface::class, $item);
+            }
+        }
     }
 
     /**
-     * Test instance resolving from cache.
-     *
-     * Checking allowed by coverage.
-     *
      * @return void
      */
-    public function testResolvingInstanceFromCache(): void
+    public function testBackwardCompatibleArrayConvert(): void
     {
-        $this->assertInstanceOf(AutoRegions::class, $this->app[AutoRegions::class]);
+        $this->assertEquals(
+            $this->app->make(References\CadastralDistricts::class)->toArray(),
+            StaticReferencesData::cadastralDistricts()->getData(true)
+        );
 
-        $this->clearCache();
-        $this->refreshApplication();
+        $this->assertEquals(
+            $this->app->make(References\SubjectCodes::class)->toArray(),
+            StaticReferencesData::subjectCodes()->getData(true)
+        );
 
-        $this->assertInstanceOf(AutoRegions::class, $this->app[AutoRegions::class]);
+        $this->assertEquals(
+            $this->app->make(References\VehicleCategories::class)->toArray(),
+            StaticReferencesData::vehicleCategories()->getData(true)
+        );
+
+        $this->assertEquals(
+            $this->app->make(References\VehicleFineArticles::class)->toArray(),
+            StaticReferencesData::vehicleFineArticles()->getData(true)
+        );
+
+        $this->assertEquals(
+            $this->app->make(References\VehicleRegistrationActions::class)->toArray(),
+            StaticReferencesData::vehicleRegistrationActions()->getData(true)
+        );
+
+        $this->assertEquals(
+            $this->app->make(References\VehicleRepairMethods::class)->toArray(),
+            StaticReferencesData::vehicleRepairMethods()->getData(true)
+        );
+
+        $this->assertEquals(
+            $this->app->make(References\VehicleTypes::class)->toArray(),
+            StaticReferencesData::vehicleTypes()->getData(true)
+        );
     }
 }
