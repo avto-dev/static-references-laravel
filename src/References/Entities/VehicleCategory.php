@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\Entities;
 
-use Tarampampam\Wrappers\Json;
-
 class VehicleCategory implements EntityInterface
 {
     /**
@@ -61,13 +59,5 @@ class VehicleCategory implements EntityInterface
             'code'        => $this->code,
             'description' => $this->description,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toJson($options = 0): string
-    {
-        return (string) Json::encode($this->toArray(), $options);
     }
 }

@@ -49,17 +49,4 @@ class CadastralAreaTest extends AbstractUnitTestCase
         $this->assertSame($code, $as_array['code']);
         $this->assertSame($name, $as_array['name']);
     }
-
-    /**
-     * @return void
-     */
-    public function testToJson(): void
-    {
-        $as_json = (new CadastralArea($code = \random_int(1, 100), $name = Str::random()))->toJson();
-
-        $this->assertJsonStringEqualsJsonString(Json::encode([
-            'code' => $code,
-            'name' => $name,
-        ]), $as_json);
-    }
 }

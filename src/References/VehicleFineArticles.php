@@ -100,10 +100,7 @@ class VehicleFineArticles implements ReferenceInterface
      */
     protected function clearArticleValue(string $value): string
     {
-        // Replace any chars except numbers to dots (`.`) + make dots trimming
-        $value = \trim((string) \preg_replace('/[\D]/', '.', $value), '.');
-
-        // Multiple dots replace with single
-        return (string) \preg_replace('/\.+/', '.', $value);
+        // Replace any chars except numbers to dots (`.`) + make dots trimming. Multiple dots replace with single
+        return \trim((string) \preg_replace('/[\D]+/', '.', $value), '.');
     }
 }

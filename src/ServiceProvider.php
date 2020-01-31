@@ -23,11 +23,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register(): void
     {
         $this->app->singleton(CadastralDistricts::class, static function (): CadastralDistricts {
-            return new References\CadastralDistricts(StaticReferencesData::cadastralDistricts());
+            return new CadastralDistricts(StaticReferencesData::cadastralDistricts());
         });
 
         $this->app->singleton(SubjectCodes::class, static function (): SubjectCodes {
-            return new References\SubjectCodes(StaticReferencesData::subjectCodes());
+            return new SubjectCodes(StaticReferencesData::subjectCodes());
         });
 
         $this->app->singleton(VehicleCategories::class, static function (): VehicleCategories {

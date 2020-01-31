@@ -49,17 +49,4 @@ class VehicleCategoryTest extends AbstractUnitTestCase
         $this->assertSame($code, $as_array['code']);
         $this->assertSame($description, $as_array['description']);
     }
-
-    /**
-     * @return void
-     */
-    public function testToJson(): void
-    {
-        $as_json = (new VehicleCategory($code = Str::random(), $description = Str::random()))->toJson();
-
-        $this->assertJsonStringEqualsJsonString(Json::encode([
-            'code'        => $code,
-            'description' => $description,
-        ]), $as_json);
-    }
 }

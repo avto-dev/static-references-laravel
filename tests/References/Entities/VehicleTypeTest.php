@@ -86,24 +86,4 @@ class VehicleTypeTest extends AbstractUnitTestCase
         $this->assertSame($group_title, $as_array['group_title']);
         $this->assertSame($group_slug, $as_array['group_slug']);
     }
-
-    /**
-     * @return void
-     */
-    public function testToJson(): void
-    {
-        $as_json = (new VehicleType(
-            $code = \random_int(1, 100),
-            $title = Str::random(),
-            $group_title = Str::random(),
-            $group_slug = Str::random()
-        ))->toJson();
-
-        $this->assertJsonStringEqualsJsonString(Json::encode([
-            'code'        => $code,
-            'title'       => $title,
-            'group_title' => $group_title,
-            'group_slug'  => $group_slug,
-        ]), $as_json);
-    }
 }

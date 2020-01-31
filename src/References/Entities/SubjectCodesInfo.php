@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\Entities;
 
-use Tarampampam\Wrappers\Json;
-
 class SubjectCodesInfo implements EntityInterface
 {
     /**
@@ -101,13 +99,5 @@ class SubjectCodesInfo implements EntityInterface
             'gibdd'          => $this->gibdd,
             'code_iso_31662' => $this->code_iso_31662,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toJson($options = 0): string
-    {
-        return (string) Json::encode($this->toArray(), $options);
     }
 }

@@ -26,7 +26,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - New reference:
   - `References\VehicleTypes`
 - New interface:
-  - `References\Entities\EntityInterface` (extends `Illuminate\Contracts\Support\Support\Arrayable, Illuminate\Contracts\Support\Support\Jsonable`)
+  - `References\Entities\EntityInterface` (extends `Illuminate\Contracts\Support\Support\Arrayable`)
 - New entity classes:
   - `References\Entities\CadastralArea`
   - `References\Entities\CadastralDistrict`

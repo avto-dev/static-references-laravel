@@ -49,17 +49,4 @@ class VehicleRepairMethodTest extends AbstractUnitTestCase
         $this->assertSame($codes, $as_array['codes']);
         $this->assertSame($description, $as_array['description']);
     }
-
-    /**
-     * @return void
-     */
-    public function testToJson(): void
-    {
-        $as_json = (new VehicleRepairMethod($codes = [\random_int(1, 100)], $description = Str::random()))->toJson();
-
-        $this->assertJsonStringEqualsJsonString(Json::encode([
-            'codes'       => $codes,
-            'description' => $description,
-        ]), $as_json);
-    }
 }

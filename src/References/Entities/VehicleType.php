@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\Entities;
 
-use Tarampampam\Wrappers\Json;
-
 class VehicleType implements EntityInterface
 {
     /**
@@ -97,13 +95,5 @@ class VehicleType implements EntityInterface
             'group_title' => $this->group_title,
             'group_slug'  => $this->group_slug,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toJson($options = 0): string
-    {
-        return (string) Json::encode($this->toArray(), $options);
     }
 }

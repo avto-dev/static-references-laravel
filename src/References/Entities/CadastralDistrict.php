@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\StaticReferences\References\Entities;
 
-use Tarampampam\Wrappers\Json;
-
 class CadastralDistrict implements EntityInterface
 {
     /**
@@ -32,8 +30,8 @@ class CadastralDistrict implements EntityInterface
      */
     public function __construct(int $code, string $name, array $areas)
     {
-        $this->code  = $code;
-        $this->name  = $name;
+        $this->code = $code;
+        $this->name = $name;
 
         foreach ($areas as $area) {
             $this->areas[$area->getCode()] = $area;
@@ -96,13 +94,5 @@ class CadastralDistrict implements EntityInterface
                 return $area->toArray();
             }, \array_values($this->areas)),
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toJson($options = 0): string
-    {
-        return (string) Json::encode($this->toArray(), $options);
     }
 }

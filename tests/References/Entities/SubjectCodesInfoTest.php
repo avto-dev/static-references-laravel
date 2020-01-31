@@ -82,24 +82,4 @@ class SubjectCodesInfoTest extends AbstractUnitTestCase
         $this->assertSame($auto_codes, $as_array['gibdd']);
         $this->assertSame($iso_31662, $as_array['code_iso_31662']);
     }
-
-    /**
-     * @return void
-     */
-    public function testToJson(): void
-    {
-        $as_json = (new SubjectCodesInfo(
-            $code = \random_int(1, 100),
-            $title = Str::random(),
-            $auto_codes = [\random_int(1, 50), \random_int(51, 100)],
-            $iso_31662 = Str::random()
-        ))->toJson();
-
-        $this->assertJsonStringEqualsJsonString(Json::encode([
-            'code'           => $code,
-            'title'          => $title,
-            'gibdd'          => $auto_codes,
-            'code_iso_31662' => $iso_31662,
-        ]), $as_json);
-    }
 }
