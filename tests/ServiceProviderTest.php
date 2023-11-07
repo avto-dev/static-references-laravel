@@ -8,7 +8,7 @@ use AvtoDev\StaticReferences\References;
 use AvtoDev\StaticReferencesData\StaticReferencesData;
 
 /**
- * @covers \AvtoDev\StaticReferences\ServiceProvider<extended>
+ * @covers \AvtoDev\StaticReferences\ServiceProvider
  */
 class ServiceProviderTest extends AbstractUnitTestCase
 {
