@@ -89,7 +89,7 @@ class SubjectCodesInfo implements EntityInterface
     /**
      * Get the instance as an array.
      *
-     * @return array{code:int, title:string, gibdd:array, code_iso_31662:string}
+     * @return array{code:int, title:string, gibdd:array<int>, code_iso_31662:string}
      */
     public function toArray(): array
     {

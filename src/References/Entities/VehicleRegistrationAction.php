@@ -51,7 +51,7 @@ class VehicleRegistrationAction implements EntityInterface
     /**
      * Get the instance as an array.
      *
-     * @return array{codes:array, description:string}
+     * @return array{codes:array<int>, description:string}
      */
     public function toArray(): array
     {

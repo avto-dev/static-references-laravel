@@ -51,7 +51,7 @@ class VehicleRepairMethod implements EntityInterface
     /**
      * Get the instance as an array.
      *
-     * @return array{codes:array, description:string}
+     * @return array{codes:array<string>, description:string}
      */
     public function toArray(): array
     {

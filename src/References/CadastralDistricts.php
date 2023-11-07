@@ -26,6 +26,7 @@ class CadastralDistricts implements ReferenceInterface
     public function __construct(StaticReferenceInterface $static_reference)
     {
         foreach ((array) $static_reference->getData(true) as $datum) {
+            /** @var int $code */
             $code  = $datum['code'];
             $areas = [];
 
@@ -38,7 +39,7 @@ class CadastralDistricts implements ReferenceInterface
     }
 
     /**
-     * @return Generator<CadastralDistrict>|CadastralDistrict[]
+     * @return Generator<CadastralDistrict>
      */
     public function getIterator(): Generator
     {
@@ -48,7 +49,7 @@ class CadastralDistricts implements ReferenceInterface
     }
 
     /**
-     * @return array[]
+     * @return array<array-key, array<string, mixed>>
      */
     public function toArray(): array
     {

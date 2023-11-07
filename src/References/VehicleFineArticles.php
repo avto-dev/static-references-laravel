@@ -32,7 +32,7 @@ class VehicleFineArticles implements ReferenceInterface
     }
 
     /**
-     * @return Generator<VehicleFineArticle>|VehicleFineArticle[]
+     * @return Generator<VehicleFineArticle>
      */
     public function getIterator(): Generator
     {
@@ -42,7 +42,7 @@ class VehicleFineArticles implements ReferenceInterface
     }
 
     /**
-     * @return array[]
+     * @return array<array-key, array<string, string>>
      */
     public function toArray(): array
     {

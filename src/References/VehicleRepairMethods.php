@@ -36,6 +36,7 @@ class VehicleRepairMethods implements ReferenceInterface
 
             // burn repair codes index
             foreach ($datum['codes'] as $code) {
+                /** @var string $code */
                 $this->repair_codes_idx[$code] = &$this->entities[$counter];
             }
 
@@ -44,7 +45,7 @@ class VehicleRepairMethods implements ReferenceInterface
     }
 
     /**
-     * @return Generator<VehicleRepairMethod>|VehicleRepairMethod[]
+     * @return Generator<VehicleRepairMethod>
      */
     public function getIterator(): Generator
     {
@@ -54,7 +55,7 @@ class VehicleRepairMethods implements ReferenceInterface
     }
 
     /**
-     * @return array[]
+     * @return array<array-key, array<string, mixed>>
      */
     public function toArray(): array
     {
