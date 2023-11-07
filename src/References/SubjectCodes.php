@@ -32,6 +32,7 @@ class SubjectCodes implements ReferenceInterface
     public function __construct(StaticReferenceInterface $static_reference)
     {
         foreach ((array) $static_reference->getData(true) as $datum) {
+            /** @var int $code */
             $code = $datum['code'];
 
             $this->entities[$code] = new SubjectCodesInfo(
@@ -43,13 +44,14 @@ class SubjectCodes implements ReferenceInterface
 
             // burn gibdd codex index
             foreach ($datum['gibdd'] as $auto_code) {
+                /** @var int $auto_code */
                 $this->gibdd_codes_idx[$auto_code] = &$this->entities[$code];
             }
         }
     }
 
     /**
-     * @return Generator<SubjectCodesInfo>|SubjectCodesInfo[]
+     * @return Generator<SubjectCodesInfo>
      */
     public function getIterator(): Generator
     {
@@ -59,7 +61,7 @@ class SubjectCodes implements ReferenceInterface
     }
 
     /**
-     * @return array[]
+     * @return array<array-key, array<string, mixed>>
      */
     public function toArray(): array
     {

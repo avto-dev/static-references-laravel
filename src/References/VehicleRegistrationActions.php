@@ -36,6 +36,7 @@ class VehicleRegistrationActions implements ReferenceInterface
 
             // burn codes index
             foreach ($datum['codes'] as $code) {
+                /** @var int $code */
                 $this->codes_idx[$code] = &$this->entities[$counter];
             }
 
@@ -44,7 +45,7 @@ class VehicleRegistrationActions implements ReferenceInterface
     }
 
     /**
-     * @return Generator<VehicleRegistrationAction>|VehicleRegistrationAction[]
+     * @return Generator<VehicleRegistrationAction>
      */
     public function getIterator(): Generator
     {
@@ -54,7 +55,7 @@ class VehicleRegistrationActions implements ReferenceInterface
     }
 
     /**
-     * @return array[]
+     * @return array<array-key, array<string, mixed>>
      */
     public function toArray(): array
     {

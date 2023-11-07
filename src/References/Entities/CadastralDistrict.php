@@ -83,7 +83,7 @@ class CadastralDistrict implements EntityInterface
     /**
      * Get the instance as an array.
      *
-     * @return array{code:int, name:string}
+     * @return array{code:int, name:string, areas:array<array<string, int|string>>}
      */
     public function toArray(): array
     {

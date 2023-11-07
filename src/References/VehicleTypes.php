@@ -27,14 +27,17 @@ class VehicleTypes implements ReferenceInterface
     public function __construct(StaticReferenceInterface $static_reference)
     {
         foreach ((array) $static_reference->getData(true) as $datum) {
-            $this->entities[$datum['code']] = new VehicleType(
-                $datum['code'], $datum['title'], $datum['group_title'], $datum['group_slug']
+            /** @var int $code */
+            $code = $datum['code'];
+
+            $this->entities[$code] = new VehicleType(
+                $datum['code'], $datum['title'], $datum['group_title'], $datum['group_slug'],
             );
         }
     }
 
     /**
-     * @return Generator<VehicleType>|VehicleType[]
+     * @return Generator<VehicleType>
      */
     public function getIterator(): Generator
     {
@@ -44,7 +47,7 @@ class VehicleTypes implements ReferenceInterface
     }
 
     /**
-     * @return array[]
+     * @return array<array-key, array<string, int|string>>
      */
     public function toArray(): array
     {
